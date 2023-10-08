@@ -2,9 +2,8 @@ package connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
-public class connection {
+public class ConnectionManager {
 
     private static final String url = "jdbc:mysql://localhost:3306/TestQuestionDB";
     private static final String user = "root";
@@ -12,16 +11,15 @@ public class connection {
 
     private static Connection conn;
 
-    public static Connection gConnection(){
-
+    public static Connection getConnection() {
         try {
-            if(conn == null){
+            if (conn == null || conn.isClosed()) {
                 conn = DriverManager.getConnection(url, user, password);
             }
-            return conn; 
+            return conn;
         } catch (Exception e) {
             e.printStackTrace();
-            return null; 
+            throw new RuntimeException("Erro ao obter a conexão: " + e.getMessage(), e);
         }
     }
 }

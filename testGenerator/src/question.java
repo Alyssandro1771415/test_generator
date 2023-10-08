@@ -1,9 +1,9 @@
 public class question {
 
-    String schoolSubject;
-    String content;
-    String Question;
-    int difficult;
+    private String schoolSubject;
+    private String content;
+    private String Question;
+    private int difficult;
 
     public question(String schoolSubject, String content, String question, int difficult) {
         this.schoolSubject = schoolSubject;
