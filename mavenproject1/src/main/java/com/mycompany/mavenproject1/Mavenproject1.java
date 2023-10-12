@@ -8,7 +8,7 @@ public class Mavenproject1 {
 
     public static void main(String[] args) throws SQLException {
 
-        ArrayList<Question> meuArrayList = new ArrayList<Question>();
+        ArrayList<Question> minhasQuestoes = new ArrayList<Question>();
         
         try {
             DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
@@ -16,15 +16,15 @@ public class Mavenproject1 {
 
             while (dados.next()) {
                 Question questao = new Question(dados.getInt("id"), dados.getString("schoolSubject"), dados.getString("content"), dados.getString("question"), dados.getInt("difficult"));
-                meuArrayList.add(questao);
+                minhasQuestoes.add(questao);
             }
 
         } catch (SQLException ex) {
             System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
         }
 
-        for(Question questao : meuArrayList){
-            System.out.println(questao);
+        for(Question questao : minhasQuestoes){
+            System.out.println(questao.getContent());
         }
         
     }

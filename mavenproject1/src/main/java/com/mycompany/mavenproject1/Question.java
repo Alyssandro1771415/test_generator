@@ -8,6 +8,26 @@ public class Question {
     private String question;
     private int difficult;
 
+    public double getId() {
+        return id;
+    }
+
+    public String getSchoolSubject() {
+        return schoolSubject;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public int getDifficult() {
+        return difficult;
+    }
+
     public Question(double id, String schoolSubject, String content, String question, int difficult) {
         this.id = id;
         this.schoolSubject = schoolSubject;
