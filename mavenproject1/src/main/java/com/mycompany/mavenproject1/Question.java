@@ -2,13 +2,13 @@ package com.mycompany.mavenproject1;
 
 public class Question {
     
-    private double id;
+    private int id;
     private String schoolSubject; 
     private String content; 
     private String question;
     private int difficult;
 
-    public double getId() {
+    public int getId() {
         return id;
     }
 
@@ -28,7 +28,7 @@ public class Question {
         return difficult;
     }
 
-    public Question(double id, String schoolSubject, String content, String question, int difficult) {
+    public Question(int id, String schoolSubject, String content, String question, int difficult) {
         this.id = id;
         this.schoolSubject = schoolSubject;
         this.content = content;
