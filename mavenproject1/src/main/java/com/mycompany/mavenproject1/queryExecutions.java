@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public class queryExecutions {
     
-    public ArrayList<Question> realizeConsult(){
+    public ArrayList<Question> realizeConsult(String consulta){
 
             ArrayList<Question> myQuestions = new ArrayList<Question>();
         
             try {
                 DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
-                ResultSet dados = dbManager.executeQuery("SELECT * FROM Questions");
+                ResultSet dados = dbManager.executeQuery(consulta);
 
                 while (dados.next()) {
                     Question questao = new Question(dados.getInt("id"), dados.getString("schoolSubject"), dados.getString("content"), dados.getString("question"), dados.getInt("difficult"));
@@ -31,8 +31,8 @@ public class queryExecutions {
         try {
             DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
 
-            String insertQuery = String.format("INSERT INTO Questions (schoolSubject, content, question, difficult) VALUES (%s, %s, %s, %i)", schoolSubjString, conteString, questionString, difficult);
-            int rowsAffected = dbManager.executeUpdate(insertQuery, "Matemática", "Conteúdo da questão", "Qual é a pergunta?", 3);
+            String insertQuery = String.format("INSERT INTO Questions (schoolSubject, content, question, difficult) VALUES (?, ?, ?, ?)");
+            int rowsAffected = dbManager.executeUpdate(insertQuery, schoolSubjString, conteString, questionString, difficult);
 
             System.out.println("Linhas afetadas pela inserção: " + rowsAffected);
 
