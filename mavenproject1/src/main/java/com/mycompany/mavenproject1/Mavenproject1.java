@@ -9,13 +9,15 @@ public class Mavenproject1 {
         
         queryExecutions consultor = new queryExecutions();
 
-        consultor.dataUpload("Português", "Tempos Verbais", "Qual o tempo verbal da frase: 'Eu vejo o futuro repetir o passado'", 1);
+        consultor.dataUpload("Português", "Tempos Verbais", "Qual o tempo verbal da frase: 'Eu vejo o futuro repetir o passado'", 1, "Passado", "Futuro", "Presente");
 
-        ArrayList<Question> lista = consultor.realizeConsult("SELECT * FROM questions");
+        ArrayList<Question> lista = consultor.realizeConsult();
 
         for(Question i : lista){
-            System.out.println(i);
+            System.out.println(i.getQuestion());
         }
+
+        consultor.dataDelete(11);
 
     }
 }

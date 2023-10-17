@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `testquestiondb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE `testquestiondb`;
 -- MariaDB dump 10.19  Distrib 10.4.28-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: testquestiondb
@@ -27,9 +29,15 @@ CREATE TABLE `questions` (
   `schoolSubject` varchar(50) NOT NULL,
   `content` varchar(100) NOT NULL,
   `question` varchar(500) NOT NULL,
-  `dificult` int(11) DEFAULT NULL CHECK (`dificult` in (1,2,3)),
+  `difficult` int(11) DEFAULT NULL CHECK (`difficult` in (1,2,3)),
+  `itemA` varchar(100) DEFAULT NULL,
+  `itemB` varchar(100) DEFAULT NULL,
+  `itemC` varchar(100) DEFAULT NULL,
+  `itemD` varchar(100) DEFAULT NULL,
+  `itemE` varchar(100) DEFAULT NULL,
+  `itemF` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +46,7 @@ CREATE TABLE `questions` (
 
 LOCK TABLES `questions` WRITE;
 /*!40000 ALTER TABLE `questions` DISABLE KEYS */;
+INSERT INTO `questions` VALUES (13,'Português','Tempos Verbais','Qual o tempo verbal da frase: \'Eu vejo o futuro repetir o passado\'',1,'Passado','Futuro','Presente',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `questions` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-08 23:36:20
+-- Dump completed on 2023-10-16 21:24:11
