@@ -1,12 +1,24 @@
 package com.mycompany.mavenproject1;
 
+import java.util.ArrayList;
+
 public class Question {
-    
-    private int id;
-    private String schoolSubject; 
-    private String content; 
-    private String question;
+
+    private int id;//ID
+    private String schoolSubject; //Disciplina
+    private String content; //Subconteúdo
+    private String question; // Descrição
     private int difficult;
+    private ArrayList<String> items = new ArrayList<>();
+
+    public Question(int id, String schoolSubject, String content, String question, int difficult, ArrayList<String> items) {
+        this.id = id;
+        this.schoolSubject = schoolSubject;
+        this.content = content;
+        this.question = question;
+        this.difficult = difficult;
+        this.items = items;
+    }
 
     public int getId() {
         return id;
@@ -28,23 +40,8 @@ public class Question {
         return difficult;
     }
 
-    public Question(int id, String schoolSubject, String content, String question, int difficult) {
-        this.id = id;
-        this.schoolSubject = schoolSubject;
-        this.content = content;
-        this.question = question;
-        this.difficult = difficult;
-    }
-
-    @Override
-    public String toString() {
-        return "Question{" +
-                "id=" + id +
-                ", schoolSubject='" + schoolSubject + '\'' +
-                ", content='" + content + '\'' +
-                ", question='" + question + '\'' +
-                ", difficult=" + difficult +
-                '}';
+    public ArrayList<String> getItems(){
+        return items;
     }
 
 }

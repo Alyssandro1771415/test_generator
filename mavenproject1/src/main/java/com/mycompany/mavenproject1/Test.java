@@ -56,9 +56,21 @@ public class Test {
                 runPaRun2.setText(Integer.toString(i + 1) + "°) ");
                 runPaRun2.setText(listQuestions.get(i).getQuestion());
                 runPaRun2.addBreak();
-                runPaRun2.addBreak();
-                runPaRun2.addBreak();
-                runPaRun2.addBreak();
+
+                for (int j = 0; j <= (listQuestions.get(i).getItems()).size() - 1; j++) {
+
+                    char letter = (char) ('A' + j);
+
+                    runPaRun2.addBreak();
+                    runPaRun2.addTab();
+                    runPaRun2.addTab();
+                    runPaRun2.setText(letter + "°) " + (listQuestions.get(i).getItems()).get(j));
+                    runPaRun2.addBreak();
+                    runPaRun2.addBreak();
+                    runPaRun2.addBreak();
+
+                }
+
                 runPaRun2.addBreak();
                 runPaRun2.addBreak();
 

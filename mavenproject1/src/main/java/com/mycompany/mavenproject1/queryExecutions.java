@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class queryExecutions {
 
     public ArrayList<Question> realizeConsult() {
-
         ArrayList<Question> myQuestions = new ArrayList<Question>();
 
         try {
@@ -15,8 +14,22 @@ public class queryExecutions {
             ResultSet dados = dbManager.executeQuery("SELECT * FROM questions");
 
             while (dados.next()) {
-                Question questao = new Question(dados.getInt("id"), dados.getString("schoolSubject"),
-                        dados.getString("content"), dados.getString("question"), dados.getInt("difficult"));
+                int id = dados.getInt("id");
+                String schoolSubject = dados.getString("schoolSubject");
+                String content = dados.getString("content");
+                String question = dados.getString("question");
+                int difficult = dados.getInt("difficult");
+
+                // Itens da questão
+                ArrayList<String> items = new ArrayList<>();
+                items.add(dados.getString("itemA"));
+                items.add(dados.getString("itemB"));
+                items.add(dados.getString("itemC"));
+                items.add(dados.getString("itemD"));
+                items.add(dados.getString("itemE"));
+                items.add(dados.getString("itemF"));
+
+                Question questao = new Question(id, schoolSubject, content, question, difficult, items);
                 myQuestions.add(questao);
             }
 
@@ -25,86 +38,26 @@ public class queryExecutions {
         }
 
         return myQuestions;
-
     }
 
-    public void dataUpload(String schoolSubjString, String conteString, String questionString, int difficult,
-            String itemA, String itemB, String itemC, String itemD, String itemE, String itemF) {
+    public void dataUpload(Question question) {
         try {
             DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
 
-            String insertQuery = "INSERT INTO Questions (schoolSubject, content, question, difficult, itemA, itemB, itemC, itemD, itemE, itemF) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String insertQuery = "INSERT INTO Questions (schoolSubject, content, question, difficult, itemA, itemB, itemC, itemD, itemE, itemF) " +
+                                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            int rowsAffected = dbManager.executeUpdate(insertQuery, schoolSubjString, conteString, questionString,
-                    difficult, itemA, itemB, itemC, itemD, itemE, itemF);
-
-            System.out.println("Linhas afetadas pela inserção: " + rowsAffected);
-
-        } catch (SQLException ex) {
-            System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
-        }
-    }
-
-    public void dataUpload(String schoolSubjString, String conteString, String questionString, int difficult,
-            String itemA, String itemB, String itemC, String itemD, String itemE) {
-        try {
-            DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
-
-            String insertQuery = "INSERT INTO Questions (schoolSubject, content, question, difficult, itemA, itemB, itemC, itemD, itemE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-            int rowsAffected = dbManager.executeUpdate(insertQuery, schoolSubjString, conteString, questionString,
-                    difficult, itemA, itemB, itemC, itemD, itemE);
-
-            System.out.println("Linhas afetadas pela inserção: " + rowsAffected);
-
-        } catch (SQLException ex) {
-            System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
-        }
-    }
-
-    public void dataUpload(String schoolSubjString, String conteString, String questionString, int difficult,
-            String itemA, String itemB, String itemC, String itemD) {
-        try {
-            DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
-
-            String insertQuery = "INSERT INTO Questions (schoolSubject, content, question, difficult, itemA, itemB, itemC, itemD) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-            int rowsAffected = dbManager.executeUpdate(insertQuery, schoolSubjString, conteString, questionString,
-                    difficult, itemA, itemB, itemC, itemD);
-
-            System.out.println("Linhas afetadas pela inserção: " + rowsAffected);
-
-        } catch (SQLException ex) {
-            System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
-        }
-    }
-
-    public void dataUpload(String schoolSubjString, String conteString, String questionString, int difficult,
-            String itemA, String itemB, String itemC) {
-        try {
-            DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
-
-            String insertQuery = "INSERT INTO Questions (schoolSubject, content, question, difficult, itemA, itemB, itemC) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-            int rowsAffected = dbManager.executeUpdate(insertQuery, schoolSubjString, conteString, questionString,
-                    difficult, itemA, itemB, itemC);
-
-            System.out.println("Linhas afetadas pela inserção: " + rowsAffected);
-
-        } catch (SQLException ex) {
-            System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
-        }
-    }
-
-    public void dataUpload(String schoolSubjString, String conteString, String questionString, int difficult,
-            String itemA, String itemB) {
-        try {
-            DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
-
-            String insertQuery = "INSERT INTO Questions (schoolSubject, content, question, difficult, itemA, itemB) VALUES (?, ?, ?, ?, ?, ?)";
-
-            int rowsAffected = dbManager.executeUpdate(insertQuery, schoolSubjString, conteString, questionString,
-                    difficult, itemA, itemB);
+            int rowsAffected = dbManager.executeUpdate(insertQuery,
+                question.getSchoolSubject(),
+                question.getContent(),
+                question.getQuestion(),
+                question.getDifficult(),
+                question.getItems().get(0),
+                question.getItems().get(1),
+                question.getItems().get(2),
+                question.getItems().get(3),
+                question.getItems().get(4),
+                question.getItems().get(5));
 
             System.out.println("Linhas afetadas pela inserção: " + rowsAffected);
 
@@ -114,11 +67,10 @@ public class queryExecutions {
     }
 
     public void dataDelete(int questionID) {
-
         try {
             DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
 
-            String deleteQuery = String.format("DELETE FROM questions WHERE ID = ?");
+            String deleteQuery = "DELETE FROM questions WHERE ID = ?";
             int rowsAffected = dbManager.executeUpdate(deleteQuery, questionID);
 
             System.out.println("Linhas afetadas pela ação: " + rowsAffected);
@@ -126,7 +78,5 @@ public class queryExecutions {
         } catch (SQLException ex) {
             System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
         }
-
     }
-
 }
