@@ -59,15 +59,17 @@ public class Test {
 
                 for (int j = 0; j <= (listQuestions.get(i).getItems()).size() - 1; j++) {
 
-                    char letter = (char) ('A' + j);
+                    if ((listQuestions.get(i).getItems()).get(j) != null) {
+                        char letter = (char) ('A' + j);
 
-                    runPaRun2.addBreak();
-                    runPaRun2.addTab();
-                    runPaRun2.addTab();
-                    runPaRun2.setText(letter + "°) " + (listQuestions.get(i).getItems()).get(j));
-                    runPaRun2.addBreak();
-                    runPaRun2.addBreak();
-                    runPaRun2.addBreak();
+                        runPaRun2.addBreak();
+                        runPaRun2.addTab();
+                        runPaRun2.addTab();
+                        runPaRun2.setText(letter + ") " + (listQuestions.get(i).getItems()).get(j));
+                        runPaRun2.addBreak();
+                        runPaRun2.addBreak();
+                        runPaRun2.addBreak();
+                    }
 
                 }
 
