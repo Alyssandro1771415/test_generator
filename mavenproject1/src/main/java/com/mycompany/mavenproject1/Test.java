@@ -19,7 +19,7 @@ public class Test {
         XWPFDocument document = new XWPFDocument();
 
         try {
-            out = new FileOutputStream(new File("Prova.docx"));
+            out = new FileOutputStream(new File("C:\\Users\\Alyssandro\\Desktop\\Prova.docx"));
 
             XWPFParagraph paragrafo = document.createParagraph();
             XWPFRun runPaRun1 = paragrafo.createRun();
@@ -57,9 +57,13 @@ public class Test {
                 runPaRun2.setText(listQuestions.get(i).getQuestion());
                 runPaRun2.addBreak();
 
-                for (int j = 0; j <= (listQuestions.get(i).getItems()).size() - 1; j++) {
+                ArrayList<String> alternatives = listQuestions.get(i).getItems();
 
-                    if ((listQuestions.get(i).getItems()).get(j) != null) {
+                
+
+                for (int j = 0; j <= alternatives.size() - 1; j++) {
+
+                    if (alternatives.get(j) != null) {
                         char letter = (char) ('A' + j);
 
                         runPaRun2.addBreak();
