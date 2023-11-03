@@ -61,6 +61,7 @@ public class QuestionViewWindow extends Window {
             consultant.dataUpload(question);
 
             ConcludedPoPWindow concludedPoPWindow = new ConcludedPoPWindow();
+
         });
     }
 

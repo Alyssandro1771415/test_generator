@@ -9,7 +9,7 @@ public class ConcludedPoPWindow extends JPanel {
     
     JFrame frame;
 
-    public void ConcludedPoPWindow() {
+    public ConcludedPoPWindow() {
 
         frame = new JFrame();
         frame.setLayout(null);
