@@ -162,6 +162,7 @@ public class MainWindow extends JPanel {
         mainWindow.setVisible(valor);
     }
 
+
     private BufferedImage loadImage(String url) {
         BufferedImage img = null;
         InputStream is = getClass().getResourceAsStream(url);

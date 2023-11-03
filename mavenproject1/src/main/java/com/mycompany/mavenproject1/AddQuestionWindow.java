@@ -17,7 +17,7 @@ public class AddQuestionWindow extends Window {
     private JRadioButton radioButtonAfirmativeQuestion;
     private int type = 0;
 
-    public void AddQuestionWindow() {
+    public AddQuestionWindow() {
         this.question = new Question();
         frame = new JFrame();
         frame.setLayout(null);
