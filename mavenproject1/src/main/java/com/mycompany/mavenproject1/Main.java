@@ -2,7 +2,7 @@ package com.mycompany.mavenproject1;
 
 import java.sql.SQLException;
 
-public class Mavenproject1 {
+public class Main {
 
     public static void main(String[] args) throws SQLException {
 
