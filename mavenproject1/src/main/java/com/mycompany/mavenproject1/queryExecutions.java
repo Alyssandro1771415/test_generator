@@ -43,24 +43,34 @@ public class queryExecutions {
     public void dataUpload(Question question) {
         try {
             DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
-
+    
             String insertQuery = "INSERT INTO Questions (schoolSubject, content, question, difficult, itemA, itemB, itemC, itemD, itemE, itemF) " +
                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
+    
+            ArrayList<String> items = new ArrayList<>();
+    
+            for (int i = 0; i < 6; i++) {
+                if (i < question.getItems().size()) {
+                    items.add(question.getItems().get(i));
+                } else {
+                    items.add("");
+                }
+            }
+    
             int rowsAffected = dbManager.executeUpdate(insertQuery,
                 question.getSchoolSubject(),
                 question.getContent(),
                 question.getQuestion(),
                 question.getDifficult(),
-                question.getItems().get(0),
-                question.getItems().get(1),
-                question.getItems().get(2),
-                question.getItems().get(3),
-                question.getItems().get(4),
-                question.getItems().get(5));
-
+                items.get(0),
+                items.get(1),
+                items.get(2),
+                items.get(3),
+                items.get(4),
+                items.get(5));
+    
             System.out.println("Linhas afetadas pela inserção: " + rowsAffected);
-
+    
         } catch (SQLException ex) {
             System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
         }

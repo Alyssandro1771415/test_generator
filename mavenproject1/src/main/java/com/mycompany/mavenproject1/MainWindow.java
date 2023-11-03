@@ -6,24 +6,14 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
 
 public class MainWindow extends JPanel {
 
-    private JPanel leftPanel;
-    private JPanel rightPanel;
-    private JLabel labelCadQuestoes, labelCadAvalicao;
-    private JButton buttonAddQuestoes, buttonDelQuestoes, buttonLimpar, buttonGerarAvAleatoria, buttonProvaManual,
-            buttonClose;
-    private JLabel labelEntryNumQuestoes, labelEntryInstituicao, labelEntryProfessor, labelEntryDisciplina;
-    private JTextField entryNumquestoes, entryDisciplina, entryInstituicao, entryProfessor;
-    private JLabel labelPrincipal_SGAA;
-    private JLabel labelImageUEPB;
-    private ImageIcon icon;
+
     private JFrame mainWindow;
+
 
     public MainWindow() {
 
@@ -39,12 +29,12 @@ public class MainWindow extends JPanel {
         instanciarLabels();
         instanciarTexFields();
         gerarQuadradosVisuais();
+        mostrarJanela(true);
     }
 
     public void gerarQuadradosVisuais() {
-        rightPanel = new JPanel();
-        leftPanel = new JPanel();
-
+        JPanel rightPanel = new JPanel();
+        JPanel leftPanel = new JPanel();
         rightPanel.setBounds(377, 50, 377, 330);
         rightPanel.setBorder(new LineBorder(Color.BLACK));
         mainWindow.add(rightPanel);
@@ -55,10 +45,10 @@ public class MainWindow extends JPanel {
 
     public void instanciarTexFields() {
 
-        entryNumquestoes = new JTextField(5);
-        entryDisciplina = new JTextField(5);
-        entryInstituicao = new JTextField(5);
-        entryProfessor = new JTextField(5);
+        JTextField entryNumquestoes = new JTextField(5);
+        JTextField entryDisciplina = new JTextField(5);
+        JTextField entryInstituicao = new JTextField(5);
+        JTextField entryProfessor = new JTextField(5);
 
         mainWindow.add(entryNumquestoes);
         mainWindow.add(entryDisciplina);
@@ -73,12 +63,21 @@ public class MainWindow extends JPanel {
     }
 
     public void instaciarBotoes() {
-        buttonAddQuestoes = new JButton("ADICIONAR QUESTÕES");
-        buttonDelQuestoes = new JButton("DELETAR/PESQUISAR QUESTÕES");
-        buttonLimpar = new JButton("LIMPAR");
-        buttonGerarAvAleatoria = new JButton("GERAR PROVA ALEATÓRIA");
-        buttonProvaManual = new JButton("GERAR PROVA MANUAL");
-        buttonClose = new JButton("FECHAR");
+
+        JButton buttonAddQuestoes = new JButton("ADICIONAR QUESTÕES");
+        JButton buttonDelQuestoes = new JButton("DELETAR/PESQUISAR QUESTÕES");
+        JButton buttonLimpar = new JButton("LIMPAR");
+        JButton buttonGerarAvAleatoria = new JButton("GERAR PROVA ALEATÓRIA");
+        JButton buttonProvaManual = new JButton("GERAR PROVA MANUAL");
+        JButton buttonClose = new JButton("FECHAR");
+
+        buttonAddQuestoes.setFocusable(false);
+        buttonDelQuestoes.setFocusable(false);
+        buttonLimpar.setFocusable(false);
+        buttonGerarAvAleatoria.setFocusable(false);
+        buttonProvaManual.setFocusable(false);
+        buttonClose.setFocusable(false);
+
         buttonAddQuestoes.setToolTipText("CLIQUE PARA ADICIONAR UMA NOVA QUESTÃO AO BANCO DE QUESTÕES.");
         buttonDelQuestoes.setToolTipText("CLIQUE PARA VIZUALIZAR QUESTÕES OU DELETAR QUESTÕES DO BANCO DE QUESTÕES.");
         buttonLimpar.setToolTipText("CLIQUE PARA LIMPAR TODAS AS CAIXAS DE ENTRADA.");
@@ -93,6 +92,7 @@ public class MainWindow extends JPanel {
         mainWindow.add(buttonProvaManual);
         mainWindow.add(buttonClose);
 
+
         buttonAddQuestoes.setBounds(70, 110, 240, 30);
         buttonDelQuestoes.setBounds(70, 160, 240, 30);
         buttonLimpar.setBounds(405, 325, 100, 30);
@@ -106,38 +106,37 @@ public class MainWindow extends JPanel {
             }
         });
 
-        buttonDelQuestoes.addActionListener(new ActionListener() {
+        buttonAddQuestoes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 mostrarJanela(false);
-                QuestionListWindow questionListWindow = new QuestionListWindow(mainWindow);
-
+                mainWindow.dispose();
+                mainWindow = null;
+                AddQuestionWindow addQuestionWindow = new AddQuestionWindow();
             }
         });
 
-        buttonGerarAvAleatoria.addActionListener(new ActionListener() {
-            @Override
+        buttonDelQuestoes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                mostrarJanela(false);
+                mainWindow.dispose();
+                mainWindow = null;
+                QuestionListWindow questionListWindow = new QuestionListWindow();
 
-                queryExecutions consultor = new queryExecutions();
-                ArrayList<Question> ListaQuestoes = consultor.realizeConsult();
-
-                Test test = new Test();
-                test.gerarArquivo(ListaQuestoes);
             }
         });
 
     }
 
     public void instanciarLabels() {
-        labelCadQuestoes = new JLabel("CADASTRO DE QUESTÕES");
-        labelCadAvalicao = new JLabel("CADASTRO DE AVALIAÇÃO");
-        labelEntryNumQuestoes = new JLabel("NUMERO DE QUESTÕES");
-        labelEntryInstituicao = new JLabel("INSTITUIÇÃO");
-        labelEntryProfessor = new JLabel("PROFESSOR");
-        labelEntryDisciplina = new JLabel("DISCIPLINA");
-        labelPrincipal_SGAA = new JLabel("SGGA - SISTEMA GERENCIADOR DE AVALIAÇÕES ACADÊMICAS");
-        icon = new ImageIcon(loadImage("UEPBLOGO.png"));// COLOCAR CASO DE ERRO PARA QUANDO NÃO CARREGAR A IMAGEM
-        labelImageUEPB = new JLabel(icon);
+        JLabel labelCadQuestoes = new JLabel("CADASTRO DE QUESTÕES");
+        JLabel labelCadAvalicao = new JLabel("CADASTRO DE AVALIAÇÃO");
+        JLabel labelEntryNumQuestoes = new JLabel("NUMERO DE QUESTÕES");
+        JLabel labelEntryInstituicao = new JLabel("INSTITUIÇÃO");
+        JLabel labelEntryProfessor = new JLabel("PROFESSOR");
+        JLabel labelEntryDisciplina = new JLabel("DISCIPLINA");
+        JLabel labelPrincipal_SGAA = new JLabel("SGGA - SISTEMA GERENCIADOR DE AVALIAÇÕES ACADÊMICAS");
+        ImageIcon icon = new ImageIcon(loadImage("UEPBLOGO.png"));//COLOCAR CASO DE ERRO PARA QUANDO NÃO CARREGAR A IMAGEM
+        JLabel labelImageUEPB = new JLabel(icon);
 
         mainWindow.add(labelCadQuestoes);
         mainWindow.add(labelCadAvalicao);
@@ -159,13 +158,10 @@ public class MainWindow extends JPanel {
 
     }
 
-    public void mostrarJanela(boolean valor) {
+    public void mostrarJanela(boolean valor){
         mainWindow.setVisible(valor);
     }
 
-    public void AbrirJanela() {
-
-    }
 
     private BufferedImage loadImage(String url) {
         BufferedImage img = null;
