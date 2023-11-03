@@ -68,9 +68,7 @@ public class queryExecutions {
                 items.get(3),
                 items.get(4),
                 items.get(5));
-    
-            System.out.println("Linhas afetadas pela inserção: " + rowsAffected);
-    
+        
         } catch (SQLException ex) {
             System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
         }
@@ -82,8 +80,6 @@ public class queryExecutions {
 
             String deleteQuery = "DELETE FROM questions WHERE ID = ?";
             int rowsAffected = dbManager.executeUpdate(deleteQuery, questionID);
-
-            System.out.println("Linhas afetadas pela ação: " + rowsAffected);
 
         } catch (SQLException ex) {
             System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
