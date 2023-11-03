@@ -25,14 +25,14 @@ public class MainWindow extends JPanel {
         mainWindow.setResizable(false);
         mainWindow.setLocationRelativeTo(null);
 
-        instaciarBotoes();
-        instanciarLabels();
-        instanciarTexFields();
-        gerarQuadradosVisuais();
-        mostrarJanela(true);
+        instantiateButtons();
+        instantiateLabels();
+        instantiateTextFields();
+        generateVisualCanvas();
+        showWindow(true);
     }
 
-    public void gerarQuadradosVisuais() {
+    public void generateVisualCanvas() {
         JPanel rightPanel = new JPanel();
         JPanel leftPanel = new JPanel();
         rightPanel.setBounds(377, 50, 377, 330);
@@ -43,7 +43,7 @@ public class MainWindow extends JPanel {
         mainWindow.add(leftPanel);
     }
 
-    public void instanciarTexFields() {
+    public void instantiateTextFields() {
 
         JTextField entryNumquestoes = new JTextField(5);
         JTextField entryDisciplina = new JTextField(5);
@@ -62,7 +62,7 @@ public class MainWindow extends JPanel {
 
     }
 
-    public void instaciarBotoes() {
+    public void instantiateButtons() {
 
         JButton buttonAddQuestoes = new JButton("ADICIONAR QUESTÕES");
         JButton buttonDelQuestoes = new JButton("DELETAR/PESQUISAR QUESTÕES");
@@ -108,7 +108,7 @@ public class MainWindow extends JPanel {
 
         buttonAddQuestoes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mostrarJanela(false);
+                showWindow(false);
                 mainWindow.dispose();
                 mainWindow = null;
                 AddQuestionWindow addQuestionWindow = new AddQuestionWindow();
@@ -117,7 +117,7 @@ public class MainWindow extends JPanel {
 
         buttonDelQuestoes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mostrarJanela(false);
+                showWindow(false);
                 mainWindow.dispose();
                 mainWindow = null;
                 QuestionListWindow questionListWindow = new QuestionListWindow();
@@ -127,7 +127,7 @@ public class MainWindow extends JPanel {
 
     }
 
-    public void instanciarLabels() {
+    public void instantiateLabels() {
         JLabel labelCadQuestoes = new JLabel("CADASTRO DE QUESTÕES");
         JLabel labelCadAvalicao = new JLabel("CADASTRO DE AVALIAÇÃO");
         JLabel labelEntryNumQuestoes = new JLabel("NUMERO DE QUESTÕES");
@@ -158,10 +158,9 @@ public class MainWindow extends JPanel {
 
     }
 
-    public void mostrarJanela(boolean valor){
+    public void showWindow(boolean valor){
         mainWindow.setVisible(valor);
     }
-
 
     private BufferedImage loadImage(String url) {
         BufferedImage img = null;

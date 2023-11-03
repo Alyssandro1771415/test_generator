@@ -100,11 +100,11 @@ public class AddQuestionTextWindow extends Window {
 
     private void setQuestionEntries() {
         question.setQuestion(textAreaQuestionDescription.getText());
-        CallNextwindow(type);
+        callNextWindow(type);
 
     }
 
-    private void CallNextwindow(int type) {
+    private void callNextWindow(int type) {
 
         if (type == OPENED) {
 

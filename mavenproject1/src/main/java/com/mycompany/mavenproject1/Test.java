@@ -14,7 +14,7 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 public class Test {
 
-    public void gerarArquivo(ArrayList<Question> listQuestions) {
+    public void generateFile(ArrayList<Question> listQuestions) {
         FileOutputStream out = null;
         XWPFDocument document = new XWPFDocument();
 
@@ -59,8 +59,6 @@ public class Test {
 
                 ArrayList<String> alternatives = listQuestions.get(i).getItems();
 
-                
-
                 for (int j = 0; j <= alternatives.size() - 1; j++) {
 
                     if (alternatives.get(j) != null) {
@@ -99,4 +97,5 @@ public class Test {
             }
         }
     }
+
 }

@@ -83,6 +83,7 @@ public class Question {
     public void setItems(ArrayList<String> items) {
         this.items = items;
     }
+  
     public void setEspecificItem(String item) {
         items.add(item);
     }
@@ -103,6 +104,7 @@ public class Question {
         }
         return count;
     }
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

@@ -2,7 +2,7 @@ package com.mycompany.mavenproject1;
 
 import java.util.ArrayList;
 
-public interface testCreator {
+public interface TestCreator {
 
     /* Aqui será para gerar aleatoriamente */
     ArrayList<Question> getQuestionsRandom(int quantEasyQuest, int quantyModerQuest, int quantHardQuest, ArrayList<Question> questions);

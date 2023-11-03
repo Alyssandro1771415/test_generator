@@ -29,7 +29,7 @@ public class ItemsSelectorWindow extends Window {
         createSelectors();
 
         if(!(type == AddQuestionTextWindow.AFIRMATIVE)){
-            creacteCheboxes();
+            createCheboxes();
         }
     }
 
@@ -40,7 +40,7 @@ public class ItemsSelectorWindow extends Window {
         itemsSelectorWindow.add (itemsQuantitySelector);
     }
 
-    private void creacteCheboxes(){
+    private void createCheboxes(){
         CheckBoxInfo = new JCheckBox ("ADICIONAR N.D.A (NENHUMA DAS ALTERNATIVAS)");
         CheckBoxInfo.setBounds (25, 110, 335, 30);
         itemsSelectorWindow.add (CheckBoxInfo);

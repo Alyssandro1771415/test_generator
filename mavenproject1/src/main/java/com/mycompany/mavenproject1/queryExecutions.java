@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class queryExecutions {
+public class QueryExecutions {
 
     public ArrayList<Question> realizeConsult() {
         ArrayList<Question> myQuestions = new ArrayList<Question>();
@@ -81,8 +81,10 @@ public class queryExecutions {
             String deleteQuery = "DELETE FROM questions WHERE ID = ?";
             int rowsAffected = dbManager.executeUpdate(deleteQuery, questionID);
 
+
         } catch (SQLException ex) {
             System.out.println("Ocorreu um erro ao acessar a DB: " + ex.getMessage());
         }
     }
+
 }

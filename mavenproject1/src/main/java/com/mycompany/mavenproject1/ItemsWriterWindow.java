@@ -40,7 +40,6 @@ public class ItemsWriterWindow extends Window {
         labelAddingItem.setBounds (220, 0, 180, 35);
         labelItemText.setBounds (10, 35, 150, 25);}
 
-
     private void createTextArea(){
         itemTextArea = new JTextArea (5, 5);
         itemsWriteWindow.add(itemTextArea);

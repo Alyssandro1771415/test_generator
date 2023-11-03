@@ -6,9 +6,10 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class ConcludedPoPWindow extends JPanel {
+    
     JFrame frame;
 
-    public ConcludedPoPWindow() {
+    public void ConcludedPoPWindow() {
 
         frame = new JFrame();
         frame.setLayout(null);

@@ -57,7 +57,7 @@ public class QuestionViewWindow extends Window {
             questionViewWindow.dispose();
             questionViewWindow = null;
 
-            queryExecutions consultant = new queryExecutions();
+            QueryExecutions consultant = new QueryExecutions();
             consultant.dataUpload(question);
 
             ConcludedPoPWindow concludedPoPWindow = new ConcludedPoPWindow();

@@ -14,7 +14,7 @@ public class QuestionListWindow extends Window {
     private JTextField entryQuestionBody;
     private DefaultTableModel tableModel; // Declaramos a variável como campo de classe
 
-    queryExecutions consultant = new queryExecutions(); // Instaciando o consultor
+    QueryExecutions consultant = new QueryExecutions(); // Instaciando o consultor
     private ArrayList<Question> questionsList = consultant.realizeConsult();
 
     private int selectedRow = -1;
