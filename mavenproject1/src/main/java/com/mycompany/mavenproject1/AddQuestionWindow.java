@@ -160,9 +160,7 @@ public class AddQuestionWindow extends Window {
             type = 3;
         }
 
-
         callNextwindow(type);
-
 
     }
 
