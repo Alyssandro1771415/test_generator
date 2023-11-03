@@ -15,7 +15,7 @@ public class QuestionListWindow extends Window {
     private DefaultTableModel tableModel; // Declaramos a variável como campo de classe
 
     QueryExecutions consultant = new QueryExecutions(); // Instaciando o consultor
-    private ArrayList<Question> questionsList = consultant.realizeConsult();
+    protected ArrayList<Question> questionsList = consultant.realizeConsult();
 
     private int selectedRow = -1;
     private JTable table;
@@ -69,15 +69,19 @@ public class QuestionListWindow extends Window {
         buttonLimpar.setBounds(605, 85, 110, 30);
 
         buttonLimpar.addActionListener(e -> {
+
             entryContent.setText(""); // Limpa o campo de tópico
             entryQuestionBody.setText(""); // Limpa o campo de texto da questão
             buildTable(questionsList); // Reconstrói a tabela com todas as questões
+        
         });
 
         buttonVoltar.addActionListener(e -> {
+
             questionListWindow.dispose();
             questionListWindow = null;
             MainWindow mainWindow = new MainWindow();
+        
         });
 
         buttonDeletar.addActionListener(e -> {
@@ -87,6 +91,7 @@ public class QuestionListWindow extends Window {
             consultant.dataDelete(dataToDelet);
 
             buildTable(consultant.realizeConsult());
+            questionsList = consultant.realizeConsult();
 
         });
 
