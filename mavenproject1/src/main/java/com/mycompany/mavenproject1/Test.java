@@ -10,7 +10,6 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -23,10 +22,10 @@ public class Test {
     private int testsNumber;
     private ArrayList<Question> questionsList;
 
-    public void generateFile(ArrayList<Question> listQuestions, int easyQuantQuestions, int moderateQuantQuestions, int hardQuantQuestions) {
-        
-        FileOutputStream out = null;
-        XWPFDocument document = new XWPFDocument();
+    public ArrayList<Question> randomizeQuestions(ArrayList<Question> listQuestions, int easyQuantQuestions,
+            int moderateQuantQuestions,
+            int hardQuantQuestions) {
+
         ArrayList<Question> selectedQuestions = new ArrayList<>();
         Random random = new Random();
 
@@ -54,8 +53,27 @@ public class Test {
 
         Collections.shuffle(selectedQuestions);
 
+        return selectedQuestions;
+
+    }
+
+    public void generateFile(ArrayList<Question> listQuestions, int easyQuantQuestions, int moderateQuantQuestions,
+            int hardQuantQuestions) {
+
+        FileOutputStream out = null;
+        XWPFDocument document = new XWPFDocument();
+        ArrayList<Question> selectedQuestions = randomizeQuestions(listQuestions, easyQuantQuestions,
+                moderateQuantQuestions, hardQuantQuestions);
+
         try {
-            out = new FileOutputStream(new File("C:\\Users\\Alyssandro\\OneDrive\\Área de Trabalho\\Prova.docx"));
+
+            DirectorySelector selector = new DirectorySelector();
+            String chossedDirectory = selector.directorySelector();    
+
+            String myFile = "Prova.docx";
+            java.io.File file = new java.io.File(chossedDirectory, myFile);
+            out = new FileOutputStream(file);
+
 
             XWPFParagraph paragrafo = document.createParagraph();
             XWPFRun runPaRun1 = paragrafo.createRun();
@@ -65,21 +83,23 @@ public class Test {
             runPaRun1.addBreak();
             runPaRun1.addBreak();
             runPaRun1.addTab();
-            runPaRun1.setText("Instituição: " + institution,1);
+            runPaRun1.setText("Instituição: " + institution, 1);
             runPaRun1.addBreak();
             runPaRun1.addTab();
-                        runPaRun1.setText("Professor: " + educatorName);
+            runPaRun1.setText("Professor: " + educatorName, 2);
+            runPaRun1.addBreak();
             runPaRun1.addBreak();
             runPaRun1.addTab();
             runPaRun1.setText(
                     "Aluno: ............................................................................................................",
-                    2);
+                    3);
+            runPaRun1.addBreak();
             runPaRun1.addBreak();
             runPaRun1.addTab();
-            runPaRun1.setText("Matrícula: ............................. \t\t\t\t\t Nota: .............", 3);
+            runPaRun1.setText("Matrícula: ............................. \t\t\t\t\t Nota: .............", 4);
             runPaRun1.addBreak();
             runPaRun1.removeTab();
-            runPaRun1.setText("_________________________________________________________________________________", 4);
+            runPaRun1.setText("_________________________________________________________________________________", 5);
             runPaRun1.addBreak();
             runPaRun1.addBreak();
             runPaRun1.setBold(true);
@@ -92,16 +112,16 @@ public class Test {
                 runPaRun2.setText(Integer.toString(i + 1) + "°) ");
                 runPaRun2.setText(selectedQuestions.get(i).getQuestion());
                 runPaRun2.addBreak();
-            
+
                 ArrayList<String> alternatives = selectedQuestions.get(i).getItems();
-            
+
                 for (int j = 0; j < alternatives.size(); j++) {
                     String alternativeText = alternatives.get(j);
-            
+
                     if (alternativeText != null && !alternativeText.trim().isEmpty()) {
 
                         char letter = (char) ('A' + j);
-            
+
                         runPaRun2.addBreak();
                         runPaRun2.addTab();
                         runPaRun2.addTab();
@@ -112,7 +132,6 @@ public class Test {
                     }
                 }
             }
-            
 
             document.write(out);
             document.close();
@@ -132,7 +151,8 @@ public class Test {
         }
     }
 
-    public Test(String institution, String schoolSubject, String educatorName, int testsNumber, ArrayList<Question> questionsList){
+    public Test(String institution, String schoolSubject, String educatorName, int testsNumber,
+            ArrayList<Question> questionsList) {
         this.institution = institution;
         this.schoolSubject = schoolSubject;
         this.educatorName = educatorName;
