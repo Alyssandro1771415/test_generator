@@ -58,97 +58,101 @@ public class Test {
     }
 
     public void generateFile(ArrayList<Question> listQuestions, int easyQuantQuestions, int moderateQuantQuestions,
-            int hardQuantQuestions) {
+            int hardQuantQuestions, String directory, int testsNumber) {
 
         FileOutputStream out = null;
         XWPFDocument document = new XWPFDocument();
         ArrayList<Question> selectedQuestions = randomizeQuestions(listQuestions, easyQuantQuestions,
                 moderateQuantQuestions, hardQuantQuestions);
 
-        try {
+        for (int newTestNumber = 0; newTestNumber < testsNumber; newTestNumber++) {
 
-            DirectorySelector selector = new DirectorySelector();
-            String chossedDirectory = selector.directorySelector();    
+            try {
 
-            String myFile = "Prova.docx";
-            java.io.File file = new java.io.File(chossedDirectory, myFile);
-            out = new FileOutputStream(file);
+                String myFile = "Prova" + newTestNumber + ".docx";
+                java.io.File file = new java.io.File(directory, myFile);
+                out = new FileOutputStream(file);
 
+                System.out.println(myFile);
 
-            XWPFParagraph paragrafo = document.createParagraph();
-            XWPFRun runPaRun1 = paragrafo.createRun();
+                XWPFParagraph paragrafo = document.createParagraph();
+                XWPFRun runPaRun1 = paragrafo.createRun();
 
-            runPaRun1.addBreak();
-            runPaRun1.setText("_________________________________________________________________________________", 0);
-            runPaRun1.addBreak();
-            runPaRun1.addBreak();
-            runPaRun1.addTab();
-            runPaRun1.setText("Instituição: " + institution, 1);
-            runPaRun1.addBreak();
-            runPaRun1.addTab();
-            runPaRun1.setText("Professor: " + educatorName, 2);
-            runPaRun1.addBreak();
-            runPaRun1.addBreak();
-            runPaRun1.addTab();
-            runPaRun1.setText(
-                    "Aluno: ............................................................................................................",
-                    3);
-            runPaRun1.addBreak();
-            runPaRun1.addBreak();
-            runPaRun1.addTab();
-            runPaRun1.setText("Matrícula: ............................. \t\t\t\t\t Nota: .............", 4);
-            runPaRun1.addBreak();
-            runPaRun1.removeTab();
-            runPaRun1.setText("_________________________________________________________________________________", 5);
-            runPaRun1.addBreak();
-            runPaRun1.addBreak();
-            runPaRun1.setBold(true);
+                runPaRun1.addBreak();
+                runPaRun1.setText("_________________________________________________________________________________",
+                        0);
+                runPaRun1.addBreak();
+                runPaRun1.addBreak();
+                runPaRun1.addTab();
+                runPaRun1.setText("Instituição: " + institution, 1);
+                runPaRun1.addBreak();
+                runPaRun1.addTab();
+                runPaRun1.setText("Professor: " + educatorName, 2);
+                runPaRun1.addBreak();
+                runPaRun1.addBreak();
+                runPaRun1.addTab();
+                runPaRun1.setText(
+                        "Aluno: ............................................................................................................",
+                        3);
+                runPaRun1.addBreak();
+                runPaRun1.addBreak();
+                runPaRun1.addTab();
+                runPaRun1.setText("Matrícula: ............................. \t\t\t\t\t Nota: .............", 4);
+                runPaRun1.addBreak();
+                runPaRun1.removeTab();
+                runPaRun1.setText("_________________________________________________________________________________",
+                        5);
+                runPaRun1.addBreak();
+                runPaRun1.addBreak();
+                runPaRun1.setBold(true);
 
-            XWPFParagraph paragrafo2 = document.createParagraph();
-            XWPFRun runPaRun2 = paragrafo2.createRun();
+                XWPFParagraph paragrafo2 = document.createParagraph();
+                XWPFRun runPaRun2 = paragrafo2.createRun();
 
-            for (int i = 0; i < selectedQuestions.size(); i++) {
-                runPaRun2.addTab();
-                runPaRun2.setText(Integer.toString(i + 1) + "°) ");
-                runPaRun2.setText(selectedQuestions.get(i).getQuestion());
-                runPaRun2.addBreak();
+                for (int i = 0; i < selectedQuestions.size(); i++) {
+                    runPaRun2.addTab();
+                    runPaRun2.setText(Integer.toString(i + 1) + "°) ");
+                    runPaRun2.setText(selectedQuestions.get(i).getQuestion());
+                    runPaRun2.addBreak();
 
-                ArrayList<String> alternatives = selectedQuestions.get(i).getItems();
+                    ArrayList<String> alternatives = selectedQuestions.get(i).getItems();
 
-                for (int j = 0; j < alternatives.size(); j++) {
-                    String alternativeText = alternatives.get(j);
+                    for (int j = 0; j < alternatives.size(); j++) {
+                        String alternativeText = alternatives.get(j);
 
-                    if (alternativeText != null && !alternativeText.trim().isEmpty()) {
+                        if (alternativeText != null && !alternativeText.trim().isEmpty()) {
 
-                        char letter = (char) ('A' + j);
+                            char letter = (char) ('A' + j);
 
-                        runPaRun2.addBreak();
-                        runPaRun2.addTab();
-                        runPaRun2.addTab();
-                        runPaRun2.setText(letter + ") " + alternativeText);
-                        runPaRun2.addBreak();
-                        runPaRun2.addBreak();
-                        runPaRun2.addBreak();
+                            runPaRun2.addBreak();
+                            runPaRun2.addTab();
+                            runPaRun2.addTab();
+                            runPaRun2.setText(letter + ") " + alternativeText);
+                            runPaRun2.addBreak();
+                            runPaRun2.addBreak();
+                            runPaRun2.addBreak();
+                        }
                     }
                 }
-            }
 
-            document.write(out);
-            document.close();
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (out != null) {
+                        document.write(out);
+                        out.close();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+
         }
+
     }
 
     public Test(String institution, String schoolSubject, String educatorName, int testsNumber,

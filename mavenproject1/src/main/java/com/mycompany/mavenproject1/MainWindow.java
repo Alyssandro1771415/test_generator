@@ -148,7 +148,7 @@ public class MainWindow extends JPanel {
                         Test newTest = getDataFromEntries();
                         mainWindow.dispose();
                         mainWindow = null;
-                        AddRandomTestWindow addRandomTestWindow = new AddRandomTestWindow(newTest);
+                        AddRandomTestWindow addRandomTestWindow = new AddRandomTestWindow(newTest, Integer.parseInt(entryTestNumber.getText()));
                     } catch (NumberFormatException ex) {
                         // Tratar o caso em que não é um número inteiro
                         JOptionPane.showMessageDialog(null, "O número de questões deve ser um valor inteiro.");

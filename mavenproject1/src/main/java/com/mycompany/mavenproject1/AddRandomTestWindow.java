@@ -32,12 +32,12 @@ public class AddRandomTestWindow extends JPanel {
     private int contentsCount = 0;
     private boolean checkboxCloseQuestionValue;
     private boolean checkboxNdaValue;
+    private int testsNumber;
 
     QueryExecutions query = new QueryExecutions();
     ArrayList<Question> questions = query.realizeConsult();
 
-
-    public AddRandomTestWindow(Test randomTest) {
+    public AddRandomTestWindow(Test randomTest, int testsNumber) {
         this.randomTest = randomTest;
         this.contentList = new HashMap<>();
         addRandomTestWindow = new JFrame();
@@ -48,6 +48,7 @@ public class AddRandomTestWindow extends JPanel {
         addRandomTestWindow.setResizable(false);
         addRandomTestWindow.setLocationRelativeTo(null);
         addRandomTestWindow.setVisible(true);
+        this.testsNumber = testsNumber;
 
         createLabels();
         createButtons();
@@ -58,7 +59,8 @@ public class AddRandomTestWindow extends JPanel {
     }
 
     private void updateTotalQuestionsLabel() {
-        if (!entryEasyCount.getText().isEmpty() && !entryMediumCount.getText().isEmpty() && !entryHardCount.getText().isEmpty()) {
+        if (!entryEasyCount.getText().isEmpty() && !entryMediumCount.getText().isEmpty()
+                && !entryHardCount.getText().isEmpty()) {
             try {
                 int easyCount = Integer.parseInt(entryEasyCount.getText());
                 int mediumCount = Integer.parseInt(entryMediumCount.getText());
@@ -67,7 +69,8 @@ public class AddRandomTestWindow extends JPanel {
                 labelQuestionsTotalNumber.setText("NÚMERO TOTALIZADO  DE QUESTÕES: " + totalQuestions);
             } catch (NumberFormatException ex) {
                 // Tratar o caso em que não é um número inteiro
-                JOptionPane.showMessageDialog(null, "As entradas das dificuldades das questões devem ser somente valores inteiros.");
+                JOptionPane.showMessageDialog(null,
+                        "As entradas das dificuldades das questões devem ser somente valores inteiros.");
                 labelQuestionsTotalNumber.setText("NÚMERO TOTALIZADO  DE QUESTÕES: ");
             }
         }
@@ -77,7 +80,7 @@ public class AddRandomTestWindow extends JPanel {
         map.put(topico, disciplina);
     }
 
-    private void createTextFields(){
+    private void createTextFields() {
         entryMediumCount = new JTextField(5);
         entryHardCount = new JTextField(5);
         entryEasyCount = new JTextField(5);
@@ -142,7 +145,8 @@ public class AddRandomTestWindow extends JPanel {
     }
 
     private int[] getEntriesData() {
-        if (!entryEasyCount.getText().isEmpty() && !entryMediumCount.getText().isEmpty() && !entryHardCount.getText().isEmpty()) {
+        if (!entryEasyCount.getText().isEmpty() && !entryMediumCount.getText().isEmpty()
+                && !entryHardCount.getText().isEmpty()) {
             try {
                 int[] testDifficulty = {
                         Integer.parseInt(entryEasyCount.getText()),
@@ -152,7 +156,8 @@ public class AddRandomTestWindow extends JPanel {
                 return testDifficulty;
             } catch (NumberFormatException ex) {
                 // Tratar o caso em que não é um número inteiro
-                JOptionPane.showMessageDialog(null, "As entradas das dificuldades das questões devem ser somente valores inteiros.");
+                JOptionPane.showMessageDialog(null,
+                        "As entradas das dificuldades das questões devem ser somente valores inteiros.");
             }
         } else {
             JOptionPane.showMessageDialog(null, "TODAS AS ENTRADAS DEVEM SER PREENCHIDAS.");
@@ -164,9 +169,9 @@ public class AddRandomTestWindow extends JPanel {
 
         contentList = new HashMap<>();
 
-        for(Question q : questions){
+        for (Question q : questions) {
 
-            if(!contentList.containsValue(q.getContent())){
+            if (!contentList.containsValue(q.getContent())) {
 
                 addSchoolSubject(contentList, q.getContent(), q.getSchoolSubject());
 
@@ -176,7 +181,7 @@ public class AddRandomTestWindow extends JPanel {
 
         String schoolSubject = randomTest.getSchoolSubject();
 
-        String[] colunas = {"Disciplina", "Tópico"};
+        String[] colunas = { "Disciplina", "Tópico" };
         tableModel = new DefaultTableModel(colunas, 0);
 
         buildTable(contentList, schoolSubject);
@@ -185,12 +190,9 @@ public class AddRandomTestWindow extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(115, 240, 590, 165);
 
-
-
-        table.getColumnModel().getColumn(0).setPreferredWidth(50);  // DISCIPLINA (coluna 1)
+        table.getColumnModel().getColumn(0).setPreferredWidth(50); // DISCIPLINA (coluna 1)
         table.getColumnModel().getColumn(1).setPreferredWidth(200); // TÓPICO (coluna 2)
         addRandomTestWindow.add(scrollPane);
-
 
         // Adicione um ListSelectionListener à tabela
         ListSelectionModel selectionModel = table.getSelectionModel();
@@ -209,59 +211,57 @@ public class AddRandomTestWindow extends JPanel {
         // Converta a disciplina para minúsculas
         String schoolSubjectLower = schoolSubject.toLowerCase();
 
-        // Adicione as entradas do Map à tabela se a disciplina corresponder (ignorando maiúsculas e minúsculas)
+        // Adicione as entradas do Map à tabela se a disciplina corresponder (ignorando
+        // maiúsculas e minúsculas)
         for (Map.Entry<String, String> entry : contentList.entrySet()) {
             String disciplina = entry.getValue().toLowerCase(); // Obtenha a disciplina em minúsculas
             String topico = entry.getKey(); // Obtenha o tópico
 
             if (disciplina.contains(schoolSubjectLower)) {
-                tableModel.addRow(new Object[]{entry.getValue(), topico});
+                tableModel.addRow(new Object[] { entry.getValue(), topico });
             }
         }
     }
 
-    private void createLabels(){
+    private void createLabels() {
         JLabel labelEasy = new JLabel("Nº DE FÁCEIS:");
         JLabel labelMedium = new JLabel("Nº DE MÉDIAS:");
         JLabel labelHard = new JLabel("Nº DE DIFÍCEIS:");
-        labelQuestionsTotalNumber = new JLabel ("NÚMERO TOTALIZADO  DE QUESTÕES: ");
-        labelContentSelector = new JLabel ("SELECIONE OS CONTEÚDOS DAS QUESTÕES:");
-        labelQuestionsNumberPerLevel = new JLabel ("SELECIONE O NÚMERO DE QUESTÕES POR DIFICULDADE:");
-        labelTopicsNumber = new JLabel ("NÚMERO DE TÓPICOS ADICIONADOS:");
-        addRandomTestWindow.add (labelEasy);
-        addRandomTestWindow.add (labelMedium);
-        addRandomTestWindow.add (labelHard);
-        addRandomTestWindow.add (labelQuestionsTotalNumber);
-        addRandomTestWindow.add (labelContentSelector);
-        addRandomTestWindow.add (labelQuestionsNumberPerLevel);
-        addRandomTestWindow.add (labelTopicsNumber);
+        labelQuestionsTotalNumber = new JLabel("NÚMERO TOTALIZADO  DE QUESTÕES: ");
+        labelContentSelector = new JLabel("SELECIONE OS CONTEÚDOS DAS QUESTÕES:");
+        labelQuestionsNumberPerLevel = new JLabel("SELECIONE O NÚMERO DE QUESTÕES POR DIFICULDADE:");
+        labelTopicsNumber = new JLabel("NÚMERO DE TÓPICOS ADICIONADOS:");
+        addRandomTestWindow.add(labelEasy);
+        addRandomTestWindow.add(labelMedium);
+        addRandomTestWindow.add(labelHard);
+        addRandomTestWindow.add(labelQuestionsTotalNumber);
+        addRandomTestWindow.add(labelContentSelector);
+        addRandomTestWindow.add(labelQuestionsNumberPerLevel);
+        addRandomTestWindow.add(labelTopicsNumber);
 
-        labelQuestionsNumberPerLevel.setBounds (25, 15, 355, 25);
+        labelQuestionsNumberPerLevel.setBounds(25, 15, 355, 25);
 
-        labelEasy.setBounds (25, 55, 85, 25);
-        labelMedium.setBounds (25, 95, 85, 25);
-        labelHard.setBounds (25, 135, 95, 25);
+        labelEasy.setBounds(25, 55, 85, 25);
+        labelMedium.setBounds(25, 95, 85, 25);
+        labelHard.setBounds(25, 135, 95, 25);
 
-        labelQuestionsTotalNumber.setBounds (450, 55, 265, 25);
-        labelTopicsNumber.setBounds (450, 135, 255, 25);
+        labelQuestionsTotalNumber.setBounds(450, 55, 265, 25);
+        labelTopicsNumber.setBounds(450, 135, 255, 25);
 
-        labelContentSelector.setBounds (115, 200, 275, 30);
-
+        labelContentSelector.setBounds(115, 200, 275, 30);
 
     }
 
-    private void createButtons(){
-        buttonFinish = new JButton ("FINALIZAR");
-        buttonCancel = new JButton ("CANCELAR");
-        buttonAddContent = new JButton ("ADICIONAR CONTEÚDO");
-        addRandomTestWindow.add (buttonFinish);
-        addRandomTestWindow.add (buttonCancel);
-        addRandomTestWindow.add (buttonAddContent);
-        buttonFinish.setBounds (680, 520, 95, 30);
-        buttonCancel.setBounds (10, 520, 100, 30);
-        buttonAddContent.setBounds (480, 520, 175, 30);
-
-
+    private void createButtons() {
+        buttonFinish = new JButton("FINALIZAR");
+        buttonCancel = new JButton("CANCELAR");
+        buttonAddContent = new JButton("ADICIONAR CONTEÚDO");
+        addRandomTestWindow.add(buttonFinish);
+        addRandomTestWindow.add(buttonCancel);
+        addRandomTestWindow.add(buttonAddContent);
+        buttonFinish.setBounds(680, 520, 95, 30);
+        buttonCancel.setBounds(10, 520, 100, 30);
+        buttonAddContent.setBounds(480, 520, 175, 30);
 
         buttonCancel.addActionListener(e -> {
             addRandomTestWindow.dispose();
@@ -272,26 +272,35 @@ public class AddRandomTestWindow extends JPanel {
 
         buttonFinish.addActionListener(e -> {
 
-            //IMPLEMENTAÇÃO BACK-END / SUBSTITUIR O CÓDIGO DESTE BOTÃO PELA LÓGICA DE GERAÇÃO DE PROVAS
+            // IMPLEMENTAÇÃO BACK-END / SUBSTITUIR O CÓDIGO DESTE BOTÃO PELA LÓGICA DE
+            // GERAÇÃO DE PROVAS
+
+            System.out.println(Integer.parseInt(entryHardCount.getText()));
+
+            DirectorySelector selector = new DirectorySelector();
+            String chossedDirectory = selector.directorySelector();
 
             ArrayList<Question> selectedQuestions = new ArrayList<Question>();
 
-            for(Question question : questions){
+            for (Question question : questions) {
 
-                if(contentsSelecteds.contains(question.getContent())){
+                if (contentsSelecteds.contains(question.getContent())) {
 
                     selectedQuestions.add(question);
 
                 }
-                
+
             }
 
-            Test test = new Test(randomTest.getInstitution(), randomTest.getSchoolSubject(), randomTest.getEducatorName(), randomTest.getTestsNumber(), selectedQuestions);
-            test.generateFile(selectedQuestions, Integer.parseInt(entryEasyCount.getText()), Integer.parseInt(entryMediumCount.getText()), Integer.parseInt(entryHardCount.getText()));
+            Test test = new Test(randomTest.getInstitution(), randomTest.getSchoolSubject(),
+                    randomTest.getEducatorName(), randomTest.getTestsNumber(), selectedQuestions);
+            test.generateFile(selectedQuestions, Integer.parseInt(entryEasyCount.getText()),
+                    Integer.parseInt(entryMediumCount.getText()), Integer.parseInt(entryHardCount.getText()),
+                    chossedDirectory, testsNumber);
 
             checkboxCloseQuestionValue = checkBoxNoClosedQuestions.isSelected();
             checkboxNdaValue = checkbox_NDA_Option.isSelected();
-            int [] testDifficultyValues = getEntriesData();
+            int[] testDifficultyValues = getEntriesData();
             StringBuilder sb = new StringBuilder();
             sb.append("FÁCEIS: ").append(testDifficultyValues[0]).append("\n");
             sb.append("MÉDIAS: ").append(testDifficultyValues[1]).append("\n");
@@ -302,21 +311,19 @@ public class AddRandomTestWindow extends JPanel {
             sb.append("Professor: ").append(randomTest.getEducatorName()).append("\n");
             sb.append("Número de avaliações: ").append(randomTest.getTestsNumber()).append("\n");
             sb.append("---------------------------------------------------------------\n");
-            for ( String content : contentsSelecteds){
+            for (String content : contentsSelecteds) {
                 sb.append(content).append("\n");
             }
             if (checkboxNdaValue) {
                 sb.append("Opção N.D.A selecionada.\n");
-            }
-            else{
+            } else {
                 sb.append("Opção N.D.A não selecionada.\n");
             }
             if (checkboxCloseQuestionValue) {
                 sb.append("Sem questões fechadas.\n");
-            }else{
+            } else {
                 sb.append("Com questões fechadas.\n");
             }
-
 
             JOptionPane.showMessageDialog(null, sb);
             addRandomTestWindow.dispose();
@@ -336,14 +343,13 @@ public class AddRandomTestWindow extends JPanel {
         });
     }
 
-    private void createCheckBox(){
-        checkbox_NDA_Option = new JCheckBox ("ADICIONAR A ALTERNATIVA N.D.A ( OPÇÃO NENHUMA DAS ALTERNATIVAS)");
-        checkBoxNoClosedQuestions = new JCheckBox ("SEM QUESTÕES FECHADAS");
-        addRandomTestWindow.add (checkbox_NDA_Option);
-        addRandomTestWindow.add (checkBoxNoClosedQuestions);
-        checkbox_NDA_Option.setBounds (115, 420, 485, 25);
-        checkBoxNoClosedQuestions.setBounds (115, 460, 195, 25);
+    private void createCheckBox() {
+        checkbox_NDA_Option = new JCheckBox("ADICIONAR A ALTERNATIVA N.D.A ( OPÇÃO NENHUMA DAS ALTERNATIVAS)");
+        checkBoxNoClosedQuestions = new JCheckBox("SEM QUESTÕES FECHADAS");
+        addRandomTestWindow.add(checkbox_NDA_Option);
+        addRandomTestWindow.add(checkBoxNoClosedQuestions);
+        checkbox_NDA_Option.setBounds(115, 420, 485, 25);
+        checkBoxNoClosedQuestions.setBounds(115, 460, 195, 25);
     }
 
 }
-
