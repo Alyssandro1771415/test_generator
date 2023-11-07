@@ -6,14 +6,18 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
 
 public class MainWindow extends JPanel {
 
-
+    private Test newTest;
     private JFrame mainWindow;
-
+    private JTextField entryTestNumber;
+    private JTextField entrySchoolSubject;
+    private JTextField entryInstitution;
+    private JTextField entryEducatorName;
 
     public MainWindow() {
 
@@ -25,14 +29,14 @@ public class MainWindow extends JPanel {
         mainWindow.setResizable(false);
         mainWindow.setLocationRelativeTo(null);
 
-        instantiateButtons();
-        instantiateLabels();
-        instantiateTextFields();
-        generateVisualCanvas();
+        createButtons();
+        createLabels();
+        createTexFields();
+        createVisualSquares();
         showWindow(true);
     }
 
-    public void generateVisualCanvas() {
+    public void createVisualSquares() {
         JPanel rightPanel = new JPanel();
         JPanel leftPanel = new JPanel();
         rightPanel.setBounds(377, 50, 377, 330);
@@ -43,61 +47,61 @@ public class MainWindow extends JPanel {
         mainWindow.add(leftPanel);
     }
 
-    public void instantiateTextFields() {
+    public void createTexFields() {
 
-        JTextField entryNumquestoes = new JTextField(5);
-        JTextField entryDisciplina = new JTextField(5);
-        JTextField entryInstituicao = new JTextField(5);
-        JTextField entryProfessor = new JTextField(5);
+        entryTestNumber = new JTextField(5);
+        entrySchoolSubject = new JTextField(5);
+        entryInstitution = new JTextField(5);
+        entryEducatorName = new JTextField(5);
 
-        mainWindow.add(entryNumquestoes);
-        mainWindow.add(entryDisciplina);
-        mainWindow.add(entryInstituicao);
-        mainWindow.add(entryProfessor);
+        mainWindow.add(entryTestNumber);
+        mainWindow.add(entrySchoolSubject);
+        mainWindow.add(entryInstitution);
+        mainWindow.add(entryEducatorName);
 
-        entryNumquestoes.setBounds(555, 110, 185, 25);
-        entryDisciplina.setBounds(495, 230, 245, 25);
-        entryInstituicao.setBounds(495, 150, 245, 25);
-        entryProfessor.setBounds(495, 190, 245, 25);
+        entryTestNumber.setBounds(570, 110, 170, 25);
+        entrySchoolSubject.setBounds(495, 230, 245, 25);
+        entryInstitution.setBounds(495, 150, 245, 25);
+        entryEducatorName.setBounds(495, 190, 245, 25);
 
     }
 
-    public void instantiateButtons() {
+    public void createButtons() {
 
-        JButton buttonAddQuestoes = new JButton("ADICIONAR QUESTÕES");
-        JButton buttonDelQuestoes = new JButton("DELETAR/PESQUISAR QUESTÕES");
-        JButton buttonLimpar = new JButton("LIMPAR");
-        JButton buttonGerarAvAleatoria = new JButton("GERAR PROVA ALEATÓRIA");
-        JButton buttonProvaManual = new JButton("GERAR PROVA MANUAL");
+        JButton buttonAddQuestions = new JButton("ADICIONAR QUESTÕES");
+        JButton buttonDelQuestions = new JButton("DELETAR/PESQUISAR QUESTÕES");
+        JButton buttonClear = new JButton("LIMPAR");
+        JButton buttonGenerateRandomTest = new JButton("GERAR PROVA ALEATÓRIA");
+        JButton buttonGenerateManualTest = new JButton("GERAR PROVA MANUAL");
         JButton buttonClose = new JButton("FECHAR");
 
-        buttonAddQuestoes.setFocusable(false);
-        buttonDelQuestoes.setFocusable(false);
-        buttonLimpar.setFocusable(false);
-        buttonGerarAvAleatoria.setFocusable(false);
-        buttonProvaManual.setFocusable(false);
+        buttonAddQuestions.setFocusable(false);
+        buttonDelQuestions.setFocusable(false);
+        buttonClear.setFocusable(false);
+        buttonGenerateRandomTest.setFocusable(false);
+        buttonGenerateManualTest.setFocusable(false);
         buttonClose.setFocusable(false);
 
-        buttonAddQuestoes.setToolTipText("CLIQUE PARA ADICIONAR UMA NOVA QUESTÃO AO BANCO DE QUESTÕES.");
-        buttonDelQuestoes.setToolTipText("CLIQUE PARA VIZUALIZAR QUESTÕES OU DELETAR QUESTÕES DO BANCO DE QUESTÕES.");
-        buttonLimpar.setToolTipText("CLIQUE PARA LIMPAR TODAS AS CAIXAS DE ENTRADA.");
-        buttonGerarAvAleatoria.setToolTipText("CLIQUE PARA GERAR UMA AVALIAÇÃO ALEATORIAMENTE.");
-        buttonProvaManual.setToolTipText("CLIQUE PARA GERAR MANUALMENTE UMA AVALIAÇÃO.");
+        buttonAddQuestions.setToolTipText("CLIQUE PARA ADICIONAR UMA NOVA QUESTÃO AO BANCO DE QUESTÕES.");
+        buttonDelQuestions.setToolTipText("CLIQUE PARA VIZUALIZAR QUESTÕES OU DELETAR QUESTÕES DO BANCO DE QUESTÕES.");
+        buttonClear.setToolTipText("CLIQUE PARA LIMPAR TODAS AS CAIXAS DE ENTRADA.");
+        buttonGenerateRandomTest.setToolTipText("CLIQUE PARA GERAR UMA AVALIAÇÃO ALEATORIAMENTE.");
+        buttonGenerateManualTest.setToolTipText("CLIQUE PARA GERAR MANUALMENTE UMA AVALIAÇÃO.");
         buttonClose.setToolTipText("CLIQUE PARA FECHAR O PROGRAMA");
 
-        mainWindow.add(buttonAddQuestoes);
-        mainWindow.add(buttonDelQuestoes);
-        mainWindow.add(buttonLimpar);
-        mainWindow.add(buttonGerarAvAleatoria);
-        mainWindow.add(buttonProvaManual);
+        mainWindow.add(buttonAddQuestions);
+        mainWindow.add(buttonDelQuestions);
+        mainWindow.add(buttonClear);
+        mainWindow.add(buttonGenerateRandomTest);
+        mainWindow.add(buttonGenerateManualTest);
         mainWindow.add(buttonClose);
 
 
-        buttonAddQuestoes.setBounds(70, 110, 240, 30);
-        buttonDelQuestoes.setBounds(70, 160, 240, 30);
-        buttonLimpar.setBounds(405, 325, 100, 30);
-        buttonGerarAvAleatoria.setBounds(555, 270, 190, 30);
-        buttonProvaManual.setBounds(555, 325, 190, 30);
+        buttonAddQuestions.setBounds(70, 110, 240, 30);
+        buttonDelQuestions.setBounds(70, 160, 240, 30);
+        buttonClear.setBounds(405, 325, 100, 30);
+        buttonGenerateRandomTest.setBounds(555, 270, 190, 30);
+        buttonGenerateManualTest.setBounds(555, 325, 190, 30);
         buttonClose.setBounds(645, 10, 100, 25);
 
         buttonClose.addActionListener(new ActionListener() {
@@ -106,7 +110,54 @@ public class MainWindow extends JPanel {
             }
         });
 
-        buttonAddQuestoes.addActionListener(new ActionListener() {
+        buttonClear.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                //Limpa o campo de texto das entradas
+                entryEducatorName.setText("");
+                entryInstitution.setText("");
+                entryTestNumber.setText("");
+                entrySchoolSubject.setText("");
+
+
+            }
+        });
+
+        buttonGenerateManualTest.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (!entryInstitution.getText().isEmpty() && !entrySchoolSubject.getText().isEmpty() && !entryEducatorName.getText().isEmpty() && !entryTestNumber.getText().isEmpty()) {
+                    try {
+                        int testsNumber = Integer.parseInt(entryTestNumber.getText());
+                        Test newTest = getDataFromEntries();
+                        mainWindow.dispose();
+                        mainWindow = null;
+                        SelectQuestionWindow selectQuestionWindow = new SelectQuestionWindow(newTest);
+                    } catch (NumberFormatException ex) {
+                        // Tratar o caso em que não é um número inteiro
+                        JOptionPane.showMessageDialog(null, "O número de questões deve ser um valor inteiro.");
+                    }
+                }
+            }
+        });
+
+        buttonGenerateRandomTest.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (!entryInstitution.getText().isEmpty() && !entrySchoolSubject.getText().isEmpty() && !entryEducatorName.getText().isEmpty() && !entryTestNumber.getText().isEmpty()) {
+                    try {
+                        int testsNumber = Integer.parseInt(entryTestNumber.getText());
+                        Test newTest = getDataFromEntries();
+                        mainWindow.dispose();
+                        mainWindow = null;
+                        AddRandomTestWindow addRandomTestWindow = new AddRandomTestWindow(newTest);
+                    } catch (NumberFormatException ex) {
+                        // Tratar o caso em que não é um número inteiro
+                        JOptionPane.showMessageDialog(null, "O número de questões deve ser um valor inteiro.");
+                    }
+                }
+            }
+        });
+
+        buttonAddQuestions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 showWindow(false);
                 mainWindow.dispose();
@@ -115,51 +166,68 @@ public class MainWindow extends JPanel {
             }
         });
 
-        buttonDelQuestoes.addActionListener(new ActionListener() {
+        buttonDelQuestions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 showWindow(false);
                 mainWindow.dispose();
                 mainWindow = null;
+                //--------------
                 QuestionListWindow questionListWindow = new QuestionListWindow();
 
             }
         });
 
+
     }
 
-    public void instantiateLabels() {
-        JLabel labelCadQuestoes = new JLabel("CADASTRO DE QUESTÕES");
-        JLabel labelCadAvalicao = new JLabel("CADASTRO DE AVALIAÇÃO");
-        JLabel labelEntryNumQuestoes = new JLabel("NUMERO DE QUESTÕES");
-        JLabel labelEntryInstituicao = new JLabel("INSTITUIÇÃO");
-        JLabel labelEntryProfessor = new JLabel("PROFESSOR");
-        JLabel labelEntryDisciplina = new JLabel("DISCIPLINA");
-        JLabel labelPrincipal_SGAA = new JLabel("SGGA - SISTEMA GERENCIADOR DE AVALIAÇÕES ACADÊMICAS");
+    public void createLabels() {
+        JLabel labelQuestionRegistration = new JLabel("CADASTRO DE QUESTÕES");
+        JLabel labelTestRegistration = new JLabel("CADASTRO DE AVALIAÇÃO");
+        JLabel labelEntryTestsNumber = new JLabel("NUMERO DE AVALIAÇÕES");
+        JLabel labelEntryInstitution = new JLabel("INSTITUIÇÃO");
+        JLabel labelEntryEducadorName = new JLabel("PROFESSOR");
+        JLabel labelEntrySchoolSubject = new JLabel("DISCIPLINA");
+        JLabel labelTitle_SGAA = new JLabel("SGGA - SISTEMA GERENCIADOR DE AVALIAÇÕES ACADÊMICAS");
         ImageIcon icon = new ImageIcon(loadImage("UEPBLOGO.png"));//COLOCAR CASO DE ERRO PARA QUANDO NÃO CARREGAR A IMAGEM
         JLabel labelImageUEPB = new JLabel(icon);
 
-        mainWindow.add(labelCadQuestoes);
-        mainWindow.add(labelCadAvalicao);
-        mainWindow.add(labelEntryNumQuestoes);
-        mainWindow.add(labelEntryInstituicao);
-        mainWindow.add(labelEntryProfessor);
-        mainWindow.add(labelEntryDisciplina);
-        mainWindow.add(labelPrincipal_SGAA);
+        mainWindow.add(labelQuestionRegistration);
+        mainWindow.add(labelTestRegistration);
+        mainWindow.add(labelEntryTestsNumber);
+        mainWindow.add(labelEntryInstitution);
+        mainWindow.add(labelEntryEducadorName);
+        mainWindow.add(labelEntrySchoolSubject);
+        mainWindow.add(labelTitle_SGAA);
         mainWindow.add(labelImageUEPB);
 
-        labelCadQuestoes.setBounds(110, 65, 165, 25);
-        labelCadAvalicao.setBounds(475, 65, 165, 25);
-        labelEntryNumQuestoes.setBounds(405, 110, 150, 25);
-        labelEntryInstituicao.setBounds(405, 150, 90, 25);
-        labelEntryProfessor.setBounds(405, 190, 90, 25);
-        labelEntryDisciplina.setBounds(405, 230, 100, 25);
-        labelPrincipal_SGAA.setBounds(70, 10, 435, 25);
+        labelQuestionRegistration.setBounds(110, 65, 165, 25);
+        labelTestRegistration.setBounds(475, 65, 165, 25);
+        labelEntryTestsNumber.setBounds(405, 110, 155, 25);
+        labelEntryInstitution.setBounds(405, 150, 90, 25);
+        labelEntryEducadorName.setBounds(405, 190, 90, 25);
+        labelEntrySchoolSubject.setBounds(405, 230, 100, 25);
+        labelTitle_SGAA.setBounds(70, 10, 435, 25);
         labelImageUEPB.setBounds(20, 220, 350, 158);
 
     }
 
-    public void showWindow(boolean valor){
-        mainWindow.setVisible(valor);
+    public Test getDataFromEntries(){
+
+        ArrayList<Question> questionsList = new ArrayList<>();
+        newTest = new Test
+
+                (entryInstitution.getText(),
+                entrySchoolSubject.getText(),
+                entryEducatorName.getText(),
+                Integer.parseInt(entryTestNumber.getText()),
+                questionsList);
+
+        return newTest;
+
+    }
+
+    public void showWindow(boolean value){
+        mainWindow.setVisible(value);
     }
 
     private BufferedImage loadImage(String url) {
