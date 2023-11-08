@@ -272,9 +272,6 @@ public class AddRandomTestWindow extends JPanel {
 
         buttonFinish.addActionListener(e -> {
 
-            // IMPLEMENTAÇÃO BACK-END / SUBSTITUIR O CÓDIGO DESTE BOTÃO PELA LÓGICA DE
-            // GERAÇÃO DE PROVAS
-
             DirectorySelector selector = new DirectorySelector();
             String chossedDirectory = selector.directorySelector();
 
@@ -292,6 +289,7 @@ public class AddRandomTestWindow extends JPanel {
 
             Test test = new Test(randomTest.getInstitution(), randomTest.getSchoolSubject(),
                     randomTest.getEducatorName(), randomTest.getTestsNumber(), selectedQuestions);
+                    
             test.generateFile(selectedQuestions, Integer.parseInt(entryEasyCount.getText()),
                     Integer.parseInt(entryMediumCount.getText()), Integer.parseInt(entryHardCount.getText()),
                     chossedDirectory, testsNumber);

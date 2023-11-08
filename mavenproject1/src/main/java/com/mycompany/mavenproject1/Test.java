@@ -58,7 +58,6 @@ public class Test {
 
     }
 
-
     public void generateFile(ArrayList<Question> listQuestions, int easyQuantQuestions, int moderateQuantQuestions,
             int hardQuantQuestions, String directory, int testsNumber) {
 
@@ -86,7 +85,6 @@ public class Test {
                 runPaRun1.addBreak();
                 runPaRun1.addTab();
                 runPaRun1.setText("Professor: " + educatorName, 2);
-                runPaRun1.addBreak();
                 runPaRun1.addBreak();
                 runPaRun1.addTab();
                 runPaRun1.setText(
@@ -139,13 +137,13 @@ public class Test {
             } catch (FileNotFoundException ex) {
 
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-            
+
             } catch (IOException ex) {
-            
+
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-            
+
             } finally {
-            
+
                 try {
                     if (out != null) {
                         document.write(out);
@@ -154,7 +152,104 @@ public class Test {
                 } catch (IOException ex) {
                     Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            
+
+            }
+
+        }
+
+    }
+
+    public void generateFile(ArrayList<Question> listQuestions, String directory, int testsNumber) {
+
+        FileOutputStream out = null;
+        XWPFDocument document = new XWPFDocument();
+
+        for (int newTestNumber = 0; newTestNumber < testsNumber; newTestNumber++) {
+
+            try {
+                document = new XWPFDocument();
+                String myFile = "Prova" + newTestNumber + ".docx";
+                java.io.File file = new java.io.File(directory, myFile);
+                out = new FileOutputStream(file);
+
+                XWPFParagraph paragrafo = document.createParagraph();
+                XWPFRun runPaRun1 = paragrafo.createRun();
+
+                runPaRun1.addBreak();
+                runPaRun1.setText("_________________________________________________________________________________",
+                        0);
+                runPaRun1.addBreak();
+                runPaRun1.addBreak();
+                runPaRun1.addTab();
+                runPaRun1.setText("Instituição: " + institution, 1);
+                runPaRun1.addBreak();
+                runPaRun1.addTab();
+                runPaRun1.setText("Professor: " + educatorName, 2);
+                runPaRun1.addBreak();
+                runPaRun1.addTab();
+                runPaRun1.setText(
+                        "Aluno: ............................................................................................................",
+                        3);
+                runPaRun1.addBreak();
+                runPaRun1.addBreak();
+                runPaRun1.addTab();
+                runPaRun1.setText("Matrícula: ............................. \t\t\t\t\t Nota: .............", 4);
+                runPaRun1.addBreak();
+                runPaRun1.removeTab();
+                runPaRun1.setText("_________________________________________________________________________________",
+                        5);
+                runPaRun1.addBreak();
+                runPaRun1.addBreak();
+                runPaRun1.setBold(true);
+
+                XWPFParagraph paragrafo2 = document.createParagraph();
+                XWPFRun runPaRun2 = paragrafo2.createRun();
+
+                for (int i = 0; i < listQuestions.size(); i++) {
+                    runPaRun2.addTab();
+                    runPaRun2.setText(Integer.toString(i + 1) + "°) ");
+                    runPaRun2.setText(listQuestions.get(i).getQuestion());
+                    runPaRun2.addBreak();
+
+                    ArrayList<String> alternatives = listQuestions.get(i).getItems();
+
+                    for (int j = 0; j < alternatives.size(); j++) {
+                        String alternativeText = alternatives.get(j);
+
+                        if (alternativeText != null && !alternativeText.trim().isEmpty()) {
+
+                            char letter = (char) ('A' + j);
+
+                            runPaRun2.addBreak();
+                            runPaRun2.addTab();
+                            runPaRun2.addTab();
+                            runPaRun2.setText(letter + ") " + alternativeText);
+                            runPaRun2.addBreak();
+                            runPaRun2.addBreak();
+                            runPaRun2.addBreak();
+                        }
+                    }
+                }
+
+            } catch (FileNotFoundException ex) {
+
+                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+
+            } catch (IOException ex) {
+
+                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+
+            } finally {
+
+                try {
+                    if (out != null) {
+                        document.write(out);
+                        out.close();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
 
         }
