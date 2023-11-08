@@ -275,8 +275,6 @@ public class AddRandomTestWindow extends JPanel {
             // IMPLEMENTAÇÃO BACK-END / SUBSTITUIR O CÓDIGO DESTE BOTÃO PELA LÓGICA DE
             // GERAÇÃO DE PROVAS
 
-            System.out.println(Integer.parseInt(entryHardCount.getText()));
-
             DirectorySelector selector = new DirectorySelector();
             String chossedDirectory = selector.directorySelector();
 

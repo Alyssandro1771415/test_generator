@@ -27,27 +27,28 @@ public class Test {
             int hardQuantQuestions) {
 
         ArrayList<Question> selectedQuestions = new ArrayList<>();
+        ArrayList<Question> receivedQuestions = (ArrayList<Question>) listQuestions.clone();
         Random random = new Random();
 
         for (int i = 0; i < easyQuantQuestions; i++) {
-            if (listQuestions.size() > 0) {
-                int index = random.nextInt(listQuestions.size());
-                selectedQuestions.add(listQuestions.get(index));
-                listQuestions.remove(index);
+            if (receivedQuestions.size() > 0) {
+                int index = random.nextInt(receivedQuestions.size());
+                selectedQuestions.add(receivedQuestions.get(index));
+                receivedQuestions.remove(index);
             }
         }
         for (int i = 0; i < moderateQuantQuestions; i++) {
-            if (listQuestions.size() > 0) {
-                int index = random.nextInt(listQuestions.size());
-                selectedQuestions.add(listQuestions.get(index));
-                listQuestions.remove(index);
+            if (receivedQuestions.size() > 0) {
+                int index = random.nextInt(receivedQuestions.size());
+                selectedQuestions.add(receivedQuestions.get(index));
+                receivedQuestions.remove(index);
             }
         }
         for (int i = 0; i < hardQuantQuestions; i++) {
-            if (listQuestions.size() > 0) {
-                int index = random.nextInt(listQuestions.size());
-                selectedQuestions.add(listQuestions.get(index));
-                listQuestions.remove(index);
+            if (receivedQuestions.size() > 0) {
+                int index = random.nextInt(receivedQuestions.size());
+                selectedQuestions.add(receivedQuestions.get(index));
+                receivedQuestions.remove(index);
             }
         }
 
@@ -57,23 +58,20 @@ public class Test {
 
     }
 
+
     public void generateFile(ArrayList<Question> listQuestions, int easyQuantQuestions, int moderateQuantQuestions,
             int hardQuantQuestions, String directory, int testsNumber) {
 
         FileOutputStream out = null;
         XWPFDocument document = new XWPFDocument();
-        ArrayList<Question> selectedQuestions = randomizeQuestions(listQuestions, easyQuantQuestions,
-                moderateQuantQuestions, hardQuantQuestions);
 
         for (int newTestNumber = 0; newTestNumber < testsNumber; newTestNumber++) {
 
             try {
-
+                document = new XWPFDocument();
                 String myFile = "Prova" + newTestNumber + ".docx";
                 java.io.File file = new java.io.File(directory, myFile);
                 out = new FileOutputStream(file);
-
-                System.out.println(myFile);
 
                 XWPFParagraph paragrafo = document.createParagraph();
                 XWPFRun runPaRun1 = paragrafo.createRun();
@@ -109,6 +107,9 @@ public class Test {
                 XWPFParagraph paragrafo2 = document.createParagraph();
                 XWPFRun runPaRun2 = paragrafo2.createRun();
 
+                ArrayList<Question> selectedQuestions = randomizeQuestions(listQuestions, easyQuantQuestions,
+                        moderateQuantQuestions, hardQuantQuestions);
+
                 for (int i = 0; i < selectedQuestions.size(); i++) {
                     runPaRun2.addTab();
                     runPaRun2.setText(Integer.toString(i + 1) + "°) ");
@@ -135,12 +136,16 @@ public class Test {
                     }
                 }
 
-
             } catch (FileNotFoundException ex) {
+
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            
             } catch (IOException ex) {
+            
                 Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+            
             } finally {
+            
                 try {
                     if (out != null) {
                         document.write(out);
@@ -149,6 +154,7 @@ public class Test {
                 } catch (IOException ex) {
                     Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            
             }
 
         }
