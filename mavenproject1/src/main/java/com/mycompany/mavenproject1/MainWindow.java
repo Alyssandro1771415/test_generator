@@ -142,6 +142,7 @@ public class MainWindow extends JPanel {
 
         buttonGenerateRandomTest.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                
                 if (!entryInstitution.getText().isEmpty() && !entrySchoolSubject.getText().isEmpty() && !entryEducatorName.getText().isEmpty() && !entryTestNumber.getText().isEmpty()) {
                     try {
                         int testsNumber = Integer.parseInt(entryTestNumber.getText());
@@ -187,9 +188,16 @@ public class MainWindow extends JPanel {
         JLabel labelEntryInstitution = new JLabel("INSTITUIÇÃO");
         JLabel labelEntryEducadorName = new JLabel("PROFESSOR");
         JLabel labelEntrySchoolSubject = new JLabel("DISCIPLINA");
-        JLabel labelTitle_SGAA = new JLabel("SGGA - SISTEMA GERENCIADOR DE AVALIAÇÕES ACADÊMICAS");
-        ImageIcon icon = new ImageIcon(loadImage("UEPBLOGO.png"));//COLOCAR CASO DE ERRO PARA QUANDO NÃO CARREGAR A IMAGEM
-        JLabel labelImageUEPB = new JLabel(icon);
+        JLabel labelTitle_SGAA = new JLabel("SGAA - SISTEMA GERENCIADOR DE AVALIAÇÕES ACADÊMICAS");
+        ImageIcon originalIcon = new ImageIcon(loadImage("UEPBLOGO.png"));
+        Image originalImage = originalIcon.getImage();
+        int desiredWidth = 350;  // Largura desejada para a imagem
+        int desiredHeight = 189;  // Altura desejada para a imagem
+        Image resizedImage = originalImage.getScaledInstance(desiredWidth, desiredHeight, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+        JLabel labelImageUEPB = new JLabel(resizedIcon);
+        labelImageUEPB.setBounds(20, 200, desiredWidth, desiredHeight);
+        mainWindow.add(labelImageUEPB);
 
         mainWindow.add(labelQuestionRegistration);
         mainWindow.add(labelTestRegistration);
@@ -198,7 +206,7 @@ public class MainWindow extends JPanel {
         mainWindow.add(labelEntryEducadorName);
         mainWindow.add(labelEntrySchoolSubject);
         mainWindow.add(labelTitle_SGAA);
-        mainWindow.add(labelImageUEPB);
+        
 
         labelQuestionRegistration.setBounds(110, 65, 165, 25);
         labelTestRegistration.setBounds(475, 65, 165, 25);
@@ -207,7 +215,7 @@ public class MainWindow extends JPanel {
         labelEntryEducadorName.setBounds(405, 190, 90, 25);
         labelEntrySchoolSubject.setBounds(405, 230, 100, 25);
         labelTitle_SGAA.setBounds(70, 10, 435, 25);
-        labelImageUEPB.setBounds(20, 220, 350, 158);
+        
 
     }
 

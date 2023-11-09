@@ -10,6 +10,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -23,39 +25,61 @@ public class Test {
     private ArrayList<Question> questionsList;
 
     public ArrayList<Question> randomizeQuestions(ArrayList<Question> listQuestions, int easyQuantQuestions,
-            int moderateQuantQuestions,
-            int hardQuantQuestions) {
+            int moderateQuantQuestions, int hardQuantQuestions) {
 
         ArrayList<Question> selectedQuestions = new ArrayList<>();
-        ArrayList<Question> receivedQuestions = (ArrayList<Question>) listQuestions.clone();
+        ArrayList<Question> receivedQuestions = new ArrayList<>(listQuestions); // Clone da lista
         Random random = new Random();
 
+        if (countQuestionsWithDifficulty(receivedQuestions, 1) < easyQuantQuestions ||
+                countQuestionsWithDifficulty(receivedQuestions, 2) < moderateQuantQuestions ||
+                countQuestionsWithDifficulty(receivedQuestions, 3) < hardQuantQuestions) {
+
+            JOptionPane.showMessageDialog(null, "TEXTO DO ERRO");
+
+            throw new IllegalArgumentException("Quantidade de questões excede o existente no banco de dados!");
+
+        }
+
         for (int i = 0; i < easyQuantQuestions; i++) {
-            if (receivedQuestions.size() > 0) {
-                int index = random.nextInt(receivedQuestions.size());
-                selectedQuestions.add(receivedQuestions.get(index));
-                receivedQuestions.remove(index);
-            }
+            int index = getRandomIndex(random, receivedQuestions, 1);
+            selectedQuestions.add(receivedQuestions.get(index));
+            receivedQuestions.remove(index);
         }
+
         for (int i = 0; i < moderateQuantQuestions; i++) {
-            if (receivedQuestions.size() > 0) {
-                int index = random.nextInt(receivedQuestions.size());
-                selectedQuestions.add(receivedQuestions.get(index));
-                receivedQuestions.remove(index);
-            }
+            int index = getRandomIndex(random, receivedQuestions, 2);
+            selectedQuestions.add(receivedQuestions.get(index));
+            receivedQuestions.remove(index);
         }
+
         for (int i = 0; i < hardQuantQuestions; i++) {
-            if (receivedQuestions.size() > 0) {
-                int index = random.nextInt(receivedQuestions.size());
-                selectedQuestions.add(receivedQuestions.get(index));
-                receivedQuestions.remove(index);
-            }
+            int index = getRandomIndex(random, receivedQuestions, 3);
+            selectedQuestions.add(receivedQuestions.get(index));
+            receivedQuestions.remove(index);
         }
 
         Collections.shuffle(selectedQuestions);
 
         return selectedQuestions;
+    }
 
+    private int countQuestionsWithDifficulty(ArrayList<Question> questions, int difficulty) {
+        int count = 0;
+        for (Question question : questions) {
+            if (question.getDifficult() == difficulty) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int getRandomIndex(Random random, ArrayList<Question> questions, int difficulty) {
+        int index;
+        do {
+            index = random.nextInt(questions.size());
+        } while (questions.get(index).getDifficult() != difficulty);
+        return index;
     }
 
     public void generateFile(ArrayList<Question> listQuestions, int easyQuantQuestions, int moderateQuantQuestions,
@@ -76,7 +100,7 @@ public class Test {
                 XWPFRun runPaRun1 = paragrafo.createRun();
 
                 runPaRun1.addBreak();
-                runPaRun1.setText("_________________________________________________________________________________",
+                runPaRun1.setText("_________________________________________________________________________",
                         0);
                 runPaRun1.addBreak();
                 runPaRun1.addBreak();
@@ -88,7 +112,7 @@ public class Test {
                 runPaRun1.addBreak();
                 runPaRun1.addTab();
                 runPaRun1.setText(
-                        "Aluno: ............................................................................................................",
+                        "Aluno: .....................................................................................................",
                         3);
                 runPaRun1.addBreak();
                 runPaRun1.addBreak();
@@ -96,7 +120,7 @@ public class Test {
                 runPaRun1.setText("Matrícula: ............................. \t\t\t\t\t Nota: .............", 4);
                 runPaRun1.addBreak();
                 runPaRun1.removeTab();
-                runPaRun1.setText("_________________________________________________________________________________",
+                runPaRun1.setText("_________________________________________________________________________",
                         5);
                 runPaRun1.addBreak();
                 runPaRun1.addBreak();
@@ -112,6 +136,7 @@ public class Test {
                     runPaRun2.addTab();
                     runPaRun2.setText(Integer.toString(i + 1) + "°) ");
                     runPaRun2.setText(selectedQuestions.get(i).getQuestion());
+                    runPaRun2.addBreak();
                     runPaRun2.addBreak();
 
                     ArrayList<String> alternatives = selectedQuestions.get(i).getItems();
@@ -176,7 +201,7 @@ public class Test {
                 XWPFRun runPaRun1 = paragrafo.createRun();
 
                 runPaRun1.addBreak();
-                runPaRun1.setText("_________________________________________________________________________________",
+                runPaRun1.setText("_________________________________________________________________________",
                         0);
                 runPaRun1.addBreak();
                 runPaRun1.addBreak();
@@ -196,7 +221,7 @@ public class Test {
                 runPaRun1.setText("Matrícula: ............................. \t\t\t\t\t Nota: .............", 4);
                 runPaRun1.addBreak();
                 runPaRun1.removeTab();
-                runPaRun1.setText("_________________________________________________________________________________",
+                runPaRun1.setText("_________________________________________________________________________",
                         5);
                 runPaRun1.addBreak();
                 runPaRun1.addBreak();
