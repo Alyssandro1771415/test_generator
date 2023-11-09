@@ -22,12 +22,15 @@ public class SelectQuestionWindow extends Window {
     private int questionsNumber = -1;
     JLabel labelQuestionsNumber;
     private int testsNumber;
+    private String schoolSubject;
 
-    public SelectQuestionWindow(Test newTest, int testsNumber) {
+    public SelectQuestionWindow(Test newTest, int testsNumber, String schoolSubject) {
         this.newTest = newTest;
         this.questionsList = new ArrayList<>();
         this.testQuestionsList = new ArrayList<>();
         this.testsNumber = testsNumber;
+        this.schoolSubject = schoolSubject;
+
         questionListWindow = new JFrame();
         questionListWindow.setLayout(null);
         questionListWindow.setSize(754, 527);
@@ -187,7 +190,8 @@ public class SelectQuestionWindow extends Window {
         DirectorySelector selector = new DirectorySelector();
         String chossedDirectory = selector.directorySelector();
 
-        Test test = new Test(newTest.getInstitution(), newTest.getSchoolSubject(), newTest.getEducatorName(), newTest.getTestsNumber(), questionsList);
+        Test test = new Test(newTest.getInstitution(), newTest.getSchoolSubject(), newTest.getEducatorName(),
+                newTest.getTestsNumber(), questionsList);
         test.generateFile(testQuestionsList, chossedDirectory, testsNumber);
 
         ConcludedPoPWindow concludeWindow = new ConcludedPoPWindow();
@@ -263,7 +267,10 @@ public class SelectQuestionWindow extends Window {
         // Adicionando linha ao arrayList para testar - IMPLEMENTAÇÃO BACK-END
 
         for (int i = 0; i < query.realizeConsult().size(); i++) {
-            questionsList.add(query.realizeConsult().get(i));
+
+            if (schoolSubject != null && schoolSubject.equals(query.realizeConsult().get(i).getSchoolSubject())) {
+                questionsList.add(query.realizeConsult().get(i));
+            }
         }
 
         String[] colunas = { "ID", "Disciplina", "Tópico", "Contéudo", "Nível" };
