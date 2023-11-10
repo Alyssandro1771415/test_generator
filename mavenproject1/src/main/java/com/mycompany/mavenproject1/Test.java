@@ -83,7 +83,7 @@ public class Test {
     }
 
     public void generateFile(ArrayList<Question> listQuestions, int easyQuantQuestions, int moderateQuantQuestions,
-            int hardQuantQuestions, String directory, int testsNumber) {
+            int hardQuantQuestions, String directory, int testsNumber, boolean acceptOpenedQuestions) {
 
         FileOutputStream out = null;
         XWPFDocument document = new XWPFDocument();
@@ -129,8 +129,20 @@ public class Test {
                 XWPFParagraph paragrafo2 = document.createParagraph();
                 XWPFRun runPaRun2 = paragrafo2.createRun();
 
-                ArrayList<Question> selectedQuestions = randomizeQuestions(listQuestions, easyQuantQuestions,
-                        moderateQuantQuestions, hardQuantQuestions);
+                ArrayList<Question> selectedQuestions;
+
+                if (acceptOpenedQuestions == true) {
+
+                    selectedQuestions = randomizeQuestions(removeOpenedQuestions(listQuestions),
+                            easyQuantQuestions,
+                            moderateQuantQuestions, hardQuantQuestions);
+
+                } else {
+
+                    selectedQuestions = randomizeQuestions(listQuestions, easyQuantQuestions,
+                            moderateQuantQuestions, hardQuantQuestions);
+
+                }
 
                 for (int i = 0; i < selectedQuestions.size(); i++) {
                     runPaRun2.addTab();
@@ -278,6 +290,24 @@ public class Test {
             }
 
         }
+
+    }
+
+    public ArrayList<Question> removeOpenedQuestions(ArrayList<Question> questions) {
+
+        ArrayList<Question> newSelectedQuestions = new ArrayList<Question>();
+
+        for (int i = 0; i < questions.size(); i++) {
+
+            if (questions.get(i).getItems().get(0) != null && !questions.get(i).getItems().get(0).trim().isEmpty()) {
+
+                newSelectedQuestions.add(questions.get(i));
+
+            }
+
+        }
+
+        return newSelectedQuestions;
 
     }
 

@@ -292,7 +292,7 @@ public class AddRandomTestWindow extends JPanel {
                     
             test.generateFile(selectedQuestions, Integer.parseInt(entryEasyCount.getText()),
                     Integer.parseInt(entryMediumCount.getText()), Integer.parseInt(entryHardCount.getText()),
-                    chossedDirectory, testsNumber);
+                    chossedDirectory, testsNumber, checkBoxNoClosedQuestions.isSelected());
 
             checkboxCloseQuestionValue = checkBoxNoClosedQuestions.isSelected();
             checkboxNdaValue = checkbox_NDA_Option.isSelected();
