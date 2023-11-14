@@ -38,6 +38,8 @@ public class ConcludedPoPWindow extends JPanel {
         frame.add (buttonOpenMainWindow);
 
         buttonOpenMainWindow.addActionListener(e -> {
+            frame.dispose();
+            frame = null;
             MainWindow mainWindow = new MainWindow();
         });
 

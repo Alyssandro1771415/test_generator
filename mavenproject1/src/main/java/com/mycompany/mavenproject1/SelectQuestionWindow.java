@@ -119,6 +119,8 @@ public class SelectQuestionWindow extends Window {
                 }
                 questionsNumber++;
                 testQuestionsList.add(selectedQuestion);
+                questionsList.remove(selectedQuestion);
+                buildTable(questionsList);
                 labelQuestionsNumber.setText("NÚMERO DE QUESTÕES ADICIONADAS ATÉ O MOMENTO: " + (1 + questionsNumber));
 
             }

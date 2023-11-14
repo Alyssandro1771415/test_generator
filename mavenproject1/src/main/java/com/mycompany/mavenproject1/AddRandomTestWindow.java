@@ -16,7 +16,7 @@ public class AddRandomTestWindow extends JPanel {
     private JLabel labelTopicsNumber;
     private JButton buttonFinish;
     private JButton buttonCancel;
-    private JCheckBox checkbox_NDA_Option;
+    
     private JCheckBox checkBoxNoClosedQuestions;
     private JButton buttonAddContent;
     private JTextField entryMediumCount;
@@ -295,7 +295,7 @@ public class AddRandomTestWindow extends JPanel {
                     chossedDirectory, testsNumber, checkBoxNoClosedQuestions.isSelected());
 
             checkboxCloseQuestionValue = checkBoxNoClosedQuestions.isSelected();
-            checkboxNdaValue = checkbox_NDA_Option.isSelected();
+            
             int[] testDifficultyValues = getEntriesData();
             StringBuilder sb = new StringBuilder();
             sb.append("FÁCEIS: ").append(testDifficultyValues[0]).append("\n");
@@ -329,22 +329,25 @@ public class AddRandomTestWindow extends JPanel {
         });
 
         buttonAddContent.addActionListener(e -> {
+            
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 String topic = (String) table.getValueAt(selectedRow, 1); // Obtém o tópico da tabela
                 contentsSelecteds.add(topic);
                 contentsCount++;
                 labelTopicsNumber.setText("NÚMERO DE TÓPICOS ADICIONADOS: " + contentsCount);
+                contentList.remove(topic);
+                buildTable(contentList, randomTest.getSchoolSubject());
             }
         });
     }
 
     private void createCheckBox() {
-        checkbox_NDA_Option = new JCheckBox("ADICIONAR A ALTERNATIVA N.D.A ( OPÇÃO NENHUMA DAS ALTERNATIVAS)");
+        
         checkBoxNoClosedQuestions = new JCheckBox("SEM QUESTÕES FECHADAS");
-        addRandomTestWindow.add(checkbox_NDA_Option);
+        
         addRandomTestWindow.add(checkBoxNoClosedQuestions);
-        checkbox_NDA_Option.setBounds(115, 420, 485, 25);
+        
         checkBoxNoClosedQuestions.setBounds(115, 460, 195, 25);
     }
 

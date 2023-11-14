@@ -35,7 +35,8 @@ public class Test {
                 countQuestionsWithDifficulty(receivedQuestions, 2) < moderateQuantQuestions ||
                 countQuestionsWithDifficulty(receivedQuestions, 3) < hardQuantQuestions) {
 
-            JOptionPane.showMessageDialog(null, "TEXTO DO ERRO");
+            JOptionPane.showMessageDialog(null, 
+            "A quantidade de questões informadas por nível difere da quantidade presente no banco de questões. Verifique o banco de questões e tente novamente.");
 
             throw new IllegalArgumentException("Quantidade de questões excede o existente no banco de dados!");
 
