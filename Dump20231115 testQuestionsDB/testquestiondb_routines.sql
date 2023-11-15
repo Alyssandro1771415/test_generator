@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `testquestiondb` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `testquestiondb`;
 -- MariaDB dump 10.19  Distrib 10.4.28-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: testquestiondb
@@ -32,4 +30,4 @@ USE `testquestiondb`;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-16 21:24:11
+-- Dump completed on 2023-11-15 15:24:58
