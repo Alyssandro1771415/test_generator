@@ -11,9 +11,12 @@ public class DatabaseManager {
 
     private Connection connection;
 
+    // Método para inicializar a conexão com o banco de dados SQL
     public DatabaseManager(String url, String user, String password) throws SQLException {
         try {
+            // carregamento do driver JDBC do MySQL
             Class.forName("com.mysql.jdbc.Driver");
+            // Armazenamento da conexão em uma variável
             connection = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -21,6 +24,7 @@ public class DatabaseManager {
         }
     }
 
+    // Método para executar um comando/query SQL
     public ResultSet executeQuery(String query) throws SQLException {
         if (connection == null || connection.isClosed()) {
             throw new SQLException("Conexão com o banco de dados não está disponível");
@@ -29,6 +33,7 @@ public class DatabaseManager {
         return connection.createStatement().executeQuery(query);
     }
 
+    // Método para fechar a conexão com o banco de dados após terem sidfo feitas as ações desejadas, isso melhora o desenpenho do programa já que ele não manterá a conexão sempre em aberta
     public void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {
@@ -39,6 +44,7 @@ public class DatabaseManager {
         }
     }
 
+    // Execução de alterações no banco de dados
     public int executeUpdate(String query, Object... params) throws SQLException {
         if (connection == null || connection.isClosed()) {
             throw new SQLException("Conexão com o banco de dados não está disponível");

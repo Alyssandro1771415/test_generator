@@ -3,8 +3,10 @@ package com.mycompany.mavenproject1;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+// Janela que permite ao usuário escolher um diretório onde os arquivos de provas serão salvos
 public class DirectorySelector {
 
+    // Método de inicialização da janela, ela retorna uma String com o caminho escolhido
     public String directorySelector() {
         // Crie uma instância do JFrame (pode ser uma janela vazia)
         JFrame frame = new JFrame();

@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddRandomTestWindow extends JPanel {
+
+    // Declaração de componentes para a interface gráfica
     private JFrame addRandomTestWindow;
     private JLabel labelQuestionsTotalNumber;
     private JLabel labelContentSelector;
@@ -23,20 +25,25 @@ public class AddRandomTestWindow extends JPanel {
     private JTextField entryHardCount;
     private JTextField entryEasyCount;
 
+    // Variavel para armazenar os dados que serão usados para preencher a tabela 
     private Map<String, String> contentList;
     private JTable table;
     private DefaultTableModel tableModel;
     private int selectedRow = -1;
     private Test randomTest;
+    // Arraylist para armazenar conteúdos selecionados para com base neles buscar questões que estejam na faixa de conteúdos desejados para a avaliação
     private ArrayList<String> contentsSelecteds = new ArrayList<>();
+    // Contagem de conteúdos
     private int contentsCount = 0;
+    // Variável para indicar se deverão ser aceitas questões abertas ou não na criação do documento
     private boolean checkboxCloseQuestionValue;
-    private boolean checkboxNdaValue;
+    // Var[avel indicando a quantidade de provas diferetes a serem geradas aleatoriamente
     private int testsNumber;
 
     QueryExecutions query = new QueryExecutions();
     ArrayList<Question> questions = query.realizeConsult();
 
+    // Método construtor da classe
     public AddRandomTestWindow(Test randomTest, int testsNumber) {
         this.randomTest = randomTest;
         this.contentList = new HashMap<>();
@@ -58,6 +65,7 @@ public class AddRandomTestWindow extends JPanel {
 
     }
 
+    // Atualiza o número total de questões
     private void updateTotalQuestionsLabel() {
         if (!entryEasyCount.getText().isEmpty() && !entryMediumCount.getText().isEmpty()
                 && !entryHardCount.getText().isEmpty()) {
@@ -76,10 +84,12 @@ public class AddRandomTestWindow extends JPanel {
         }
     }
 
+    // Adiciona um conteúdo ao map de selecionados para poder trabalhar com esse conteúdos escolhidos pelo usuário
     public static void addSchoolSubject(Map<String, String> map, String topico, String disciplina) {
         map.put(topico, disciplina);
     }
 
+    // Criação e configuração das entradas de texto
     private void createTextFields() {
         entryMediumCount = new JTextField(5);
         entryHardCount = new JTextField(5);
@@ -144,6 +154,7 @@ public class AddRandomTestWindow extends JPanel {
         entryEasyCount.setBounds(140, 55, 40, 25);
     }
 
+    // Pega as estradas do usuário e as coloca de forma a serem usadas como variáveis pelo programa
     private int[] getEntriesData() {
         if (!entryEasyCount.getText().isEmpty() && !entryMediumCount.getText().isEmpty()
                 && !entryHardCount.getText().isEmpty()) {
@@ -165,11 +176,12 @@ public class AddRandomTestWindow extends JPanel {
         return null;
     }
 
+    // Criação do componente da tabela
     private void createTable() {
 
         contentList = new HashMap<>();
 
-        for (Question q : questions) {
+        for (Question q : questions) { // Leitura dos conteúdos existente que correspondem àquela disciplina
 
             if (!contentList.containsValue(q.getContent())) {
 
@@ -204,6 +216,7 @@ public class AddRandomTestWindow extends JPanel {
 
     }
 
+    // Contrução da tabela na interface gráfica
     private void buildTable(Map<String, String> contentList, String schoolSubject) {
         // Limpe o modelo da tabela
         tableModel.setRowCount(0);
@@ -223,6 +236,7 @@ public class AddRandomTestWindow extends JPanel {
         }
     }
 
+    // Criação das labels da interface gráfica
     private void createLabels() {
         JLabel labelEasy = new JLabel("Nº DE FÁCEIS:");
         JLabel labelMedium = new JLabel("Nº DE MÉDIAS:");
@@ -252,6 +266,7 @@ public class AddRandomTestWindow extends JPanel {
 
     }
 
+    // Criação dos botões da interface gráfica
     private void createButtons() {
         buttonFinish = new JButton("FINALIZAR");
         buttonCancel = new JButton("CANCELAR");
@@ -310,11 +325,6 @@ public class AddRandomTestWindow extends JPanel {
             for (String content : contentsSelecteds) {
                 sb.append(content).append("\n");
             }
-            if (checkboxNdaValue) {
-                sb.append("Opção N.D.A selecionada.\n");
-            } else {
-                sb.append("Opção N.D.A não selecionada.\n");
-            }
             if (checkboxCloseQuestionValue) {
                 sb.append("Sem questões fechadas.\n");
             } else {
@@ -342,6 +352,7 @@ public class AddRandomTestWindow extends JPanel {
         });
     }
 
+    // Criação das caixas de marcar da interface gráfica
     private void createCheckBox() {
         
         checkBoxNoClosedQuestions = new JCheckBox("SEM QUESTÕES FECHADAS");
