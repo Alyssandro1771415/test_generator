@@ -10,12 +10,17 @@ public class SelectQuestionWindow extends Window {
 
     private JFrame questionListWindow;
     private JTextField entryContent;
-    // private JTextArea entryQuestionBody;
     private JTextField entryQuestionBody;
-    private DefaultTableModel tableModel; // Declaramos a variável como campo de classe
+    private DefaultTableModel tableModel;
+
+    // Criação do objeto query e realização da consulta das questões no banco de dados para inserção direta na lista das questões
     private QueryExecutions query = new QueryExecutions();
     private ArrayList<Question> questionsList;
+
+    // Arraylista para armazenar as questões selecionadas pelo usuário
     private ArrayList<Question> testQuestionsList;
+
+
     private int selectedRow = -1;
     private JTable table;
     private Test newTest;
@@ -24,6 +29,7 @@ public class SelectQuestionWindow extends Window {
     private int testsNumber;
     private String schoolSubject;
 
+    // Método construtor da classe
     public SelectQuestionWindow(Test newTest, int testsNumber, String schoolSubject) {
         this.newTest = newTest;
         this.questionsList = new ArrayList<>();
@@ -47,15 +53,17 @@ public class SelectQuestionWindow extends Window {
 
     }
 
+    //Criação dos botões
     @Override
     protected void createButtons() {
-        JButton buttonClean = new JButton("LIMPAR");
-        JButton buttonSearch = new JButton("PESQUISAR");
-        JButton buttonAdd = new JButton("ADICIONAR");
-        JButton buttonReturn = new JButton("VOLTAR");
-        JButton buttonViewQuestion = new JButton("VER QUESTÃO");
-        JButton buttonFinish = new JButton("FINALIZAR");
+        JButton buttonClean = new JButton("LIMPAR"); // Botão para limpar os campos de entrada
+        JButton buttonSearch = new JButton("PESQUISAR"); // Botão para pesquisar por questões a
+        JButton buttonAdd = new JButton("ADICIONAR"); // Botão para adicionar a questão selecionada da tabela no testQuestionsList
+        JButton buttonReturn = new JButton("VOLTAR"); // Botão para voltar à tela principal
+        JButton buttonViewQuestion = new JButton("VER QUESTÃO"); // Botão para visualizar a questão por completa e seus itens se houver
+        JButton buttonFinish = new JButton("FINALIZAR"); // Botão para finalizar e seguir o processo de criação da avaliação
 
+        // Mensagens que aparecem ao deixar o mouse sobre os botões
         buttonClean.setToolTipText("CLIQUE PARA LIMPAR AS ENTRADAS");
         buttonSearch.setToolTipText("CLIQUE PARA PESQUISAR");
         buttonAdd.setToolTipText("CLIQUE PARA ADICIONAR");
@@ -84,50 +92,69 @@ public class SelectQuestionWindow extends Window {
         buttonReturn.setBounds(335, 435, 100, 30);
         buttonFinish.setBounds(605, 435, 100, 30);
 
+        // Adicionando o evento de limpeza das entradas ao botão
         buttonClean.addActionListener(e -> {
             entryContent.setText("");
             entryQuestionBody.setText("");
             buildTable(questionsList);
         });
 
+        // Adicionando o evento de retornar para a janela principal do programa
         buttonReturn.addActionListener(e -> {
             questionListWindow.dispose();
             questionListWindow = null;
             MainWindow mainWindow = new MainWindow();
         });
 
+        // Adicionando o evento de finalizar o processo de criação das avaliações
         buttonFinish.addActionListener(e -> {
             questionListWindow.dispose();
             questionListWindow = null;
             newTest.setQuestionsList(testQuestionsList);
-            createTestFile(newTest); // IMPLEMENTAÇÃO BACK-END
+            createTestFile(newTest); // Criação dos arquivos de avaliação
         });
 
+        // Adicionando a ação de adicionar a questão selecionada à testQuestionsList
         buttonAdd.addActionListener(e -> {
 
+            // Verificando se a linha selecionada está na linha 0 ou mais
             if (selectedRow >= 0) {
 
+                // Lista de questões selecionadas
                 Question selectedQuestion = new Question();
 
+                // Armazena o ID da questão num atributo inteiro
                 int id = (int) (table.getValueAt(selectedRow, 0));
 
+                // Varre a lista de questões buscando a selecionada
                 for (Question question : questionsList) {
                     if (question.getId() == id) {
                         selectedQuestion = question;
                         break; // Se encontrar a questão, saia do loop
                     }
                 }
+
                 questionsNumber++;
+
+                // Armazena a questão na lista da questões para a avaliação
                 testQuestionsList.add(selectedQuestion);
+
+                // Remove da lista a questão para retirar ela da tabela
                 questionsList.remove(selectedQuestion);
+
+                // Reconstroi a tabela
                 buildTable(questionsList);
+
+                // Contabilização de questões selecionadas para a avaliação
                 labelQuestionsNumber.setText("NÚMERO DE QUESTÕES ADICIONADAS ATÉ O MOMENTO: " + (1 + questionsNumber));
 
             }
+            // Limpeza das entradas
             entryContent.setText("");
             entryQuestionBody.setText("");
         });
 
+        // Adicionando a ação de pesquisa ao botão
         buttonSearch.addActionListener(e -> {
             // Obtém o texto das entradas
             String topico = entryContent.getText().toLowerCase(); // Use toLowerCase() para tornar a pesquisa não
@@ -165,6 +192,7 @@ public class SelectQuestionWindow extends Window {
             buildTable(questoesFiltradas);
         });
 
+        // Adicionando o evento de chamada da janela de visualização da questão e seus itens
         buttonViewQuestion.addActionListener(e -> {
             if (selectedRow >= 0) {
 
@@ -186,20 +214,26 @@ public class SelectQuestionWindow extends Window {
         });
     }
 
+    // Método de criação dos arquivos de avaliação
     private void createTestFile(Test newTest) {
-        // IMPLEMENTAÇÃO BACK-END
 
+        // Chamada da janela de seleção de diretório
         DirectorySelector selector = new DirectorySelector();
         String chossedDirectory = selector.directorySelector();
 
+        // Instanciando o objeto do documento da avaliação
         Test test = new Test(newTest.getInstitution(), newTest.getSchoolSubject(), newTest.getEducatorName(),
                 newTest.getTestsNumber(), questionsList);
+
+        // Gerando e salvando os arquivos das avaliações
         test.generateFile(testQuestionsList, chossedDirectory, testsNumber);
 
+        // Chamada da janela de processo concluido
         ConcludedPoPWindow concludeWindow = new ConcludedPoPWindow();
 
     }
 
+    // Criação das labels
     protected void createLabels() {
         JLabel labelQuestionTable = new JLabel("TABELA DE QUESTÕES");
         labelQuestionsNumber = new JLabel("NÚMERO DE QUESTÕES ADICIONADAS ATÉ O MOMENTO: " + (1 + questionsNumber));
@@ -227,6 +261,7 @@ public class SelectQuestionWindow extends Window {
 
     }
 
+    // Verificação do limite de caracteres para não haverem conflitos com a configuração no campo da DB
     private void checkCharacterLimit() {
         int maxCharacters = 500;
         if (entryQuestionBody.getText().length() > maxCharacters) {
@@ -235,6 +270,7 @@ public class SelectQuestionWindow extends Window {
         }
     }
 
+    // Criação dos campos de entrada de texto
     private void createTextFields() {
         entryContent = new JTextField();
         entryQuestionBody = new JTextField();
@@ -254,7 +290,7 @@ public class SelectQuestionWindow extends Window {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                // Plain text components do not fire these events.
+                
             }
         });
 
@@ -265,19 +301,24 @@ public class SelectQuestionWindow extends Window {
 
     }
 
+    // Criação da tabela com as questões
     private void createTable() {
-        // Adicionando linha ao arrayList para testar - IMPLEMENTAÇÃO BACK-END
 
+        // Varredura da lista de questões vindas da DB
         for (int i = 0; i < query.realizeConsult().size(); i++) {
 
+            // Verifica se o conteúdo escolar não é nulo e se está correspondendo ao selecionado 
             if (schoolSubject != null && schoolSubject.equals(query.realizeConsult().get(i).getSchoolSubject())) {
                 questionsList.add(query.realizeConsult().get(i));
             }
+
         }
 
+        // Colunas da tabela
         String[] colunas = { "ID", "Disciplina", "Tópico", "Contéudo", "Nível" };
         tableModel = new DefaultTableModel(colunas, 0);
 
+        // Contrução da tabela
         buildTable(questionsList);
 
         table = new JTable(tableModel);
@@ -301,6 +342,7 @@ public class SelectQuestionWindow extends Window {
 
     }
 
+    // Construção da tabela
     private void buildTable(ArrayList<Question> questions) {
         // Limpe o modelo da tabela
 

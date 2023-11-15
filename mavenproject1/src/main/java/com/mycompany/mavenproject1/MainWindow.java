@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
 
+// Classe que extende a classe JPanel, ela representa a tela principal e inicial à qual o usuário terá seu primeiro contato com o programa 
 public class MainWindow extends JPanel {
 
     private Test newTest;
@@ -19,6 +20,7 @@ public class MainWindow extends JPanel {
     private JTextField entryInstitution;
     private JTextField entryEducatorName;
 
+    // Método contrutor da classe
     public MainWindow() {
 
         mainWindow = new JFrame();
@@ -36,6 +38,7 @@ public class MainWindow extends JPanel {
         showWindow(true);
     }
 
+    // Criação e configuração das duas métades da tela principal
     public void createVisualSquares() {
         JPanel rightPanel = new JPanel();
         JPanel leftPanel = new JPanel();
@@ -47,6 +50,7 @@ public class MainWindow extends JPanel {
         mainWindow.add(leftPanel);
     }
 
+    // Criação das TextFields para obter atributos que serão usados na criação dos arquivos das avaliações
     public void createTexFields() {
 
         entryTestNumber = new JTextField(5);
@@ -54,10 +58,10 @@ public class MainWindow extends JPanel {
         entryInstitution = new JTextField(5);
         entryEducatorName = new JTextField(5);
 
-        mainWindow.add(entryTestNumber);
-        mainWindow.add(entrySchoolSubject);
-        mainWindow.add(entryInstitution);
-        mainWindow.add(entryEducatorName);
+        mainWindow.add(entryTestNumber); // Entrada da quantidade de randomizações das avaliações a serem geradas 
+        mainWindow.add(entrySchoolSubject); // Entrada do nome do conteúdo a ser usado na avaliação, servirá para quando a tabela de questões aparecer ter apenas questões do conteúdo desejado
+        mainWindow.add(entryInstitution); // Nome da instituição de ensino para ser inserido no arquivo avaliação
+        mainWindow.add(entryEducatorName); // Nome do educador para ser inserido no arquivo da avaliação
 
         entryTestNumber.setBounds(570, 110, 170, 25);
         entrySchoolSubject.setBounds(495, 230, 245, 25);
@@ -66,14 +70,15 @@ public class MainWindow extends JPanel {
 
     }
 
+    // Criação dos botões da janela
     public void createButtons() {
 
-        JButton buttonAddQuestions = new JButton("ADICIONAR QUESTÕES");
-        JButton buttonDelQuestions = new JButton("DELETAR/PESQUISAR QUESTÕES");
-        JButton buttonClear = new JButton("LIMPAR");
-        JButton buttonGenerateRandomTest = new JButton("GERAR PROVA ALEATÓRIA");
-        JButton buttonGenerateManualTest = new JButton("GERAR PROVA MANUAL");
-        JButton buttonClose = new JButton("FECHAR");
+        JButton buttonAddQuestions = new JButton("ADICIONAR QUESTÕES"); // Botão para cadastramento de questões na DB
+        JButton buttonDelQuestions = new JButton("DELETAR/PESQUISAR QUESTÕES"); // Botão para chamada de uma janela de pesquisa de questões e de exclusão delas
+        JButton buttonClear = new JButton("LIMPAR"); // Limpa todos os campos de entrada de texto
+        JButton buttonGenerateRandomTest = new JButton("GERAR PROVA ALEATÓRIA"); // Botão para chamada da janela de criação de avaliações aleatórias
+        JButton buttonGenerateManualTest = new JButton("GERAR PROVA MANUAL"); // Botão para chamada da janela de criação de avaliações manualmente
+        JButton buttonClose = new JButton("FECHAR"); // Botão de encerramento do programa
 
         buttonAddQuestions.setFocusable(false);
         buttonDelQuestions.setFocusable(false);
@@ -82,6 +87,7 @@ public class MainWindow extends JPanel {
         buttonGenerateManualTest.setFocusable(false);
         buttonClose.setFocusable(false);
 
+        // Mensagens para aparecerem quando o mouse estiver sobre os botões
         buttonAddQuestions.setToolTipText("CLIQUE PARA ADICIONAR UMA NOVA QUESTÃO AO BANCO DE QUESTÕES.");
         buttonDelQuestions.setToolTipText("CLIQUE PARA VIZUALIZAR QUESTÕES OU DELETAR QUESTÕES DO BANCO DE QUESTÕES.");
         buttonClear.setToolTipText("CLIQUE PARA LIMPAR TODAS AS CAIXAS DE ENTRADA.");
@@ -96,7 +102,6 @@ public class MainWindow extends JPanel {
         mainWindow.add(buttonGenerateManualTest);
         mainWindow.add(buttonClose);
 
-
         buttonAddQuestions.setBounds(70, 110, 240, 30);
         buttonDelQuestions.setBounds(70, 160, 240, 30);
         buttonClear.setBounds(405, 325, 100, 30);
@@ -104,12 +109,14 @@ public class MainWindow extends JPanel {
         buttonGenerateManualTest.setBounds(555, 325, 190, 30);
         buttonClose.setBounds(645, 10, 100, 25);
 
+        // Adição da ação de fechar o programa ao acionar o botão FECHAR
         buttonClose.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
 
+        // Adição da ação de limpeza dos campos de entrada ao acionar o botão LIMPAR
         buttonClear.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -123,14 +130,19 @@ public class MainWindow extends JPanel {
             }
         });
 
+        // Adição da ação de chamada da janela de geração manual de avaliação 
         buttonGenerateManualTest.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+                // Verificando se os campos com os dados que serão usados na geração do arquivo não estão vazios
                 if (!entryInstitution.getText().isEmpty() && !entrySchoolSubject.getText().isEmpty() && !entryEducatorName.getText().isEmpty() && !entryTestNumber.getText().isEmpty()) {
                     try {
-                        int testsNumber = Integer.parseInt(entryTestNumber.getText());
-                        Test newTest = getDataFromEntries();
-                        mainWindow.dispose();
+                        int testsNumber = Integer.parseInt(entryTestNumber.getText()); // Passando o valor do campo corrspondente a quantidade de avaliações randomizadas diferents para uma variável de tipo inteio
+                        Test newTest = getDataFromEntries(); // Passa os valores das entradas para uma varável do tipo da classe Test
+                        mainWindow.dispose(); // Fechando a janela MainWindow
                         mainWindow = null;
+
+                        // Chamando uma janela da classe SelectQuestionWindow onde o processo de criação da avaliação manualmentee será dado seguimento
                         SelectQuestionWindow selectQuestionWindow = new SelectQuestionWindow(newTest, Integer.parseInt(entryTestNumber.getText()), entrySchoolSubject.getText().toLowerCase());
                     } catch (NumberFormatException ex) {
                         // Tratar o caso em que não é um número inteiro
@@ -140,14 +152,16 @@ public class MainWindow extends JPanel {
             }
         });
 
+        // Adição da ação de chamada da janela de geração aleatória de avaliação 
         buttonGenerateRandomTest.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 
+                // Verifica se não há campos não estão vazios
                 if (!entryInstitution.getText().isEmpty() && !entrySchoolSubject.getText().isEmpty() && !entryEducatorName.getText().isEmpty() && !entryTestNumber.getText().isEmpty()) {
                     try {
-                        int testsNumber = Integer.parseInt(entryTestNumber.getText());
-                        Test newTest = getDataFromEntries();
-                        mainWindow.dispose();
+                        int testsNumber = Integer.parseInt(entryTestNumber.getText()); // Passando o valor do campo corrspondente a quantidade de avaliações randomizadas diferents para uma variável de tipo inteio
+                        Test newTest = getDataFromEntries(); // Passa os valores das entradas para uma varável do tipo da classe Test
+                        mainWindow.dispose(); // Fechando a janela mainWindow
                         mainWindow = null;
                         AddRandomTestWindow addRandomTestWindow = new AddRandomTestWindow(newTest, Integer.parseInt(entryTestNumber.getText()));
                     } catch (NumberFormatException ex) {
@@ -158,6 +172,7 @@ public class MainWindow extends JPanel {
             }
         });
 
+        // Adição da ação de chamada da janela de cadastramento de questões na DB
         buttonAddQuestions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 showWindow(false);
@@ -167,12 +182,13 @@ public class MainWindow extends JPanel {
             }
         });
 
+        // Adição da ação de chamada da janela de visualização e exclusão de questões
         buttonDelQuestions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 showWindow(false);
                 mainWindow.dispose();
                 mainWindow = null;
-                //--------------
+                
                 QuestionListWindow questionListWindow = new QuestionListWindow();
 
             }
@@ -181,6 +197,7 @@ public class MainWindow extends JPanel {
 
     }
 
+    // criação das labels
     public void createLabels() {
         JLabel labelQuestionRegistration = new JLabel("CADASTRO DE QUESTÕES");
         JLabel labelTestRegistration = new JLabel("CADASTRO DE AVALIAÇÃO");
@@ -219,6 +236,7 @@ public class MainWindow extends JPanel {
 
     }
 
+    // Pega o valor de todos os campos de entrada do usuário e cria um objeto da Classe Test para retornar
     public Test getDataFromEntries(){
 
         ArrayList<Question> questionsList = new ArrayList<>();
@@ -234,10 +252,12 @@ public class MainWindow extends JPanel {
 
     }
 
+    // Apresentação da janela
     public void showWindow(boolean value){
         mainWindow.setVisible(value);
     }
 
+    // Instanciamento da imagem logo do programa na janela principal
     private BufferedImage loadImage(String url) {
         BufferedImage img = null;
         InputStream is = getClass().getResourceAsStream(url);
@@ -254,4 +274,5 @@ public class MainWindow extends JPanel {
         }
         return img;
     }
+
 }

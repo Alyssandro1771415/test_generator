@@ -10,8 +10,9 @@ public class QuestionViewWindow extends Window {
     private JFrame lastFrame;
     private Question question;
 
+    // Construtor da classe QuestionViewWindow para exibir uma única pergunta
     public QuestionViewWindow(Question question) {
-
+        // Inicializar a janela de visualização de pergunta
         this.question = question;
         questionViewWindow = new JFrame();
         questionViewWindow.setLayout(null);
@@ -21,16 +22,27 @@ public class QuestionViewWindow extends Window {
         questionViewWindow.setResizable(false);
         questionViewWindow.setLocationRelativeTo(null);
 
-        createTextPane(question);
+        // Criar painéis de texto e botões na janela de visualização
         createTextPane(question);
         createButtons();
+
+        // Tornar a janela de visualização visível
         questionViewWindow.setVisible(true);
     }
 
+    // Construtor adicional para a classe QuestionViewWindow, recebendo a janela
+    // anterior como parâmetro
     public QuestionViewWindow(Question question, JFrame lastFrame) {
+        // Inicializar a janela de visualização de pergunta
         this.question = question;
         this.lastFrame = lastFrame;
-        lastFrame.setVisible(false);
+
+        // Ocultar a janela anterior, se fornecida
+        if (lastFrame != null) {
+            lastFrame.setVisible(false);
+        }
+
+        // Inicializar a janela de visualização de pergunta
         questionViewWindow = new JFrame();
         questionViewWindow.setLayout(null);
         setWindowSize(question);
@@ -39,46 +51,59 @@ public class QuestionViewWindow extends Window {
         questionViewWindow.setResizable(false);
         questionViewWindow.setLocationRelativeTo(null);
 
-        createTextPane(question);
+        // Criar painéis de texto e botões na janela de visualização, passando a janela
+        // anterior, se fornecida
         createTextPane(question);
         createButtons(lastFrame);
+
+        // Tornar a janela de visualização visível
         questionViewWindow.setVisible(true);
     }
 
+    // Método para criar botões na janela de visualização da pergunta
     @Override
     protected void createButtons() {
+        // Criar botão de fechar
         buttonClose = new JButton("X");
         buttonClose.setBounds(660, 10, 45, 40);
         buttonClose.setFocusable(false);
         questionViewWindow.add(buttonClose);
 
+        // Adicionar um ouvinte ao botão de fechar
         buttonClose.addActionListener(e -> {
+            // Esconder, fechar e limpar a janela de visualização
             questionViewWindow.setVisible(false);
             questionViewWindow.dispose();
             questionViewWindow = null;
 
+            // Realizar operação de upload de dados e abrir uma nova janela concluída
             QueryExecutions consultant = new QueryExecutions();
             consultant.dataUpload(question);
-
             ConcludedPoPWindow concludedPoPWindow = new ConcludedPoPWindow();
-
         });
     }
 
+    // Método adicional para criar botões na janela de visualização da pergunta, recebendo a janela anterior como parâmetro
     protected void createButtons(JFrame frame) {
+        // Criar botão de fechar
         buttonClose = new JButton("X");
         buttonClose.setBounds(660, 10, 45, 40);
         buttonClose.setFocusable(false);
         questionViewWindow.add(buttonClose);
 
+        // Adicionar um ouvinte ao botão de fechar
         buttonClose.addActionListener(e -> {
+            // Esconder, fechar e limpar a janela de visualização
             questionViewWindow.setVisible(false);
             questionViewWindow.dispose();
             questionViewWindow = null;
+
+            // Tornar visível a janela anterior que foi passada como parâmetro
             frame.setVisible(true);
         });
     }
 
+    // Janela que representa um painel para visualizar uma questão e seus itens
     protected void createTextPane(Question question) {
         JTextPane textPaneQuestionDescription = new JTextPane();
         textPaneQuestionDescription.setText(question.getQuestion());
@@ -86,11 +111,14 @@ public class QuestionViewWindow extends Window {
         textPaneQuestionDescription.setBounds(45, 50, 600, getTextPaneSize(question));
         questionViewWindow.add(textPaneQuestionDescription);
 
+        // Verifica se a quantidade de itens não é 0, ou seja, se ela não é uma questãoa aberta pois caso seja não haverá itens a apresentar
         if (question.countItems(question.getItems()) != 0) {
 
             int itemPos = getTextPaneSize(question) + 70;
             JTextPane[] textPane_Item = new JTextPane[7];
             String[] lettersArray = { "A)", "B)", "C)", "D)", "E)", "F)" };
+
+            // Varre a lista de itens e cria o JPanel de cada uma delas
             for (int i = 0; i < question.countItems(question.getItems()); i++) {
                 if (i != 0) {
                     itemPos += 50;
@@ -105,36 +133,37 @@ public class QuestionViewWindow extends Window {
 
     }
 
+    // Configura o tamanho da janela de acordo com a quantidade de itens existentes
     private void setWindowSize(Question question) {
-        int windowHeight = (getTextPaneSize(question) + 200);
-        int itemsNumber = question.countItems(question.getItems());
+        int windowHeight = (getTextPaneSize(question) + 200); // tamanho padrão
+        int itemsNumber = question.countItems(question.getItems()); // Quantidade de itens
 
         switch (itemsNumber) {
             case 2:
-                windowHeight += 25;
+                windowHeight += 25; // Soma um determinado valor ao já existente a depender da quantidade de itens 
                 questionViewWindow.setSize(712, windowHeight);
                 break;
             case 3:
-                windowHeight += 50;
+                windowHeight += 50; // Soma um determinado valor ao já existente a depender da quantidade de itens
                 questionViewWindow.setSize(712, windowHeight);
                 break;
             case 4:
-                windowHeight += 100;
+                windowHeight += 100;// Soma um determinado valor ao já existente a depender da quantidade de itens
                 questionViewWindow.setSize(712, windowHeight);
                 break;
             case 5:
-                windowHeight += 150;
+                windowHeight += 150;// Soma um determinado valor ao já existente a depender da quantidade de itens
                 questionViewWindow.setSize(712, windowHeight);
                 break;
             case 6:
-                windowHeight += 200;
+                windowHeight += 200;// Soma um determinado valor ao já existente a depender da quantidade de itens
                 questionViewWindow.setSize(712, windowHeight);
                 break;
             case 7:
-                windowHeight += 250;
+                windowHeight += 250;// Soma um determinado valor ao já existente a depender da quantidade de itens
                 questionViewWindow.setSize(712, windowHeight);
                 break;
-            case 0:
+            case 0: // Soma um determinado valor ao já existente a depender da quantidade de itens
 
                 questionViewWindow.setSize(712, getTextPaneSize(question) + 100);
                 break;
@@ -143,6 +172,7 @@ public class QuestionViewWindow extends Window {
         }
     }
 
+    // Método para capturar o tamanho de um painel
     private int getTextPaneSize(Question question) {
 
         int textLength = question.getQuestion().length();
