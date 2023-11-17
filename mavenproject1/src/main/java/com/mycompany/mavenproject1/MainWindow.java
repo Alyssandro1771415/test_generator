@@ -203,7 +203,7 @@ public class MainWindow extends JPanel implements Window {
         JLabel labelEntryEducatorName = new JLabel("PROFESSOR");
         JLabel labelEntrySchoolSubject = new JLabel("DISCIPLINA");
         JLabel labelTitle_SGAA = new JLabel("SGAA - SISTEMA GERENCIADOR DE AVALIAÇÕES ACADÊMICAS");
-        ImageIcon originalIcon = new ImageIcon(loadImage("UEPBLOGO.png"));
+        ImageIcon originalIcon = new ImageIcon(loadImage("/static/LOGO.png"));
         Image originalImage = originalIcon.getImage();
         int desiredWidth = 350; // Desired width for the image
         int desiredHeight = 189; // Desired height for the image
