@@ -6,24 +6,23 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
-public class QuestionListWindow extends Window {
 
+public class QuestionListWindow extends JPanel implements Window {
+
+    // Declare instance variables
     private JFrame questionListWindow;
     private JTextField entryContent;
     private JTextField entryQuestionBody;
     private DefaultTableModel tableModel;
-
-    QueryExecutions consultant = new QueryExecutions(); // Instaciando o consultor
-    protected ArrayList<Question> questionsList = consultant.realizeConsult(); // Criando um arrayList de questões e
-                                                                               // fazendo ele receber diretamente da
-                                                                               // consulta da DB
-
-    private int selectedRow = -1; // Apenas para não aparecer nenhuma linha selecionada já ao abrir a janela
+    private QueryExecutions consultant = new QueryExecutions();
+    protected ArrayList<Question> questionsList = consultant.realizeConsult();
+    private int selectedRow = -1;
     private JTable table;
 
-    // Método contrutor
+
     public QuestionListWindow() {
 
+        // Initialize the JFrame for the question list window
         questionListWindow = new JFrame();
         questionListWindow.setLayout(null);
         questionListWindow.setSize(754, 527);
@@ -32,6 +31,7 @@ public class QuestionListWindow extends Window {
         questionListWindow.setResizable(false);
         questionListWindow.setLocationRelativeTo(null);
 
+        // Create buttons, labels, text fields, and the table
         createButtons();
         createLabels();
         createTextFields();
@@ -39,140 +39,118 @@ public class QuestionListWindow extends Window {
         questionListWindow.setVisible(true);
     }
 
-    // Criação dos botões
+    // Implementation of the createButtons method from the Window interface
     @Override
-    protected void createButtons() {
-        JButton buttonLimpar = new JButton("LIMPAR"); // Botão para limpar todas as entradas
-        JButton buttonPesquisar = new JButton("PESQUISAR"); // Botão para realizar pesquisa de questões com base no
-                                                            // valor inserido pelo usuário no campo de TÓPICO ou TEXTO A
-                                                            // QUESTÃO
-        JButton buttonDeletar = new JButton("DELETAR"); // Botão para deletar permanentemente uma questão da DB
-        JButton buttonVoltar = new JButton("VOLTAR"); // Botão para voltar à tela principal do programa
-        JButton buttonVisualizar = new JButton("VER QUESTÃO"); // Botão para visualizar por completo uma questão
-                                                               // exitente na DB
+    public void createButtons() {
+        // Create buttons with labels
+        JButton buttonLimpar = new JButton("LIMPAR");
+        JButton buttonPesquisar = new JButton("PESQUISAR");
+        JButton buttonDeletar = new JButton("DELETAR");
+        JButton buttonVoltar = new JButton("VOLTAR");
+        JButton buttonVisualizar = new JButton("VER QUESTÃO");
 
-        // Textos que aparecem ao deixar o mouse sobre os botões
+        // Set tooltips for the buttons
         buttonLimpar.setToolTipText("CLIQUE PARA LIMPAR AS ENTRADAS");
         buttonPesquisar.setToolTipText("CLIQUE PARA PESQUISAR");
         buttonDeletar.setToolTipText("CLIQUE PARA DELETAR");
         buttonVoltar.setToolTipText("CLIQUE PARA VOLTAR À TELA PRINCIPAL");
 
+        // Set focusable to false for better GUI experience
         buttonVoltar.setFocusable(false);
         buttonDeletar.setFocusable(false);
         buttonVisualizar.setFocusable(false);
         buttonPesquisar.setFocusable(false);
         buttonLimpar.setFocusable(false);
 
+        // Add buttons to the window
         questionListWindow.add(buttonPesquisar);
         questionListWindow.add(buttonDeletar);
         questionListWindow.add(buttonVoltar);
         questionListWindow.add(buttonVisualizar);
         questionListWindow.add(buttonLimpar);
 
+        // Set the bounds of each button
         buttonPesquisar.setBounds(605, 160, 110, 30);
         buttonDeletar.setBounds(470, 435, 100, 30);
         buttonVoltar.setBounds(605, 435, 100, 30);
         buttonVisualizar.setBounds(115, 435, 150, 30);
         buttonLimpar.setBounds(605, 85, 110, 30);
 
-        // Adição da ação de limparos campos de entrada
+        // Add action listeners to the buttons
         buttonLimpar.addActionListener(e -> {
-
-            entryContent.setText(""); // Limpa o campo de tópico
-            entryQuestionBody.setText(""); // Limpa o campo de texto da questão
-            buildTable(questionsList); // Reconstrói a tabela com todas as questões
-
+            entryContent.setText(""); // Clear the topic field
+            entryQuestionBody.setText(""); // Clear the question text field
+            buildTable(questionsList); // Rebuild the table with all questions
         });
 
-        // Adição da ação de voltar à tela principal do programa
         buttonVoltar.addActionListener(e -> {
-
             questionListWindow.dispose();
             questionListWindow = null;
             MainWindow mainWindow = new MainWindow();
-
         });
 
-        // Adição da ação de deletar uma questão na DB
         buttonDeletar.addActionListener(e -> {
+            int tableRow = table.getSelectedRow();
+            int dataToDelete = (int) table.getValueAt(tableRow, 0);
+            consultant.dataDelete(dataToDelete);
 
-            int tabelRow = table.getSelectedRow(); // Pega a linha selecionada na tabela
-            int dataToDelet = (int) table.getValueAt(tabelRow, 0); // Pega o valor da coluna de ID da questão
-                                                                   // selecionada na tabela
-            consultant.dataDelete(dataToDelet); // realiza a exclusão da questão que possui o ID capturado na DB
-
-            buildTable(consultant.realizeConsult()); // Reconstroi a tabela com os dados atualizados
-            questionsList = consultant.realizeConsult(); // Pega os dados atualizados da DB
-
+            buildTable(consultant.realizeConsult());
+            questionsList = consultant.realizeConsult();
         });
 
-        // Adição da ação de pesquisar por uma questão
         buttonPesquisar.addActionListener(e -> {
-            // Obtém o texto das entradas
-            String topico = entryContent.getText().toLowerCase(); // Use toLowerCase() para tornar a pesquisa não
-                                                                  // sensível a maiúsculas e minúsculas
-            String corpoQuestao = entryQuestionBody.getText().toLowerCase(); // Use toLowerCase() para tornar a pesquisa
-                                                                             // não sensível a maiúsculas e minúsculas
+            // Get the text from the entries
+            String topic = entryContent.getText().toLowerCase();
+            String questionBody = entryQuestionBody.getText().toLowerCase();
 
-            // Verifique se ambos os campos estão vazios
-            if (topico.isEmpty() && corpoQuestao.isEmpty()) {
-                // Ambos os campos estão vazios, não faça nada
+            // Check if both fields are empty
+            if (topic.isEmpty() && questionBody.isEmpty()) {
+                // Both fields are empty, do nothing
                 buildTable(questionsList);
                 return;
             }
 
-            // Crie uma nova lista para armazenar as questões correspondentes à pesquisa
-            ArrayList<Question> questoesFiltradas = new ArrayList<>();
+            // Create a new list to store questions matching the search
+            ArrayList<Question> filteredQuestions = new ArrayList<>();
 
-            // Percorra a lista existente de ListaQuestoes
-            for (Question questao : questionsList) {
-                String topicoQuestao = questao.getContent().toLowerCase();
-                String descricaoQuestao = questao.getQuestion().toLowerCase();
+            // Iterate through the existing list of questions
+            for (Question question : questionsList) {
+                String topicQuestion = question.getContent().toLowerCase();
+                String descriptionQuestion = question.getQuestion().toLowerCase();
 
-                // Verifique se a disciplina corresponde
-
-                if (((topicoQuestao.contains(topico) && !topico.isEmpty())
-                        && descricaoQuestao.contains(corpoQuestao))) {
-                    questoesFiltradas.add(questao);
-                } else if (((topico.isEmpty()) && descricaoQuestao.contains(corpoQuestao))) {
-                    questoesFiltradas.add(questao);
+                // Check if the topic and question body match
+                if (((topicQuestion.contains(topic) && !topic.isEmpty()) && descriptionQuestion.contains(questionBody))) {
+                    filteredQuestions.add(question);
+                } else if ((topic.isEmpty()) && descriptionQuestion.contains(questionBody)) {
+                    filteredQuestions.add(question);
                 }
-
             }
 
-            // Atualize a tabela para exibir as questões na nova lista
-            buildTable(questoesFiltradas);
+            // Update the table to display the questions in the new list
+            buildTable(filteredQuestions);
         });
 
-        // Adição da ação de visualizar uma questão por completa
         buttonVisualizar.addActionListener(e -> {
-
-            // Verifica se a linha selecionada é a 0 ou superior
             if (selectedRow >= 0) {
-
                 Question selectedQuestion = new Question();
+                int id = (int) (table.getValueAt(selectedRow, 0));
 
-                int id = (int) (table.getValueAt(selectedRow, 0)); // Coloca o ID da questão numa variável inteira
-                                                                   // possível de se usar
-
-                // Varre a lista de questões até encontrar a de ID selecionado
                 for (Question question : questionsList) {
                     if (question.getId() == id) {
                         selectedQuestion = question;
-                        break; // Se encontrar a questão, saia do loop
+                        break; // If found the question, exit the loop
                     }
                 }
 
-                // Abre a janela de visualização da questão por completa
-                QuestionViewWindow questionViewWindowWindow = new QuestionViewWindow(selectedQuestion,
-                        questionListWindow);
-
+                QuestionViewWindow questionViewWindow = new QuestionViewWindow(selectedQuestion, questionListWindow);
             }
         });
     }
 
-    // Criação das labels
-    protected void createLabels() {
+    // Implementation of the createLabels method from the Window interface
+    @Override
+    public void createLabels() {
+        // Create labels with text
         JLabel labelQuestionTable = new JLabel("TABELA DE QUESTÕES");
         JLabel labelContent = new JLabel("TÓPICO");
         JLabel labelQuestionBody = new JLabel("TEXTO DA QUESTÃO");
@@ -180,6 +158,7 @@ public class QuestionListWindow extends Window {
         JLabel labelTable_Disciplina = new JLabel("DISCIPLINA");
         JLabel labelTable_CorpoQuestao = new JLabel("TEXTO DA QUESTÃO");
 
+        // Add labels to the window
         questionListWindow.add(labelQuestionTable);
         questionListWindow.add(labelContent);
         questionListWindow.add(labelQuestionBody);
@@ -187,17 +166,16 @@ public class QuestionListWindow extends Window {
         questionListWindow.add(labelTable_Disciplina);
         questionListWindow.add(labelTable_CorpoQuestao);
 
+        // Set the bounds of each label
         labelQuestionTable.setBounds(275, 50, 140, 25);
         labelContent.setBounds(115, 85, 75, 30);
         labelQuestionBody.setBounds(115, 130, 135, 25);
         labelTable_ID.setBounds(115, 215, 75, 25);
         labelTable_Disciplina.setBounds(195, 215, 100, 25);
         labelTable_CorpoQuestao.setBounds(290, 215, 220, 25);
-
     }
 
-    // Verificação do tamanho máximo de caracteres do corpo da questão para não
-    // haver conflitos com a configuração desse campo com o da DB
+    // Check and limit the character count in the question text field
     private void checkCharacterLimit() {
         int maxCharacters = 500;
         if (entryQuestionBody.getText().length() > maxCharacters) {
@@ -206,90 +184,83 @@ public class QuestionListWindow extends Window {
         }
     }
 
-    // Método privado para criar campos de texto na interface gráfica
+    // Implementation of the createTextFields method
     private void createTextFields() {
-        // Criar campos de texto para conteúdo e descrição da pergunta
+        // Create text fields
         entryContent = new JTextField();
         entryQuestionBody = new JTextField();
 
-        // Adicionar o campo de descrição da pergunta à janela da lista de perguntas
+        // Add the question text field and attach a document listener
         questionListWindow.add(entryQuestionBody);
 
-        // Adicionar um ouvinte de documento ao campo de descrição da pergunta para
-        // verificar o limite de caracteres
         entryQuestionBody.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                // Chamado quando caracteres são inseridos no campo
                 checkCharacterLimit();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                // Chamado quando caracteres são removidos do campo
                 checkCharacterLimit();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                // Eventos não são gerados para componentes de texto simples (plain text
-                // components)
+                // Plain text components do not fire these events.
             }
         });
 
-        // Adicionar o campo de conteúdo à janela da lista de perguntas
+        // Add text fields to the window
         questionListWindow.add(entryContent);
-
-        // Definir as posições e tamanhos dos campos de texto na interface
+        questionListWindow.add(entryQuestionBody);
         entryContent.setBounds(190, 85, 380, 30);
         entryQuestionBody.setBounds(250, 130, 320, 30);
     }
 
-    // Método para criar e configurar uma tabela com um modelo personalizado
+    // Implementation of the createTable method
     private void createTable() {
-        // Definir as colunas da tabela
-        String[] colunas = { "ID", "Disciplina", "Tópico", "Conteúdo", "Nível" };
+        // Define column names for the table
+        String[] columns = { "ID", "Disciplina", "Tópico", "Contéudo", "Nível" };
 
-        // Criar um modelo de tabela com as colunas definidas
-        tableModel = new DefaultTableModel(colunas, 0);
+        // Initialize the table model with columns
+        tableModel = new DefaultTableModel(columns, 0);
 
-        // Construir a tabela com base na lista de questões
+        // Build the table with the initial list of questions
         buildTable(questionsList);
 
-        // Instanciar a tabela e adicionar um painel de rolagem
+        // Create the JTable and a scroll pane for it
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(115, 240, 590, 165);
 
-        // Adicionar o painel de rolagem à janela da lista de perguntas
+        // Add the scroll pane to the window
         questionListWindow.add(scrollPane);
 
-        // Definir larguras preferenciais das colunas
+        // Set preferred column widths for better display
         table.getColumnModel().getColumn(0).setPreferredWidth(30); // ID
-        table.getColumnModel().getColumn(1).setPreferredWidth(100); // Disciplina
-        table.getColumnModel().getColumn(2).setPreferredWidth(130); // Tópico
-        table.getColumnModel().getColumn(3).setPreferredWidth(300); // Conteúdo
-        table.getColumnModel().getColumn(4).setPreferredWidth(30); // Nível de dificuldade
+        table.getColumnModel().getColumn(1).setPreferredWidth(100); // DISCIPLINA
+        table.getColumnModel().getColumn(2).setPreferredWidth(130); // TÓPICO
+        table.getColumnModel().getColumn(3).setPreferredWidth(300); // CONTEÚDO
+        table.getColumnModel().getColumn(4).setPreferredWidth(30); // DIFICULDADE
 
-        // Adicionar um ouvinte de seleção de lista para obter a linha selecionada
+        // Add a ListSelectionListener to the table
         ListSelectionModel selectionModel = table.getSelectionModel();
         selectionModel.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                selectedRow = table.getSelectedRow();
+                selectedRow = table.getSelectedRow(); // Update the selected row
             }
         });
     }
 
-    // Método para a construção da tabela
+    // Implementation of the buildTable method
     private void buildTable(ArrayList<Question> questions) {
-
+        // Clear the table model
         tableModel.setRowCount(0);
 
-        // Adicione as questões filtradas ao modelo da tabela
+        // Add the filtered questions to the table model
         for (Question question : questions) {
             tableModel.addRow(new Object[] { question.getId(), question.getSchoolSubject(), question.getContent(),
                     question.getQuestion(), question.getDifficult() });
         }
     }
-
 }

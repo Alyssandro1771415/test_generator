@@ -2,17 +2,17 @@ package com.mycompany.mavenproject1;
 
 import javax.swing.*;
 
-// Classe abstrata window
-public abstract class Window extends JPanel {
+// The Window interface provides a template for window-related operations
+public interface Window {
 
-    // Método para criar os botões de uma janela
-    protected abstract void createButtons();
+    // Abstract method to create buttons in the window
+    void createButtons();
 
-    // Indica se a janela deve ou não ser visível
-    protected void showWindow(boolean b, JFrame window) {
-        window.setVisible(b);
+    // Abstract method to create labels in the window
+    void createLabels();
+
+    // Default method to show or hide a window
+    default void showWindow(boolean isVisible, JFrame window) {
+        window.setVisible(isVisible);
     }
-
-
 }
-

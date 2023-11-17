@@ -2,15 +2,12 @@ package com.mycompany.mavenproject1;
 
 import javax.swing.*;
 
-public class AddQuestionWindow extends Window {
 
-    // Objeto Question para armazenar informações da pergunta
+public class AddQuestionWindow extends JPanel implements Window {
+
+    // Declare instance variables
     private Question question;
-
-    // JFrame para a janela de adição de pergunta
     private JFrame frame;
-
-    // Componentes de entrada (campos de texto e botões de opção)
     private JTextField entryContent;
     private JTextField entrySchoolSubject;
     private JRadioButton radioButtonEasy;
@@ -19,11 +16,9 @@ public class AddQuestionWindow extends Window {
     private JRadioButton radioButtonOpenedQuestion;
     private JRadioButton radioButtonClosedQuestion;
     private JRadioButton radioButtonAfirmativeQuestion;
-
-    // Tipo de pergunta
     private int type = 0;
 
-    // Construtor da classe
+    // CONSTRUCTOR
     public AddQuestionWindow() {
         this.question = new Question();
         frame = new JFrame();
@@ -34,7 +29,6 @@ public class AddQuestionWindow extends Window {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
 
-        // Método para criar botões, labels, campos de texto e botões de opção
         createButtons();
         createLabels();
         createRadioButtons();
@@ -42,7 +36,7 @@ public class AddQuestionWindow extends Window {
         setWindowVisible(true);
     }
 
-    // Método para criar os campos de texto
+    // Method to create entry text fields
     private void createEntrySpace() {
         entrySchoolSubject = new JTextField(5);
         entryContent = new JTextField(5);
@@ -54,7 +48,7 @@ public class AddQuestionWindow extends Window {
         entryContent.setBounds(120, 125, 195, 25);
     }
 
-    // Método para criar os botões de opção
+    // Method to create radio buttons
     private void createRadioButtons() {
         radioButtonEasy = new JRadioButton("FÁCIL");
         radioButtonNormal = new JRadioButton("MÉDIA");
@@ -88,9 +82,9 @@ public class AddQuestionWindow extends Window {
         radioButtonGroupType.add(radioButtonAfirmativeQuestion);
     }
 
-    // Método para criar botões
+    // Implementation of the createButtons method
     @Override
-    protected void createButtons() {
+    public void createButtons() {
         JButton butttonCancel = new JButton("CANCELAR");
         JButton buttonNext = new JButton("PRÓXIMO");
 
@@ -100,17 +94,19 @@ public class AddQuestionWindow extends Window {
         butttonCancel.setBounds(10, 310, 100, 30);
         buttonNext.setBounds(260, 310, 100, 30);
 
+        // Action listener for the cancel button
         butttonCancel.addActionListener(e -> {
             frame.dispose();
             frame = null;
             MainWindow mainWindow = new MainWindow();
         });
 
+        // Action listener for the next button
         buttonNext.addActionListener(e -> {
             if (radioButtonEasy.isSelected() || radioButtonNormal.isSelected() || radioButtonHard.isSelected()) {
                 if (radioButtonOpenedQuestion.isSelected() ||
-                    radioButtonClosedQuestion.isSelected() ||
-                    radioButtonAfirmativeQuestion.isSelected()){
+                        radioButtonClosedQuestion.isSelected() ||
+                        radioButtonAfirmativeQuestion.isSelected()){
                     if(!entrySchoolSubject.getText().isEmpty() && !entryContent.getText().isEmpty()){
                         setQuestionEntries();
                     }
@@ -119,8 +115,9 @@ public class AddQuestionWindow extends Window {
         });
     }
 
-    // Método para criar labels
-    protected void createLabels(){
+    // Implementation of the createLabels method
+    @Override
+    public void createLabels() {
         JLabel labelSchoolSubject = new JLabel("DISCIPLINA:");
         JLabel labelContent = new JLabel("SUBÁREA:");
         JLabel labelQuestionLevel = new JLabel("NÍVEL DA QUESTÃO:");
@@ -140,8 +137,8 @@ public class AddQuestionWindow extends Window {
         labelAddingQuestion.setBounds(105, 25, 155, 30);
     }
 
-    // Método para configurar as entradas da pergunta com base na opção escolhida pelo usuário nos radioButtons
-    private void setQuestionEntries(){
+    // Method to set the entries for the question
+    private void setQuestionEntries() {
         question.setSchoolSubject(entrySchoolSubject.getText().toLowerCase());
         question.setContent(entryContent.getText().toLowerCase());
 
@@ -164,15 +161,15 @@ public class AddQuestionWindow extends Window {
         callNextwindow(type);
     }
 
-    // Método para chamar a próxima janela com base no tipo
-    private void callNextwindow(int type){
+    // Method to call the next window
+    private void callNextwindow(int type) {
         AddQuestionTextWindow addQuestionTextWindow = new AddQuestionTextWindow(type, question);
         frame.dispose();
         frame = null;
     }
 
-    // Método para configurar a visibilidade da janela
-    protected void setWindowVisible(boolean value){
+    // Method to set the visibility of the window
+    protected void setWindowVisible(boolean value) {
         frame.setVisible(value);
     }
 }

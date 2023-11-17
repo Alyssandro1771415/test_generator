@@ -1,11 +1,8 @@
 package com.mycompany.mavenproject1;
 
-import java.awt.*;
 import javax.swing.*;
 
-// Classe para a janela de criação dos itens de questões fechadas e de afirmativas V/F, ela extende a classe window
-public class ItemsSelectorWindow extends Window {
-
+public class ItemsSelectorWindow extends JPanel implements Window {
     private JFrame itemsSelectorWindow;
     private JComboBox itemsQuantitySelector;
     private JCheckBox CheckBoxInfo;
@@ -13,11 +10,13 @@ public class ItemsSelectorWindow extends Window {
     private int type;
     private Question question;
 
-    // Construtor da classe
+    // Constructor
     public ItemsSelectorWindow(int type, Question question) {
+        // Initialize instance variables with constructor parameters
         this.type = type;
         this.question = question;
 
+        // Initialize JFrame and configure its properties
         itemsSelectorWindow = new JFrame();
         itemsSelectorWindow.setLayout(null);
         itemsSelectorWindow.setSize(452, 194);
@@ -27,93 +26,97 @@ public class ItemsSelectorWindow extends Window {
         itemsSelectorWindow.setLocationRelativeTo(null);
         itemsSelectorWindow.setVisible(true);
 
+        // Create labels, buttons, selectors, and checkboxes
         createLabels();
         createButtons();
         createSelectors();
 
-        // Dependendo do tipo da questão, as checkboxes serão ou não criadas
-        if(!(type == AddQuestionTextWindow.AFIRMATIVE)){
+        // Create checkboxes only if the question type is not AFIRMATIVE
+        if (!(type == AddQuestionTextWindow.AFIRMATIVE)) {
             createCheboxes();
         }
     }
 
-    // Crria os seletores da quantidade de itens da questão
-    private  void createSelectors(){
+    // Create and configure the item quantity selector
+    private void createSelectors() {
         String[] itemsQuantitySelectorItems = {"3", "4", "5", "6"};
-        itemsQuantitySelector = new JComboBox (itemsQuantitySelectorItems);
-        itemsQuantitySelector.setBounds (180, 70, 100, 25);
-        itemsSelectorWindow.add (itemsQuantitySelector);
+        itemsQuantitySelector = new JComboBox(itemsQuantitySelectorItems);
+        itemsQuantitySelector.setBounds(180, 70, 100, 25);
+        itemsSelectorWindow.add(itemsQuantitySelector);
     }
 
-    // Criação das checkboxes para caso a questão tenha itens ou seja de afirmativas V/F
-    private void createCheboxes(){
-        CheckBoxInfo = new JCheckBox ("ADICIONAR N.D.A (NENHUMA DAS ALTERNATIVAS)");
-        CheckBoxInfo.setBounds (25, 110, 335, 30);
-        itemsSelectorWindow.add (CheckBoxInfo);
+    // Create and configure the checkbox for adding "N.D.A" (None of the Above)
+    private void createCheboxes() {
+        CheckBoxInfo = new JCheckBox("ADICIONAR N.D.A (NENHUMA DAS ALTERNATIVAS)");
+        CheckBoxInfo.setBounds(25, 110, 335, 30);
+        itemsSelectorWindow.add(CheckBoxInfo);
     }
 
-    // 
-    private void nextWindow(){
+    // Method to proceed to the next window based on user selection
+    private void nextWindow() {
+        // Retrieve selected item quantity from the selector
         Object selectedItem = itemsQuantitySelector.getSelectedItem();
         itemsQuantity = Integer.parseInt(selectedItem.toString());
-        
-        // Verifica se a quantidade de itens não é 6 e se a checkbox de adição de opção N.D.A, dai então ele chamará a tela de escrita dos itens
-        if(!(itemsQuantity==6 && isCheckBoxSelected())){
+
+        // Proceed to the next window only if the selected quantity is not 6 and the checkbox is not selected
+        if (!(itemsQuantity == 6 && isCheckBoxSelected())) {
             itemsSelectorWindow.dispose();
             itemsSelectorWindow = null;
-            ItemsWriterWindow itemsWriterWindow = new ItemsWriterWindow(type , question, isCheckBoxSelected(), itemsQuantity);
+            ItemsWriterWindow itemsWriterWindow = new ItemsWriterWindow(type, question, isCheckBoxSelected(), itemsQuantity);
         }
     }
 
-    // Método para retornar se o CheckBox de adição de N.D.A está selecionado
+    // Method to check if the checkbox is selected
     public boolean isCheckBoxSelected() {
         if (CheckBoxInfo != null) {
             return CheckBoxInfo.isSelected();
         }
-        return false; // Retorna false por padrão se CheckBoxInfo for nulo.
+        return false; // Return false by default if CheckBoxInfo is null.
     }
 
-    // Criação dos botões
+    // Implementation of the createButtons method from the Window interface
     @Override
-    protected void createButtons() {
+    public void createButtons() {
         JButton buttonNext = new JButton("PRÓXIMO");
         JButton buttonCancel = new JButton("CANCELAR");
 
-        itemsSelectorWindow.add (buttonNext);
-        itemsSelectorWindow.add (buttonCancel);
+        // Add buttons to the JFrame
+        itemsSelectorWindow.add(buttonNext);
+        itemsSelectorWindow.add(buttonCancel);
 
-        buttonNext.setBounds (345, 155, 100, 30);
-        buttonCancel.setBounds (10, 155, 100, 30);
+        // Set bounds for the buttons
+        buttonNext.setBounds(345, 155, 100, 30);
+        buttonCancel.setBounds(10, 155, 100, 30);
 
-        // Evento disparado caso o botão de PRÓXIMO seja acionado, ele chama a tela seguinte do processo
+        // Add ActionListener to the "Next" button to handle the action when clicked
         buttonNext.addActionListener(e -> {
             nextWindow();
         });
 
-        // Evento disparado caso o botão de CANCELAR seja acionado, ele cancela o processo de criação da questão e volta para a tela anterior
+        // Add ActionListener to the "Cancel" button to handle the action when clicked
         buttonCancel.addActionListener(e -> {
             itemsSelectorWindow.dispose();
             itemsSelectorWindow = null;
             AddQuestionWindow addQuestionWindow = new AddQuestionWindow();
         });
-
     }
 
-    // Criação das labels
-    protected void createLabels() {
-        JLabel labelAddingQuestion = new JLabel ("ADICIONANDO QUESTÃO");
-        JLabel labelItemsQuantity = new JLabel ("Nº DE ALTERNATIVAS:");
-        JLabel labelWarning = new JLabel ("Nº DE ALTERNATIVAS LIMITADO A 6, N.D.A ENTRA NESTE TOTAL");
+    // Implementation of the createLabels method from the Window interface
+    @Override
+    public void createLabels() {
+        // Create and configure JLabels to provide information in the window
+        JLabel labelAddingQuestion = new JLabel("ADICIONANDO QUESTÃO");
+        JLabel labelItemsQuantity = new JLabel("Nº DE ALTERNATIVAS:");
+        JLabel labelWarning = new JLabel("Nº DE ALTERNATIVAS LIMITADO A 6, N.D.A ENTRA NESTE TOTAL");
 
-        labelWarning.setBounds (30, 5, 380, 30);
-        labelAddingQuestion.setBounds (30, 25, 165, 30);
-        labelItemsQuantity.setBounds (30, 65, 140, 30);
+        // Set bounds for JLabels
+        labelWarning.setBounds(30, 5, 380, 30);
+        labelAddingQuestion.setBounds(30, 25, 165, 30);
+        labelItemsQuantity.setBounds(30, 65, 140, 30);
 
-        itemsSelectorWindow.add (labelWarning);
-        itemsSelectorWindow.add (labelAddingQuestion);
-        itemsSelectorWindow.add (labelItemsQuantity);
-
-
+        // Add JLabels to the JFrame
+        itemsSelectorWindow.add(labelWarning);
+        itemsSelectorWindow.add(labelAddingQuestion);
+        itemsSelectorWindow.add(labelItemsQuantity);
     }
 }
-

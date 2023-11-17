@@ -4,21 +4,18 @@ import java.util.ArrayList;
 
 public class Question {
 
-    // Atributos da classe Question
-    private int id; // Identificador único da pergunta
-    private String schoolSubject; // Disciplina da pergunta
-    private String content; // Subconteúdo associado à pergunta
-    private String question; // Descrição da pergunta
-    private int difficult; // Nível de dificuldade da pergunta
-    private ArrayList<String> items = new ArrayList<>(); // Lista de itens associados à pergunta
+    private int id;//ID
+    private String schoolSubject; //Disciplina
+    private String content; //Subconteúdo
+    private String question; // Descrição
+    private int difficult;
+    private ArrayList<String> items = new ArrayList<>();
 
-    // Construtores da classe Question
-    public Question() {
-        // Construtor vazio
+    public Question(){
+
     }
 
     public Question(int id, String schoolSubject, String content, String question, int difficult, ArrayList<String> items) {
-        // Construtor com parâmetros para inicializar todos os atributos
         this.id = id;
         this.schoolSubject = schoolSubject;
         this.content = content;
@@ -28,7 +25,6 @@ public class Question {
     }
 
     public Question(String schoolSubject, String content, String question, int difficult, ArrayList<String> items) {
-        // Construtor alternativo sem o ID, útil para criar novas perguntas sem um ID pré-determinado
         this.schoolSubject = schoolSubject;
         this.content = content;
         this.question = question;
@@ -36,7 +32,6 @@ public class Question {
         this.items = items;
     }
 
-    // Métodos de acesso (getters) para obter os valores dos atributos
     public int getId() {
         return id;
     }
@@ -57,7 +52,7 @@ public class Question {
         return difficult;
     }
 
-    public ArrayList<String> getItems() {
+    public ArrayList<String> getItems(){
         return items;
     }
 
@@ -65,7 +60,6 @@ public class Question {
         return items.get(itemIndex);
     }
 
-    // Métodos de modificação (setters) para alterar os valores dos atributos
     public void setId(int id) {
         this.id = id;
     }
@@ -89,12 +83,11 @@ public class Question {
     public void setItems(ArrayList<String> items) {
         this.items = items;
     }
-
+  
     public void setEspecificItem(String item) {
         items.add(item);
     }
 
-    // Método para verificar se a pergunta é de múltipla escolha com base nos itens associados
     public boolean isA_Multiplechoice(ArrayList<String> arrayItems) {
         if (!(arrayItems.isEmpty())) {
             return true;
@@ -102,7 +95,6 @@ public class Question {
         return false;
     }
 
-    // Método para contar o número de itens não vazios associados à pergunta
     public int countItems(ArrayList<String> items) {
         int count = 0;
         for (String item : items) {
@@ -112,8 +104,7 @@ public class Question {
         }
         return count;
     }
-
-    // Sobrescrita do método toString para fornecer uma representação de string formatada da pergunta
+    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -128,4 +119,5 @@ public class Question {
         }
         return sb.toString();
     }
+
 }

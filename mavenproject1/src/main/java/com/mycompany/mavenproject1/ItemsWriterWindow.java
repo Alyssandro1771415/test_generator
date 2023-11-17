@@ -1,7 +1,13 @@
 package com.mycompany.mavenproject1;
-import javax.swing.*;
 
-public class ItemsWriterWindow extends Window {
+import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import java.awt.*;
+
+public class ItemsWriterWindow extends JPanel implements Window {
     private JTextArea itemTextArea;
     private JFrame itemsWriteWindow;
     private JLabel labelAddingItem;
@@ -11,14 +17,16 @@ public class ItemsWriterWindow extends Window {
     private boolean checkBoxValue;
     private int itemsQuantity;
 
-    // Método construtor da classe
+    //CONSTRUCTOR
     public ItemsWriterWindow(int type, Question question, boolean checkBoxValue, int itemsQuantity) {
 
+        // Initialize instance variables with constructor parameters
         this.question = question;
         this.type = type;
         this.checkBoxValue = checkBoxValue;
         this.itemsQuantity = itemsQuantity;
 
+        // Initialize JFrame and configure its properties
         itemsWriteWindow = new JFrame();
         itemsWriteWindow.setLayout(null);
         itemsWriteWindow.setSize(624, 223);
@@ -28,97 +36,108 @@ public class ItemsWriterWindow extends Window {
         itemsWriteWindow.setLocationRelativeTo(null);
         itemsWriteWindow.setVisible(true);
 
+        // Create labels, buttons, and text area
         createLabels();
         createButtons();
         createTextArea();
     }
 
-    // Criação das labels
-    private void createLabels(){
-        labelAddingItem = new JLabel ("ADICIONANDO ALTERNATIVA " + (1 + itemIndex)); // Atualização do valor na label comforme as alternativas são criadas
-        JLabel labelItemText = new JLabel ("TEXTO DA ALTERNATIVA:");
-        itemsWriteWindow.add (labelAddingItem);
-        itemsWriteWindow.add (labelItemText);
-        labelAddingItem.setBounds (220, 0, 180, 35);
-        labelItemText.setBounds (10, 35, 150, 25);}
-
-    // Criação da área de entrada de texto para o usuário inserir o texto do item da questão
-    private void createTextArea(){
-        itemTextArea = new JTextArea (5, 5);
-        itemsWriteWindow.add(itemTextArea);
-        itemTextArea.setBounds (10, 65, 605, 90);
-    }
-
-    // Criação dos botões
+    // Implementation of the createLabels method from the Window interface
     @Override
-    protected void createButtons() {
-        JButton buttonNextItem = new JButton ("PRÓXIMA ALTERNATIVA");
-        JButton buttonCancel = new JButton ("CANCELAR");
-        itemsWriteWindow.add (buttonNextItem);
-        itemsWriteWindow.add (buttonCancel);
-        buttonNextItem.setBounds (440, 185, 175, 30);
-        buttonCancel.setBounds (10, 185, 100, 30);
+    public void createLabels() {
+        labelAddingItem = new JLabel("ADICIONANDO ALTERNATIVA " + (1 + itemIndex));
+        JLabel labelItemText = new JLabel("TEXTO DA ALTERNATIVA:");
+        itemsWriteWindow.add(labelAddingItem);
+        itemsWriteWindow.add(labelItemText);
+        labelAddingItem.setBounds(220, 0, 180, 35);
+        labelItemText.setBounds(10, 35, 150, 25);
+    }
+    // Create and configure the text area for entering item text
+    private void createTextArea() {
+        itemTextArea = new JTextArea(5, 5);
 
-        // Adição de evento para que ao botão PRÓXIMA ALTERNATIVA seja acionado o programa siga para o próximo item a ser escrito
+        // Configurar DocumentFilter para limitar a quantidade de caracteres
+        ((AbstractDocument) itemTextArea.getDocument()).setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+                    throws BadLocationException {
+                if ((fb.getDocument().getLength() + string.length()) <= 200) {
+                    super.insertString(fb, offset, string, attr);
+                } else {
+                    // Excede o limite de 200 caracteres
+                    Toolkit.getDefaultToolkit().beep();
+                }
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                    throws BadLocationException {
+                if ((fb.getDocument().getLength() + text.length() - length) <= 200) {
+                    super.replace(fb, offset, length, text, attrs);
+                } else {
+                    // Excede o limite de 200 caracteres
+                    Toolkit.getDefaultToolkit().beep();
+                }
+            }
+        });
+
+        // Configurar quebra de linha automática
+        itemTextArea.setLineWrap(true);
+        itemTextArea.setWrapStyleWord(true);
+
+        itemsWriteWindow.add(itemTextArea);
+        itemTextArea.setBounds(10, 65, 605, 90);
+    }
+    // Implementation of the createButtons method from the Window interface
+    @Override
+    public void createButtons() {
+        JButton buttonNextItem = new JButton("PRÓXIMA ALTERNATIVA");
+        JButton buttonCancel = new JButton("CANCELAR");
+        itemsWriteWindow.add(buttonNextItem);
+        itemsWriteWindow.add(buttonCancel);
+        buttonNextItem.setBounds(440, 185, 175, 30);
+        buttonCancel.setBounds(10, 185, 100, 30);
+
+        // Add ActionListener to the "Next Item" button to handle the action when clicked
         buttonNextItem.addActionListener(e -> {
-
-            // Verificação de se o campo de texto não está vazio
-            if(!(itemTextArea.getText().isEmpty())){
-                
-                // Verifica se a contagem de itens não é 0, se caso for o programa fechara a tela e abrirá a janela de visualização da quetão que acaba de ser cadastrada
-                if(itemsQuantity == 0){
-
+            if (!(itemTextArea.getText().isEmpty())) {
+                if (itemsQuantity == 0) {
+                    // If no more items are required, proceed to QuestionViewWindow
                     itemsWriteWindow.dispose();
                     itemsWriteWindow = null;
                     QuestionViewWindow questionViewWindow = new QuestionViewWindow(question);
+                } else {
+                    // Set the specific item text based on the question type
+                    if (type == AddQuestionTextWindow.CLOSED) {
 
-                }
-
-                // Se a contagem ainda não for 0, ele fará as ações abaixo
-                else{
-
-                    // Verifica o tipo do item em questão
-                    if(type == AddQuestionTextWindow.CLOSED) {
                         question.setEspecificItem(itemTextArea.getText());
+                    } else if (type == AddQuestionTextWindow.AFIRMATIVE) {
+                        question.setEspecificItem( itemTextArea.getText() + " ( )");
                     }
-                    else if (type == AddQuestionTextWindow.AFIRMATIVE) {
-                        question.setEspecificItem(itemTextArea.getText());
-                    }
-                    itemTextArea.setText(""); // Limpa o JTextArea
+                    itemTextArea.setText(""); // Clear the JTextArea
                     itemIndex++;
-                    labelAddingItem.setText("ADICIONANDO ALTERNATIVA " + (1 + itemIndex)); // Atualiza o index da alternativa
-                    itemsQuantity--; // Diminui a quantidade de itens conforme se for criando
+                    labelAddingItem.setText("ADICIONANDO ALTERNATIVA " + (1 + itemIndex));
+                    itemsQuantity--;
 
-                    // Verifica se a quantidade de itens é 0, caso seja ele verifica se deve criar a alternativa de N.D.A
-                    if(itemsQuantity==0){
-                        if(checkBoxValue == true){
+                    if (itemsQuantity == 0) {
+                        // If no more items are required, set N.D.A (None of the Above) if checkbox is selected
+                        if (checkBoxValue == true) {
                             question.setEspecificItem("N.D.A");
                         }
-
-                        // Abre a janela de visualização da questão
+                        // Proceed to QuestionViewWindow
                         QuestionViewWindow questionViewWindow = new QuestionViewWindow(question);
-
                         itemsWriteWindow.dispose();
                         itemsWriteWindow = null;
-
-
                     }
-
                 }
-
             }
-
         });
 
-        // Caso o usuário aciona po botão de cancelar a janela é fechada e uma janela de intância da classe AddQuestionWindow é aberta
+        // Add ActionListener to the "Cancel" button to handle the action when clicked
         buttonCancel.addActionListener(e -> {
-            
             itemsWriteWindow.dispose();
             itemsWriteWindow = null;
             AddQuestionWindow addQuestionWindow = new AddQuestionWindow();
-
         });
-
     }
-
 }
