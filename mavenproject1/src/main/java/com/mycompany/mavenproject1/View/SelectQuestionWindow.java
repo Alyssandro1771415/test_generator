@@ -6,7 +6,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.mycompany.mavenproject1.Model.Question;
-import com.mycompany.mavenproject1.Model.Test;
+import com.mycompany.mavenproject1.Model.Avaliacao;
 import com.mycompany.mavenproject1.Repository.QueryExecutions;
 
 import java.util.ArrayList;
@@ -24,14 +24,14 @@ public class SelectQuestionWindow extends JPanel implements Window {
     private ArrayList<Question> testQuestionsList;
     private int selectedRow = -1;
     private JTable table;
-    private Test newTest;
+    private Avaliacao newTest;
     private int questionsNumber = -1;
     JLabel labelQuestionsNumber;
     private int testsNumber;
     private String schoolSubject;
 
     // CONSTRUCTOR
-    public SelectQuestionWindow(Test newTest, int testsNumber, String schoolSubject) {
+    public SelectQuestionWindow(Avaliacao newTest, int testsNumber, String schoolSubject) {
         this.newTest = newTest;
         this.questionsList = new ArrayList<>();
         this.testQuestionsList = new ArrayList<>();
@@ -177,10 +177,10 @@ public class SelectQuestionWindow extends JPanel implements Window {
     }
 
     // Method to create a test file
-    private void createTestFile(Test newTest) {
+    private void createTestFile(Avaliacao newTest) {
         DirectorySelector selector = new DirectorySelector();
         String chossedDirectory = selector.directorySelector();
-        Test test = new Test(newTest.getInstitution(), newTest.getSchoolSubject(), newTest.getEducatorName(),
+        Avaliacao test = new Avaliacao(newTest.getInstitution(), newTest.getSchoolSubject(), newTest.getEducatorName(),
                 newTest.getTestsNumber(), questionsList);
         test.generateFile(testQuestionsList, chossedDirectory, testsNumber);
         ConcludedPoPWindow concludeWindow = new ConcludedPoPWindow();

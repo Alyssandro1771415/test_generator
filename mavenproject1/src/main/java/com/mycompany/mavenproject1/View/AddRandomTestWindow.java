@@ -6,7 +6,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import com.mycompany.mavenproject1.Model.Question;
-import com.mycompany.mavenproject1.Model.Test;
+import com.mycompany.mavenproject1.Model.Avaliacao;
 import com.mycompany.mavenproject1.Repository.QueryExecutions;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class AddRandomTestWindow extends JPanel implements Window{
     private JTable table;
     private DefaultTableModel tableModel;
     private int selectedRow = -1;
-    private Test randomTest;
+    private Avaliacao randomTest;
     private ArrayList<String> contentsSelecteds = new ArrayList<>();
     private int contentsCount = 0;
     private boolean checkboxCloseQuestionValue;
@@ -36,7 +36,7 @@ public class AddRandomTestWindow extends JPanel implements Window{
     QueryExecutions query = new QueryExecutions();
     ArrayList<Question> dataBaseQuestions = query.realizeConsult();
 
-    public AddRandomTestWindow(Test randomTest, int testsNumber) {
+    public AddRandomTestWindow(Avaliacao randomTest, int testsNumber) {
         this.randomTest = randomTest;
         this.contentList = new HashMap<>();
         this.testsNumber = testsNumber;
@@ -322,7 +322,7 @@ public class AddRandomTestWindow extends JPanel implements Window{
                     }
 
                 }
-                Test test = new Test(randomTest.getInstitution(), randomTest.getSchoolSubject(),
+                Avaliacao test = new Avaliacao(randomTest.getInstitution(), randomTest.getSchoolSubject(),
                         randomTest.getEducatorName(), randomTest.getTestsNumber(), selectedQuestions);
 
                 //GENERATING THE FILE

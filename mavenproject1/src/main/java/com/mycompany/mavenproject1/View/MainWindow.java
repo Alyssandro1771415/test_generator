@@ -11,11 +11,11 @@ import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
 
 import com.mycompany.mavenproject1.Model.Question;
-import com.mycompany.mavenproject1.Model.Test;
+import com.mycompany.mavenproject1.Model.Avaliacao;
 
 public class MainWindow extends JPanel implements Window {
 
-    private Test newTest;
+    private Avaliacao newTest;
     private JFrame mainWindow;
     private JTextField entryTestNumber;
     private JTextField entrySchoolSubject;
@@ -139,7 +139,7 @@ public class MainWindow extends JPanel implements Window {
                         && !entryEducatorName.getText().isEmpty() && !entryTestNumber.getText().isEmpty()) {
                     try {
                         int testsNumber = Integer.parseInt(entryTestNumber.getText());
-                        Test newTest = getDataFromEntries();
+                        Avaliacao newTest = getDataFromEntries();
                         // Dispose of the main window and open the SelectQuestionWindow
                         mainWindow.dispose();
                         mainWindow = null;
@@ -160,7 +160,7 @@ public class MainWindow extends JPanel implements Window {
                         && !entryEducatorName.getText().isEmpty() && !entryTestNumber.getText().isEmpty()) {
                     try {
                         int testsNumber = Integer.parseInt(entryTestNumber.getText());
-                        Test newTest = getDataFromEntries();
+                        Avaliacao newTest = getDataFromEntries();
                         // Dispose of the main window and open the AddRandomTestWindow
                         mainWindow.dispose();
                         mainWindow = null;
@@ -236,9 +236,9 @@ public class MainWindow extends JPanel implements Window {
     }
 
     // Method to retrieve data from text fields and create a Test object
-    public Test getDataFromEntries() {
+    public Avaliacao getDataFromEntries() {
         ArrayList<Question> questionsList = new ArrayList<>();
-        newTest = new Test(entryInstitution.getText(), entrySchoolSubject.getText(), entryEducatorName.getText(),
+        newTest = new Avaliacao(entryInstitution.getText(), entrySchoolSubject.getText(), entryEducatorName.getText(),
                 Integer.parseInt(entryTestNumber.getText()), questionsList);
         return newTest;
     }

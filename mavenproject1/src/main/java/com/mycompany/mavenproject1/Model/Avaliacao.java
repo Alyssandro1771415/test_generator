@@ -16,14 +16,14 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 
-public class Test {
+public class Avaliacao {
 
     private String institution;
     private String schoolSubject;
     private String educatorName;
     private int testsNumber;
     private ArrayList<Question> questionsList;
-    protected boolean quantityOK;
+    public boolean quantityOK;
 
     public ArrayList<Question> randomizeQuestions(ArrayList<Question> listQuestions, int easyQuantQuestions,
             int moderateQuantQuestions, int hardQuantQuestions) {
@@ -68,11 +68,11 @@ public class Test {
         return selectedQuestions;
     }
 
-    protected boolean getQuantityOK(){
+    public boolean getQuantityOK(){
         return this.quantityOK;
     }
 
-    private int countQuestionsWithDifficulty(ArrayList<Question> questions, int difficulty) {
+    public int countQuestionsWithDifficulty(ArrayList<Question> questions, int difficulty) {
         int count = 0;
         for (Question question : questions) {
             if (question.getDifficult() == difficulty) {
@@ -82,7 +82,7 @@ public class Test {
         return count;
     }
 
-    private int getRandomIndex(Random random, ArrayList<Question> questions, int difficulty) {
+    public int getRandomIndex(Random random, ArrayList<Question> questions, int difficulty) {
         int index;
         do {
             index = random.nextInt(questions.size());
@@ -183,11 +183,11 @@ public class Test {
 
             } catch (FileNotFoundException ex) {
 
-                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Avaliacao.class.getName()).log(Level.SEVERE, null, ex);
 
             } catch (IOException ex) {
 
-                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Avaliacao.class.getName()).log(Level.SEVERE, null, ex);
 
             } finally {
 
@@ -197,7 +197,7 @@ public class Test {
                         out.close();
                     }
                 } catch (IOException ex) {
-                    Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Avaliacao.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -280,11 +280,11 @@ public class Test {
 
             } catch (FileNotFoundException ex) {
 
-                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Avaliacao.class.getName()).log(Level.SEVERE, null, ex);
 
             } catch (IOException ex) {
 
-                Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Avaliacao.class.getName()).log(Level.SEVERE, null, ex);
 
             } finally {
 
@@ -294,7 +294,7 @@ public class Test {
                         out.close();
                     }
                 } catch (IOException ex) {
-                    Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Avaliacao.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -321,7 +321,7 @@ public class Test {
 
     }
 
-    public Test(String institution, String schoolSubject, String educatorName, int testsNumber,
+    public Avaliacao(String institution, String schoolSubject, String educatorName, int testsNumber,
             ArrayList<Question> questionsList) {
         this.institution = institution;
         this.schoolSubject = schoolSubject;
