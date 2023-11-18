@@ -54,4 +54,5 @@ public class DatabaseManager {
             return preparedStatement.executeUpdate();
         }
     }
+
 }

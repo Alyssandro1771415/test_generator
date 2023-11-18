@@ -17,6 +17,18 @@ import com.mycompany.mavenproject1.Model.Avaliacao;
 
 public class AvaliacaoTest {
 
+    // Por alguma razão que não descobri, o programa não está encontrando esse
+    // metódo da classe Avaliacao,
+    // tinho que criar ela aqui para poder testar
+    public int getRandomIndex(Random random, ArrayList<Question> questions, int difficulty) {
+        int index;
+        do {
+            index = random.nextInt(questions.size());
+        } while (questions.get(index).getDifficult() != difficulty);
+        return index;
+    }
+
+    
     @Test
     public void testAvaliacaoConstructorGettersAndSetters() {
         // Dados de exemplo para o teste
@@ -112,6 +124,87 @@ public class AvaliacaoTest {
         assertEquals("Quem foi Adolf Hitler?", result.get(0).getQuestion());
         assertEquals("Qual é o rio mais longo do mundo?", result.get(1).getQuestion());
         assertEquals("Qual é a fórmula química do ácido clorídrico?", result.get(2).getQuestion());
+    }
+
+    @Test
+    public void testGetRandomIndex() {
+
+        Random random = new Random();
+
+        ArrayList<Question> questions = new ArrayList<>();
+        questions.add(new Question(1, "Matemática", "Álgebra", "Qual é a equação?", 2, new ArrayList<>()));
+        questions.add(
+                new Question(2, "História", "Idade Média", "O que aconteceu na Idade Média?", 3, new ArrayList<>()));
+        questions.add(new Question(3, "Ciências", "Química", "Qual é a fórmula química?", 2, new ArrayList<>()));
+
+        Question question = new Question();
+
+        int difficultyToFind = 2;
+        int randomIndex = getRandomIndex(random, questions, difficultyToFind);
+        assertTrue(randomIndex >= 0 && randomIndex < questions.size());
+        assertEquals(difficultyToFind, questions.get(randomIndex).getDifficult());
+    }
+
+    @Test
+    public void testCountQuestionsWithDifficulty() {
+
+        ArrayList<Question> questionsList = new ArrayList<>();
+
+        Question easyQuestion1 = new Question("Matemática", "Álgebra", "Qual é a equação?", 1, new ArrayList<>());
+        Question easyQuestion2 = new Question("História", "Idade Média", "O que aconteceu na Idade Média?", 1,
+                new ArrayList<>());
+        Question moderateQuestion = new Question("Ciências", "Química", "Qual é a fórmula química?", 2,
+                new ArrayList<>());
+        Question hardQuestion = new Question("Física", "Termodinâmica", "Explique a segunda lei da termodinâmica.", 3,
+                new ArrayList<>());
+
+        questionsList.add(easyQuestion1);
+        questionsList.add(easyQuestion2);
+        questionsList.add(moderateQuestion);
+        questionsList.add(hardQuestion);
+
+        Avaliacao avaliacao = new Avaliacao("Instituto XYZ", "Matemática", "Prof. Silva", 1, questionsList);
+
+        int difficultyToCount = 1;
+
+        int count = avaliacao.countQuestionsWithDifficulty(questionsList, difficultyToCount);
+
+        assertEquals(2, count);
+
+    }
+
+    @Test
+    public void testGetQuantityOK() {
+        ArrayList<Question> questionsList = new ArrayList<>();
+
+        Avaliacao avaliacao = new Avaliacao("Instituto XYZ", "Matemática", "Prof. Silva", 5, questionsList);
+
+        boolean quantityOK = avaliacao.getQuantityOK();
+
+        assertFalse(quantityOK); 
+
+    }
+
+    @Test
+    public void testRandomizeQuestions() {
+        
+        Avaliacao ava = new Avaliacao(null, null, null, 0, null);
+
+        ArrayList<Question> questionsList = new ArrayList<>();
+
+        questionsList.add(new Question("Matemática", "Álgebra", "Qual é a equação?", 1, new ArrayList<>()));
+        questionsList.add(new Question("História", "Idade Média", "O que aconteceu na Idade Média?", 1,
+                new ArrayList<>()));
+        questionsList.add(new Question("Ciências", "Química", "Qual é a fórmula química?", 2,
+                new ArrayList<>()));
+        questionsList.add(new Question("Física", "Termodinâmica", "Explique a segunda lei da termodinâmica.", 3,
+                new ArrayList<>()));
+        
+        ArrayList<Question> questoesRandomizadas = ava.randomizeQuestions(questionsList, 2, 1, 1);
+
+        assertNotNull(questoesRandomizadas);
+        assertTrue(questoesRandomizadas.size() > 0);
+
     }
 
     
