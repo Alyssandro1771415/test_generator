@@ -16,8 +16,8 @@ public class AddQuestionTextWindow extends JPanel implements Window {
     public static final int OPENED = 1;
     public static final int CLOSED = 2;
     public static final int AFIRMATIVE = 3;
-    private Question question;
-    private JTextArea textAreaQuestionDescription;
+    public Question question;
+    public JTextArea textAreaQuestionDescription;
 
     public AddQuestionTextWindow(int type, Question question) {
 
@@ -37,7 +37,6 @@ public class AddQuestionTextWindow extends JPanel implements Window {
         createButtons();
 
     }
-
 
     //BUTTON GENERATER AND CONFIGURATOR METHOD
     @Override
@@ -109,7 +108,7 @@ public class AddQuestionTextWindow extends JPanel implements Window {
     }
 
     //SPECIFIC METHOD FOR SETTING VALUES IN TEXTAREAS
-    private void setQuestionEntries() {
+    public void setQuestionEntries() {
         question.setQuestion(textAreaQuestionDescription.getText());
         callNextWindow(type);
 
@@ -136,4 +135,5 @@ public class AddQuestionTextWindow extends JPanel implements Window {
         }
 
     }
+
 }

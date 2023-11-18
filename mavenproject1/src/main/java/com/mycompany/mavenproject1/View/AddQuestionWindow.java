@@ -174,4 +174,5 @@ public class AddQuestionWindow extends JPanel implements Window {
     protected void setWindowVisible(boolean value) {
         frame.setVisible(value);
     }
+
 }
