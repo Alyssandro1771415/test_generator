@@ -25,6 +25,7 @@ public class Avaliacao {
     private ArrayList<Question> questionsList;
     public boolean quantityOK;
 
+    // Method to randomize a ArrayList of objects of Question type
     public ArrayList<Question> randomizeQuestions(ArrayList<Question> listQuestions, int easyQuantQuestions,
             int moderateQuantQuestions, int hardQuantQuestions) {
 
@@ -68,10 +69,12 @@ public class Avaliacao {
         return selectedQuestions;
     }
 
+    // Return a true to confirm that a needed quantity of questions corresponds with what was requested
     public boolean getQuantityOK(){
         return this.quantityOK;
     }
 
+    // Count the quantity of objects of Question type exist in a ArrayList of the difficulty solicited
     public int countQuestionsWithDifficulty(ArrayList<Question> questions, int difficulty) {
         int count = 0;
         for (Question question : questions) {
@@ -82,6 +85,11 @@ public class Avaliacao {
         return count;
     }
 
+    /*
+     In summary, this method is used to randomly select an index of a question from an ArrayList based on a 
+     specified difficulty level, and it ensures that the selected question matches the desired difficulty 
+     before returning the index.
+    */
     public int getRandomIndex(Random random, ArrayList<Question> questions, int difficulty) {
         int index;
         do {
@@ -90,6 +98,10 @@ public class Avaliacao {
         return index;
     }
 
+    /* 
+    This method is used to generate a avaliation file and download it in a selected directory, 
+    but in this method is informed the quantity of easy, moderate and hard question is to be used
+     */
     public void generateFile(ArrayList<Question> listQuestions, int easyQuantQuestions, int moderateQuantQuestions,
             int hardQuantQuestions, String directory, int testsNumber, boolean acceptOpenedQuestions) {
 
@@ -206,6 +218,10 @@ public class Avaliacao {
 
     }
 
+    /* 
+    This method is used to generate a avaliation file and download it in a selected directory,
+    in this method the ArrayList has the user selected questions to be used in the file
+     */
     public void generateFile(ArrayList<Question> listQuestions, String directory, int testsNumber) {
 
         FileOutputStream out = null;
@@ -303,6 +319,9 @@ public class Avaliacao {
 
     }
 
+    /*
+    This method remove the opened questions of a ArrayList when 
+    */
     public ArrayList<Question> removeOpenedQuestions(ArrayList<Question> questions) {
 
         ArrayList<Question> newSelectedQuestions = new ArrayList<Question>();
@@ -321,6 +340,7 @@ public class Avaliacao {
 
     }
 
+    //Constructor of a Avaliation object 
     public Avaliacao(String institution, String schoolSubject, String educatorName, int testsNumber,
             ArrayList<Question> questionsList) {
         this.institution = institution;
@@ -330,6 +350,7 @@ public class Avaliacao {
         this.questionsList = questionsList;
     }
 
+    // Getters and Setter
     public ArrayList<Question> getQuestionsList() {
         return questionsList;
     }
@@ -370,6 +391,7 @@ public class Avaliacao {
         this.testsNumber = testsNumber;
     }
 
+    // Override of the toString method to a better visualisation of the avaliation datas
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

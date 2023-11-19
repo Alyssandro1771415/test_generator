@@ -11,6 +11,7 @@ public class DatabaseManager {
 
     private Connection connection;
 
+    // Method to realize the connection with de MySQL database
     public DatabaseManager(String url, String user, String password) throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -21,6 +22,7 @@ public class DatabaseManager {
         }
     }
 
+    // Method to execute a query in the database and retunr the datas
     public ResultSet executeQuery(String query) throws SQLException {
         if (connection == null || connection.isClosed()) {
             throw new SQLException("Conexão com o banco de dados não está disponível");
@@ -29,6 +31,7 @@ public class DatabaseManager {
         return connection.createStatement().executeQuery(query);
     }
 
+    // Method to close the connection with the database after the actions on the DB be realised
     public void closeConnection() {
         try {
             if (connection != null && !connection.isClosed()) {
@@ -39,6 +42,7 @@ public class DatabaseManager {
         }
     }
 
+    // Method to execute a datas update in the database
     public int executeUpdate(String query, Object... params) throws SQLException {
         if (connection == null || connection.isClosed()) {
             throw new SQLException("Conexão com o banco de dados não está disponível");

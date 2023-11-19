@@ -173,4 +173,5 @@ public class QuestionViewWindow extends JPanel implements Window {
         }
         return 22;
     }
+
 }

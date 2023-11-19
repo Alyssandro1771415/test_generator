@@ -8,13 +8,18 @@ import com.mycompany.mavenproject1.Model.Question;
 
 public class QueryExecutions {
 
+    // Method to realize a general consult on the database and rreturn a ArrayList with de datas
     public ArrayList<Question> realizeConsult() {
+        
         ArrayList<Question> myQuestions = new ArrayList<Question>();
 
         try {
+            //Starting the database connection
             DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
+            // Getting the datas of the database
             ResultSet dados = dbManager.executeQuery("SELECT * FROM questions");
 
+            // Using the consult result to insert the datas in the model of Quesion class and insert in a ArrayList to return
             while (dados.next()) {
                 int id = dados.getInt("id");
                 String schoolSubject = dados.getString("schoolSubject");
@@ -42,15 +47,19 @@ public class QueryExecutions {
         return myQuestions;
     }
 
+    // Method to execute a datas upload in the database
     public void dataUpload(Question question) {
         try {
+            // Starting the conection with the databse
             DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
     
+            // Base of the query
             String insertQuery = "INSERT INTO Questions (schoolSubject, content, question, difficult, itemA, itemB, itemC, itemD, itemE, itemF) " +
                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
             ArrayList<String> items = new ArrayList<>();
     
+            // Getting the datas to use on the query
             for (int i = 0; i < 6; i++) {
                 if (i < question.getItems().size()) {
                     items.add(question.getItems().get(i));
@@ -59,6 +68,7 @@ public class QueryExecutions {
                 }
             }
     
+            // Get data by data of the items and include on the query
             int rowsAffected = dbManager.executeUpdate(insertQuery,
                 question.getSchoolSubject(),
                 question.getContent(),
@@ -76,11 +86,15 @@ public class QueryExecutions {
         }
     }
 
+    // Method to delete a data on the database
     public void dataDelete(int questionID) {
         try {
+            // Starting the database connection
             DatabaseManager dbManager = new DatabaseManager("jdbc:mysql://localhost/TestQuestionDB", "root", "");
 
+            // Query of the data to delete
             String deleteQuery = "DELETE FROM questions WHERE ID = ?";
+            // Executing the query
             int rowsAffected = dbManager.executeUpdate(deleteQuery, questionID);
 
 

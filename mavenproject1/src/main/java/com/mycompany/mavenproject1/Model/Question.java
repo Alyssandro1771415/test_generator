@@ -11,10 +11,12 @@ public class Question {
     private int difficult;
     private ArrayList<String> items = new ArrayList<>();
 
+    // Constructor to create a object Question empty, that object will receive the datas during the input of the entry in the graphical interface
     public Question(){
 
     }
 
+    // Constructor to create a object in the models of what will be needed for creation of the tables
     public Question(int id, String schoolSubject, String content, String question, int difficult, ArrayList<String> items) {
         this.id = id;
         this.schoolSubject = schoolSubject;
@@ -24,6 +26,7 @@ public class Question {
         this.items = items;
     }
 
+    // Constructor to create a object in the models of will be needed by the database
     public Question(String schoolSubject, String content, String question, int difficult, ArrayList<String> items) {
         this.schoolSubject = schoolSubject;
         this.content = content;
@@ -32,6 +35,7 @@ public class Question {
         this.items = items;
     }
 
+    // Getters and Setters of the datas of questions
     public int getId() {
         return id;
     }
@@ -56,6 +60,7 @@ public class Question {
         return items;
     }
 
+    // Method to get a specific item of a question
     public String getSpecificItem(int itemIndex) {
         return items.get(itemIndex);
     }
@@ -88,6 +93,7 @@ public class Question {
         items.add(item);
     }
 
+   // Method to verify if a question has multiple choices or is an open ended question
     public boolean isA_Multiplechoice(ArrayList<String> arrayItems) {
         if (!(arrayItems.isEmpty())) {
             return true;
@@ -95,6 +101,7 @@ public class Question {
         return false;
     }
 
+    // Method to realize the score of the options of a questions if that questions isn't open
     public int countItems(ArrayList<String> items) {
         int count = 0;
         for (String item : items) {
@@ -105,6 +112,7 @@ public class Question {
         return count;
     }
     
+    // Override of the toString method to a better visualisation of the question datas
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
