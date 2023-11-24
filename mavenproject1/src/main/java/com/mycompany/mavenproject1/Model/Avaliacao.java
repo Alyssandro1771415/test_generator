@@ -273,6 +273,7 @@ public class Avaliacao {
                     runPaRun2.setText(Integer.toString(i + 1) + "°) ");
                     runPaRun2.setText(listQuestions.get(i).getQuestion());
                     runPaRun2.addBreak();
+                    runPaRun2.addBreak();
 
                     ArrayList<String> alternatives = listQuestions.get(i).getItems();
 
