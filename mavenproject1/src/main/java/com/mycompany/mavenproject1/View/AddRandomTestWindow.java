@@ -5,8 +5,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
+import com.mycompany.mavenproject1.Model.Assessment;
 import com.mycompany.mavenproject1.Model.Question;
-import com.mycompany.mavenproject1.Model.Avaliacao;
 import com.mycompany.mavenproject1.Repository.QueryExecutions;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class AddRandomTestWindow extends JPanel implements Window{
     private JTable table;
     private DefaultTableModel tableModel;
     private int selectedRow = -1;
-    private Avaliacao randomTest;
+    private Assessment randomTest;
     private ArrayList<String> contentsSelecteds = new ArrayList<>();
     private int contentsCount = 0;
     private boolean checkboxCloseQuestionValue;
@@ -36,7 +36,7 @@ public class AddRandomTestWindow extends JPanel implements Window{
     QueryExecutions query = new QueryExecutions();
     ArrayList<Question> dataBaseQuestions = query.realizeConsult();
 
-    public AddRandomTestWindow(Avaliacao randomTest, int testsNumber) {
+    public AddRandomTestWindow(Assessment randomTest, int testsNumber) {
         this.randomTest = randomTest;
         this.contentList = new HashMap<>();
         this.testsNumber = testsNumber;
@@ -309,6 +309,12 @@ public class AddRandomTestWindow extends JPanel implements Window{
                 DirectorySelector selector = new DirectorySelector();
                 String chossedDirectory = selector.directorySelector();
 
+                if(chossedDirectory == null){
+                    addRandomTestWindow.dispose();
+                    MainWindow mainWindow = new MainWindow();
+                    return;
+                }
+
                 ArrayList<Question> selectedQuestions = new ArrayList<Question>();
 
 
@@ -322,7 +328,7 @@ public class AddRandomTestWindow extends JPanel implements Window{
                     }
 
                 }
-                Avaliacao test = new Avaliacao(randomTest.getInstitution(), randomTest.getSchoolSubject(),
+                Assessment test = new Assessment(randomTest.getInstitution(), randomTest.getSchoolSubject(),
                         randomTest.getEducatorName(), randomTest.getTestsNumber(), selectedQuestions);
 
                 //GENERATING THE FILE
