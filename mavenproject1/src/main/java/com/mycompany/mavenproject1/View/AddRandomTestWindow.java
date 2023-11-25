@@ -317,8 +317,6 @@ public class AddRandomTestWindow extends JPanel implements Window{
 
                 ArrayList<Question> selectedQuestions = new ArrayList<Question>();
 
-
-
                 for (Question question : dataBaseQuestions) {
 
                     if (contentsSelecteds.contains(question.getContent())) {
