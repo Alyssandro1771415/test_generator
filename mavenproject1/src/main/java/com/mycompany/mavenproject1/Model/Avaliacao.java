@@ -220,7 +220,8 @@ public class Avaliacao {
 
     /* 
     This method is used to generate a avaliation file and download it in a selected directory,
-    in this method the ArrayList has the user selected questions to be used in the file
+    in this method the ArrayList has the user selected questions to be used in the file and that is
+     the reason why this method is overload
      */
     public void generateFile(ArrayList<Question> listQuestions, String directory, int testsNumber) {
 
