@@ -108,8 +108,8 @@ public class ItemsSelectorWindow extends JPanel implements Window {
     public void createLabels() {
         // Create and configure JLabels to provide information in the window
         JLabel labelAddingQuestion = new JLabel("ADICIONANDO QUESTÃO");
-        JLabel labelItemsQuantity = new JLabel("Nº DE ALTERNATIVAS:");
-        JLabel labelWarning = new JLabel("Nº DE ALTERNATIVAS LIMITADO A 6, N.D.A ENTRA NESTE TOTAL");
+        JLabel labelItemsQuantity = new JLabel("Nº DE ITENS:");
+        JLabel labelWarning = new JLabel("Nº DE ITENS LIMITADO A 6, N.D.A ENTRA NESTE TOTAL");
 
         // Set bounds for JLabels
         labelWarning.setBounds(30, 5, 380, 30);

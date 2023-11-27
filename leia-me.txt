@@ -1,7 +1,9 @@
 Para o programa funcionar corretamente siga o passo a passo:
-	
-	1 - Existe um diretório chamada "Dump20231115 testQuestionsDB", 	ela contem um dump de criação da base de dados e com alguns 	dados já prontos para testar, no MySQL Workbench use o data 	export com os 3 arquivos dentro do diretório.
-	
-	2 - Ligue o servido do banco de dados
 
-	3 - Pronto, o programa está pronto para ser rodado e utilizado
+	1 - Existe um diretório chamada "Dump20231115 testQuestionsDB", ela contem um dump de
+	    criação da base de dados e com alguns dados já prontos para testar, no MySQL Workbench
+	    use o data export com os 3 arquivos dentro do diretório.
+
+	2 - Ligue o servidor do banco de dados.
+
+	3 - Pronto, o programa está pronto para ser rodado e utilizado.

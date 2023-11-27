@@ -36,13 +36,12 @@ public class Assessment {
                 countQuestionsWithDifficulty(receivedQuestions, 2) < moderateQuantQuestions ||
                 countQuestionsWithDifficulty(receivedQuestions, 3) < hardQuantQuestions) {
 
-            JOptionPane.showMessageDialog(null, 
-            "A quantidade de questões informadas por nível difere da quantidade presente no banco de questões. Verifique o banco de questões e tente novamente.");
+            JOptionPane.showMessageDialog(null,
+                    "A quantidade de questões informadas por nível difere da quantidade presente no banco de questões. Verifique o banco de questões e tente novamente.");
             quantityOK = false;
             throw new IllegalArgumentException("Quantidade de questões excede o existente no banco de dados!");
 
-        }
-        else {
+        } else {
             quantityOK = true;
         }
         for (int i = 0; i < easyQuantQuestions; i++) {
@@ -68,12 +67,22 @@ public class Assessment {
         return selectedQuestions;
     }
 
-    // Return a true to confirm that a needed quantity of questions corresponds with what was requested
-    public boolean getQuantityOK(){
+    public ArrayList<Question> randomizeQuestions(ArrayList<Question> questions) {
+        ArrayList<Question> randomizedQuestions = new ArrayList<>(questions);
+
+        Collections.shuffle(randomizedQuestions);
+
+        return randomizedQuestions;
+    }
+
+    // Return a true to confirm that a needed quantity of questions corresponds with
+    // what was requested
+    public boolean getQuantityOK() {
         return this.quantityOK;
     }
 
-    // Count the quantity of objects of Question type exist in a ArrayList of the difficulty solicited
+    // Count the quantity of objects of Question type exist in a ArrayList of the
+    // difficulty solicited
     public int countQuestionsWithDifficulty(ArrayList<Question> questions, int difficulty) {
         int count = 0;
         for (Question question : questions) {
@@ -85,10 +94,12 @@ public class Assessment {
     }
 
     /*
-     In summary, this method is used to randomly select an index of a question from an ArrayList based on a 
-     specified difficulty level, and it ensures that the selected question matches the desired difficulty 
-     before returning the index.
-    */
+     * In summary, this method is used to randomly select an index of a question
+     * from an ArrayList based on a
+     * specified difficulty level, and it ensures that the selected question matches
+     * the desired difficulty
+     * before returning the index.
+     */
     public int getRandomIndex(Random random, ArrayList<Question> questions, int difficulty) {
         int index;
         do {
@@ -97,9 +108,11 @@ public class Assessment {
         return index;
     }
 
-    /* 
-    This method is used to generate a avaliation file and download it in a selected directory, 
-    but in this method is informed the quantity of easy, moderate and hard question is to be used
+    /*
+     * This method is used to generate a avaliation file and download it in a
+     * selected directory,
+     * but in this method is informed the quantity of easy, moderate and hard
+     * question is to be used
      */
     public void generateFile(ArrayList<Question> listQuestions, int easyQuantQuestions, int moderateQuantQuestions,
             int hardQuantQuestions, String directory, int testsNumber, boolean acceptOpenedQuestions) {
@@ -151,7 +164,9 @@ public class Assessment {
                     runPaRun1.addBreak();
                     runPaRun1.addBreak();
                     runPaRun1.addTab();
-                    runPaRun1.setText("Matrícula: ............................. \t\t\t\t\t Nota: .............   Data: __/__/____", 4);
+                    runPaRun1.setText(
+                            "Matrícula: ............................. \t\t\t\t\t Nota: .............   Data: __/__/____",
+                            4);
                     runPaRun1.addBreak();
                     runPaRun1.removeTab();
                     runPaRun1.setText("_________________________________________________________________________",
@@ -162,7 +177,6 @@ public class Assessment {
 
                     XWPFParagraph paragrafo2 = document.createParagraph();
                     XWPFRun runPaRun2 = paragrafo2.createRun();
-
 
                     for (int i = 0; i < selectedQuestions.size(); i++) {
                         runPaRun2.addTab();
@@ -215,13 +229,14 @@ public class Assessment {
 
         }
 
-
     }
 
-    /* 
-    This method is used to generate a avaliation file and download it in a selected directory,
-    in this method the ArrayList has the user selected questions to be used in the file and that is
-     the reason why this method is overload
+    /*
+     * This method is used to generate a avaliation file and download it in a
+     * selected directory,
+     * in this method the ArrayList has the user selected questions to be used in
+     * the file and that is
+     * the reason why this method is overload
      */
     public void generateFile(ArrayList<Question> listQuestions, String directory, int testsNumber) {
 
@@ -229,6 +244,8 @@ public class Assessment {
         XWPFDocument document = new XWPFDocument();
 
         for (int newTestNumber = 0; newTestNumber < testsNumber; newTestNumber++) {
+
+            ArrayList<Question> listQuestionsRandomized = randomizeQuestions(listQuestions);
 
             try {
                 document = new XWPFDocument();
@@ -257,7 +274,9 @@ public class Assessment {
                 runPaRun1.addBreak();
                 runPaRun1.addBreak();
                 runPaRun1.addTab();
-                runPaRun1.setText("Matrícula: ............................. \t\t\t\t\t Nota: .............   Data: __/__/____", 4);
+                runPaRun1.setText(
+                        "Matrícula: ............................. \t\t\t\t\t Nota: .............   Data: __/__/____",
+                        4);
                 runPaRun1.addBreak();
                 runPaRun1.removeTab();
                 runPaRun1.setText("_________________________________________________________________________",
@@ -269,14 +288,14 @@ public class Assessment {
                 XWPFParagraph paragrafo2 = document.createParagraph();
                 XWPFRun runPaRun2 = paragrafo2.createRun();
 
-                for (int i = 0; i < listQuestions.size(); i++) {
+                for (int i = 0; i < listQuestionsRandomized.size(); i++) {
                     runPaRun2.addTab();
                     runPaRun2.setText(Integer.toString(i + 1) + "°) ");
-                    runPaRun2.setText(listQuestions.get(i).getQuestion());
+                    runPaRun2.setText(listQuestionsRandomized.get(i).getQuestion());
                     runPaRun2.addBreak();
                     runPaRun2.addBreak();
 
-                    ArrayList<String> alternatives = listQuestions.get(i).getItems();
+                    ArrayList<String> alternatives = listQuestionsRandomized.get(i).getItems();
 
                     for (int j = 0; j < alternatives.size(); j++) {
                         String alternativeText = alternatives.get(j);
@@ -322,8 +341,8 @@ public class Assessment {
     }
 
     /*
-    This method remove the opened questions of a ArrayList when 
-    */
+     * This method remove the opened questions of a ArrayList when
+     */
     public ArrayList<Question> removeOpenedQuestions(ArrayList<Question> questions) {
 
         ArrayList<Question> newSelectedQuestions = new ArrayList<Question>();
@@ -342,9 +361,9 @@ public class Assessment {
 
     }
 
-    //Constructor of a Avaliation object 
+    // Constructor of a Avaliation object
     public Assessment(String institution, String schoolSubject, String educatorName, int testsNumber,
-                      ArrayList<Question> questionsList) {
+            ArrayList<Question> questionsList) {
         this.institution = institution;
         this.schoolSubject = schoolSubject;
         this.educatorName = educatorName;
@@ -393,7 +412,8 @@ public class Assessment {
         this.testsNumber = testsNumber;
     }
 
-    // Override of the toString method to a better visualisation of the avaliation datas
+    // Override of the toString method to a better visualisation of the avaliation
+    // datas
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

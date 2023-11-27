@@ -48,8 +48,8 @@ public class ItemsWriterWindow extends JPanel implements Window {
     // Implementation of the createLabels method from the Window interface
     @Override
     public void createLabels() {
-        labelAddingItem = new JLabel("ADICIONANDO ALTERNATIVA " + (1 + itemIndex));
-        JLabel labelItemText = new JLabel("TEXTO DA ALTERNATIVA:");
+        labelAddingItem = new JLabel("ADICIONANDO ITEM " + (1 + itemIndex));
+        JLabel labelItemText = new JLabel("TEXTO DO ITEM:");
         itemsWriteWindow.add(labelAddingItem);
         itemsWriteWindow.add(labelItemText);
         labelAddingItem.setBounds(220, 0, 180, 35);
@@ -94,7 +94,7 @@ public class ItemsWriterWindow extends JPanel implements Window {
     // Implementation of the createButtons method from the Window interface
     @Override
     public void createButtons() {
-        JButton buttonNextItem = new JButton("PRÓXIMA ALTERNATIVA");
+        JButton buttonNextItem = new JButton("PRÓXIMO ITEM");
         JButton buttonCancel = new JButton("CANCELAR");
         itemsWriteWindow.add(buttonNextItem);
         itemsWriteWindow.add(buttonCancel);
@@ -119,7 +119,7 @@ public class ItemsWriterWindow extends JPanel implements Window {
                     }
                     itemTextArea.setText(""); // Clear the JTextArea
                     itemIndex++;
-                    labelAddingItem.setText("ADICIONANDO ALTERNATIVA " + (1 + itemIndex));
+                    labelAddingItem.setText("ADICIONANDO ITEM " + (1 + itemIndex));
                     itemsQuantity--;
 
                     if (itemsQuantity == 0) {
